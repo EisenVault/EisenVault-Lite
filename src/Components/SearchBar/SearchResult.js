@@ -31,8 +31,8 @@ useEffect(()=>{
       );
     },[result]);
 
-    function handleDocument(id , name){
-      history.push(`/document-details/${id}/${name}`)
+    function handleDocument(id , name , type){
+      type === "document" ? history.push(`/document-details/${id}/${name}`) : history.push(`/document/${id}`)
    }
     
     return( 
@@ -57,7 +57,8 @@ useEffect(()=>{
                     <td className="file_name-u"  
                     onClick={() => handleDocument(
                       d.nodeRef.substring(24),
-                      d.name)}
+                      d.name,
+                      d.type)}
                    ><FontAwesomeIcon 
                    className="pdf-file fas fa-file-pdf" 
                      icon={d.type === "document" ? faFile : faFolder} 

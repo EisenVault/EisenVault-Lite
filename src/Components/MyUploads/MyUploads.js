@@ -10,6 +10,7 @@ import Axios from 'axios';
 import { getToken,getUser, getUrl} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+import alertify from 'alertifyjs';
 // import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function MyUploads(props){
@@ -89,6 +90,7 @@ function MyUploads(props){
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getData();
            }).catch(err=>alert(err));
       }
@@ -235,7 +237,11 @@ function MyUploads(props){
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                     onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id,d.name) }}                   //{handleDelete(d.id,d.name)}}
+                     onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                     buttonFocus : "ok",
+                     'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.name,'onok': () => {handleDelete(d.id)} ,
+                     'oncancel': () => {alertify.confirm().destroy();}}).show()
+         }}                   //{handleDelete(d.id,d.name)}}
                       />
                 </td>
               </tr>

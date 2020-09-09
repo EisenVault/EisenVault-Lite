@@ -10,6 +10,8 @@ import './DocumentList.scss';
 import alertify from 'alertifyjs';
 // import {instance} from "../ApiUrl/endpointName.instatnce"
 import Search from "../SearchBar/SearchBar";
+
+
 import Modal from "../Modal/Modal";
 import { DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';

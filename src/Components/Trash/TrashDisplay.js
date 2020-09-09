@@ -7,6 +7,7 @@ import Axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import Search from '../SearchBar/SearchBar';
 // import '../MyUploads/MyUploads.scss';
+import alertify from 'alertifyjs';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
 import { getToken,getUrl } from '../../Utils/Common';
@@ -103,6 +104,7 @@ const RestoreFileByIds=()=>{
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getDeletedData();
            }).catch(err=>alert(err));}
      
@@ -113,6 +115,7 @@ const RestoreFileByIds=()=>{
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getDeletedData();
            }).catch(err=>alert(err));}
      
@@ -231,9 +234,17 @@ const RestoreFileByIds=()=>{
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
                 <FontAwesomeIcon icon={faTrash} className="TrashIcon" 
-                onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id) }}/>
+                onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                buttonFocus : "ok",
+                'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.name,'onok': () => {handleDelete(d.id)} ,
+                'oncancel': () => {alertify.confirm().destroy();}}).show()
+    }}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon" 
-                 onClick={(e) => { if (window.confirm(`Are you sure you wish to restore ${d.name}`)) handleRestore(d.id) }}/>
+                 onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                 buttonFocus : "ok",
+                 'message' : 'DO YOU WANT TO RESTORE THIS FILE '+ d.name,'onok': () => {handleRestore(d.id)} ,
+                 'oncancel': () => {alertify.confirm().destroy();}}).show()
+      }}/>
                  </td></tr>
                 ))}
         </tbody>
