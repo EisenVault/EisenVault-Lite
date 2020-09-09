@@ -15,7 +15,7 @@ import ManageShares from "../Components/ManageShares/ManageShares";
 //import SharedWithMe from "../Components/sharedWithMe/sharedWithMe";
 import ChangePassword from "../Components/ChangePassword/ChangePassword";
 import SubDocument from "../Components/Documents/SubDocument/SubDocument";
-
+import FullAudittrails from "../Components/MoreDetails/FullAuditTrails";
 import PdfViewer from "../Components/Documents/DocumentViewer/DocumentViewer";
 import SearchResult from '../Components/SearchBar/SearchResult';
 
@@ -25,11 +25,11 @@ import PrivateRoute from '../Utils/PrivateRoutes';
 import './styles.scss';
 import { getToken, removeUserLocal, setUserLocal } from "../Utils/Common";
 import Backdrop from "../Components/Backdrop/Backdrop";
+import { instance } from "../Components/ApiUrl/endpointName.instatnce";
 
 const Routings = withRouter (({ location },props) => {
   const [authLoading, setAuthLoading] = useState(true);
   const[sideDrawerOpen,setsideDrawerOpen]=useState(false);
-  const[moreDetails,setMoreDetails]=useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -38,7 +38,7 @@ const Routings = withRouter (({ location },props) => {
     }
   })
 
-  axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+  instance.get(`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`}
   }).then(response => {
@@ -47,7 +47,6 @@ const Routings = withRouter (({ location },props) => {
   }).catch(error => {
       removeUserLocal();
       setAuthLoading(false);
-      
     }, []);
 
   if (authLoading && getToken()) {
@@ -59,12 +58,6 @@ const Routings = withRouter (({ location },props) => {
       return {sideDrawerOpen: !prevState.sideDrawerOpen}
     })
   };
-
-  // let MoreDetailsHandler=()=>{
-  //   setMoreDetails((prevState)=>{
-  //     return {moreDetails: !prevState.sideDrawerOpen}
-  //   })
-  // };
 
   let backdropClickHandler=()=>{
     setsideDrawerOpen(false);
@@ -99,7 +92,7 @@ const Routings = withRouter (({ location },props) => {
         {/* <PrivateRoute path="/sharedWithMe" component={SharedWithMe} /> */}
         <PrivateRoute path="/changePassword" component={ChangePassword} />
         <PrivateRoute path="/document/:id" component={SubDocument} />
-
+        <PrivateRoute path="/actions/:id/AuditTrails" component={FullAudittrails}/>
         <PrivateRoute path="/doc/:id/:name" component={PdfViewer} />
         <PrivateRoute path="/search/:result" component={SearchResult} />
 

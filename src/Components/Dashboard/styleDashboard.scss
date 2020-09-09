@@ -2,7 +2,6 @@ $font-color:#073453;
 $icon-color: #ee9796;
 
 .filesDetail{
-    margin-left: 1rem;
     border: 1px solid $font-color;
     border-radius: 1.5rem;
     margin-top: 1rem;
@@ -19,10 +18,6 @@ $icon-color: #ee9796;
     border-spacing: 0 1rem;
 }
 
-.avtarStyle{
-    margin-left: 1rem;
-}
-
 .fa-file{
     font-size: 1.4rem;
     margin: 0 1rem 0 1rem;
@@ -35,6 +30,7 @@ $icon-color: #ee9796;
     & h4{
         font-weight: 100;
         display: inline;
+        word-break: break-all;
     }
 }
 

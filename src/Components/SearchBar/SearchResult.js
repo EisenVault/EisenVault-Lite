@@ -1,11 +1,12 @@
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
-import axios from 'axios';
+import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
-
-import {getToken} from  "../../Utils/Common";
+import Axios from 'axios';
+import { getToken,getUrl } from  "../../Utils/Common";
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function SearchResult(){
   let history = useHistory();
@@ -14,9 +15,8 @@ function SearchResult(){
    let params = useParams();
    const result = params.result;
    
-
 useEffect(()=>{
-        axios.get(`https://systest.eisenvault.net/alfresco/s/slingshot/search?term=${result}`,
+        Axios.get(getUrl()+`/alfresco/s/slingshot/search?term=${result}`,
         {
           headers:
           {
@@ -31,8 +31,8 @@ useEffect(()=>{
       );
     },[result]);
 
-    function handleDocument(id , name){
-      history.push(`/document-details/${id}/${name}`)
+    function handleDocument(id , name , type){
+      type === "document" ? history.push(`/document-details/${id}/${name}`) : history.push(`/document/${id}`)
    }
     
     return( 
@@ -47,7 +47,8 @@ useEffect(()=>{
                   <tr id="icons">
                     <th id="item-names">Item Name</th>
                     <th id="shared">Department Name</th>
-                    <th id="action">Actions</th>
+                    <th>Actions</th>
+                    <th id="action"><Item/></th>
                   </tr>
                   </thead>
                   { documents.map((d) => (
@@ -56,7 +57,8 @@ useEffect(()=>{
                     <td className="file_name-u"  
                     onClick={() => handleDocument(
                       d.nodeRef.substring(24),
-                      d.name)}
+                      d.name,
+                      d.type)}
                    ><FontAwesomeIcon 
                    className="pdf-file fas fa-file-pdf" 
                      icon={d.type === "document" ? faFile : faFolder} 

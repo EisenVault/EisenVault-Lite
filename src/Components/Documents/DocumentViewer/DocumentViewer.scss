@@ -1,7 +1,16 @@
-// .docFrame{
-//     display: inline-block;
-// }
- 
-.docFrame{
-    margin-left: 2rem;
+.title{
+    text-align: center;
+    width: 100%;
+    float: left;
+}
+
+.buttons{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 1rem;
+
+    & .back-button{
+        float: right;
+        margin-right: 1rem;
+    }
 }

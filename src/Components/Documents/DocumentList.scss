@@ -1,20 +1,18 @@
-#second_section{
-  width: 100%;
-}
 .files{
-  margin-left: 1rem;
   margin-top: 1rem;
   border: 1px solid #073453;
   border-radius: 1.5rem;
-  height: 100%;
-  width: 95%;
+  height: auto;
+  width: 100%;
   color: #073453;
   }
+
   .files h2{
     margin: 2rem 0 0 2rem;
     font-weight: 100;
     font-size: 20px;
   }
+
   .files .fas {
     color: #ee9796;
     text-align: center;
@@ -22,14 +20,11 @@
     margin-left: 1rem;
     margin-right: 1rem;
   }
-
-  .files #doc_list {
-    border-collapse: separate;
-    border-spacing: 0 1rem;
-  }
   
   #doc_list{
-    width: 92%;
+    width: 100%;
+    border-spacing: 0 1rem;
+    border-collapse: separate;
   }
   
   .fileDetails{
@@ -42,52 +37,38 @@
 
   @media (min-width: 533px) and (max-width: 1023){
     .files{
-      margin-top: 1rem;
       width: 102%;
-      height: 40rem;
+      // height: 40rem;
     }
-    .files #doc_list {
-      width: 95%;
-      margin: 0 0rem 1.5rem 0.2rem;
-    }
+    // .files #doc_list {
+    //   width: 95%;
+    //   // margin: 0 0rem 1.5rem 0.2rem;
+    // }
   }
   @media (min-width: 768px) and (max-width: 1022px){
-    .files{
-      height: 40rem;
-    }
-    .files #doc_list{
-      width: 97%;
-    }
+    
+    // .files #doc_list{
+    //   width: 97%;
+    // }
   }
   @media (min-width: 800px){
-    .files{
-      height: 40rem;
-    }
-    .files #doclist{
-      width: 98%;
-    }
+   
+    // .files #doclist{
+    //   width: 98%;
+    // }
   }
   @media (min-width: 1280px){
-    .files{
-      height: 48rem;
-      margin-top: 2rem;
-    }
-    .files #doc_list{
-      // padding-bottom: 2rem;
-      width: 95%;
-    }
+    
+    // .files #doc_list{
+    //   // padding-bottom: 2rem;
+    //   width: 95%;
+    // }
   }
   @media (min-width: 1024) and (max-width: 1279px){
     .files{
       width: 100%;
-      height: 48rem;
-      margin-top: 1.5rem;
     }
-    .files #doc_list{
-      width: 92%;
-      // padding-bottom: 2.5rem;
-    }
-  }
-  @media (min-width: 1920px){
-
+    // .files #doc_list{
+    //   width: 92%;
+    // }
   }

@@ -9,12 +9,14 @@ $font-color:#073453;
   font-family: 'Open Sans', sans-serif;
   display: grid;
   grid-template-columns: 30% 70%;
-  margin: 0;
+  max-width: 70rem;
+  margin: auto;
 }
 
 #second_section{
   display: inline-block;
-  margin: 0;
+  width: 95%;
+  margin-left: 2rem;
 }
 
 #second_section .top-menu{
@@ -27,7 +29,7 @@ $font-color:#073453;
 
 .avtarStyle{
   float: right;
-  margin: 0;
+  margin: 0.2rem 0.5rem 0 0;
 }
 
 @media (min-width:1024px) and (max-width:1279px){

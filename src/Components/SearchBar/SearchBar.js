@@ -1,12 +1,13 @@
 import React,{ useState, useEffect} from "react";
 import {useHistory } from 'react-router-dom';
-import axios from 'axios';
+import Axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 //import ReactSearchBox from "react-search-box";
 import OutsideClickHandler from 'react-outside-click-handler';
 import "./styleSearchBar.scss";
-import { getToken } from '../../Utils/Common';
+import { getToken,getUrl } from '../../Utils/Common';
+// import { instance } from "../ApiUrl/endpointName.instatnce";
 
  const Search = () => {
   let history = useHistory();
@@ -18,7 +19,7 @@ import { getToken } from '../../Utils/Common';
       // useEffect(()=>{
             const fetchData =  ()=> {
                     try{
-                        axios.get(`https://systest.eisenvault.net//alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
+                        Axios.get(getUrl()+`/alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
                          
                              {headers:{
                                 Authorization: `Basic ${btoa(getToken())}`

@@ -7,20 +7,38 @@ $white-color: white;
     position: absolute;
     // z-index:200;
     width: 30%;
-    height:890px;
-    margin-left: 35rem;
-    padding: 5.6rem 5.6rem 11.4rem 5.6rem;
+    height: auto;
+    margin-left: 30rem;
+    padding: 2rem 2rem 3.4rem 3.6rem;
     background-color: $sidebar-color;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
     list-style: none;
     -webkit-font-smoothing: antialiased; 
     transform: translateX(-100%);
     transition: transform 0.3s ease-out ;
+    
     & a{
         text-decoration: none;
       }
+
+    & button{
+        background-color: $sidebar-color;
+        color: $font-color;
+        font-weight: bold;
+    }
+}
+
+#second_section .details-p p{
+    font-size: 15px;
 }
 
 .pdf-preview.open{
     transform:translateX(0);
 }
+    .actions{
+        border-left: 2px;
+    }
+
+    .time{
+        border-right: none; 
+    }

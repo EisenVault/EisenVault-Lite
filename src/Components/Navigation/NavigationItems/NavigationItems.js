@@ -11,10 +11,11 @@ import { faHome,
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
 
-
 import  './NavigationItems.scss';
-import axios from 'axios';
-import { getToken,getUser } from '../../../Utils/Common';
+import Axios from 'axios';
+// import {instance} from "../../ApiUrl/endpointName.instatnce"
+import { getToken,getUser,getUrl } from '../../../Utils/Common';
+import { instance } from '../../ApiUrl/endpointName.instatnce';
 
 function NavigationItems() {
   const history = useHistory();
@@ -24,7 +25,7 @@ function NavigationItems() {
   const user = getUser();
   // handle click event of logout button
    const handleLogout = () => {    
-      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+      Axios.delete(`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {
@@ -58,7 +59,7 @@ function NavigationItems() {
               <li> <FontAwesomeIcon 
               className="Icon" 
               icon={faFileAlt}/>
-              <p> &nbsp;DOCUMENTS</p>
+              <p> &nbsp;DEPARTMENTS</p>
               </li></Link>
 
             <Link to="/myUploads">

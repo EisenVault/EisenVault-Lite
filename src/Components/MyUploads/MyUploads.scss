@@ -2,12 +2,12 @@ $font-color:#073453;
 $icon-color: #ee9796;
 
 #second_section{
-  display: inline-block;
-  margin: 0;
+//   display: inline-block;
+//   margin: 0;
 
   & h2{
     color: #073453;
-    margin-left: 6rem;
+    // margin-left: 6rem;
     float: left;
   }
 
@@ -17,19 +17,10 @@ $icon-color: #ee9796;
     font-size: 1rem;
 }
 }
-
-#doc_list {
-  border-collapse: separate;
-  border-spacing: 0 1rem;
-  margin: 1rem 2rem;
-  width: 95%; 
-}
   
 .filesUpload {
     color: $font-color;
-    margin-top: 1rem; 
   }
-
 
 .filesUpload td.file_icon1 input[type=checkbox] {
      margin: 0.9rem 0.3rem 0.9rem 1.9rem;
@@ -54,7 +45,7 @@ $icon-color: #ee9796;
     border-collapse: separate;
     padding-top:1rem;
     padding-bottom:1rem;
-    padding-right:1.9rem;
+    // padding-right:1.9rem;
 }
 th#action {
   border-right: 1px solid #073453;
@@ -78,7 +69,7 @@ th#action {
 
 .fa-times-circle {
   color:$icon-color;
-  margin-left:4rem; 
+  margin-left:2rem; 
 }
 
 // .file_name-u {
@@ -241,10 +232,7 @@ white-space: nowrap;
 #item-name{
     padding-left:0.5rem;
 }
-  #doc_list {
-    margin: 1rem 1rem;
-   
-  }
+
   #action label{
       padding-left:1.3rem;
   }

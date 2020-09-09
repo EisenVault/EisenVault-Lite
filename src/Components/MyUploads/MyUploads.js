@@ -6,10 +6,12 @@ import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons"
 import './MyUploads.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
-import axios from 'axios';
-import { getToken,getUser} from '../../Utils/Common';
+import Axios from 'axios';
+import { getToken,getUser, getUrl} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+import alertify from 'alertifyjs';
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function MyUploads(props){
   let history = useHistory();
@@ -25,9 +27,9 @@ function MyUploads(props){
   const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
 
-  //api call
+  //api call 
     const getData=()=>{
-      axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search`,
+      Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
       {
         "query": 
           {"query": `cm:creator:${getUser()}`},
@@ -61,12 +63,6 @@ function MyUploads(props){
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  function handleDocument(id,title){
-    history.push(`/document-details/${id}/${title}`)
-  }
   const closeModal=()=>{ //function to close modal after performing it's operations
     return  setmodalIsOpen(false)
   }
@@ -75,7 +71,7 @@ function MyUploads(props){
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
       if(d.select){
-      axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -88,19 +84,20 @@ function MyUploads(props){
       })}
       
       const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
-        axios.delete(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+        Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getData();
            }).catch(err=>alert(err));
       }
 
       function next(){
         document.getElementById("myprevBtn").disabled = false;
-        axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search`,
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
@@ -138,7 +135,7 @@ function MyUploads(props){
     
       function previous(){
         document.getElementById("myBtn").disabled = false;
-        axios.post(`https://systest.eisenvault.net/alfresco/api/-default-/public/search/versions/1/search`,
+        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
@@ -178,14 +175,16 @@ function MyUploads(props){
       <Fragment>
          <div id="second_section">
 
-         <div className="top-menu">
-
-            <h2>My Uploads</h2>
-            <Search />
+         <div className="title">
             <ProfilePic />
+            <h2>My Uploads</h2>
           </div>
 
-               <div className="filesUpload">
+          <div className="search-profile">
+            <Search />
+          </div>
+
+              <div className="filesUpload">
                 <table id="doc_list">
                   <tbody>
                   <tr id="icons">
@@ -214,7 +213,7 @@ function MyUploads(props){
                       </Modal>
                 </tr> 
                   
-                  { FileState.map((d,i) => (
+                  { FileState.map((d) => (
                      <tr  key={d.id}  id="first_details">
                     <td className="file_icon1">
                       <input onChange={(event)=>{
@@ -238,7 +237,11 @@ function MyUploads(props){
                     <td className="details-u">{d.uploadedOn}</td>
                     <td className="delete-u">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
-                     onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id,d.name) }}                   //{handleDelete(d.id,d.name)}}
+                     onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                     buttonFocus : "ok",
+                     'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.name,'onok': () => {handleDelete(d.id)} ,
+                     'oncancel': () => {alertify.confirm().destroy();}}).show()
+         }}                   //{handleDelete(d.id,d.name)}}
                       />
                 </td>
               </tr>

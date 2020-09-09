@@ -25,9 +25,9 @@ $white-color: white;
         text-decoration: none;
 
         & p{
-            color: $white-color;
+            color: $white-color!important;
             display: inline;
-            font-size: 16px;
+            font-size: 16px!important;
             margin-left: 2rem;
         }
     }

@@ -1,51 +1,25 @@
 $font-color:#073453;
 
-// .container{
-//   display: inline-block;
-//   margin-top: 1rem;
-// }
-
-// // h2{
-// //   float: left;
-// //   margin: 1rem 0.2rem 0 0.5rem;
-// //   color: $font-color;
-// // }
-
-// .sc-htpNat {
-//   width: 12rem;
-//   border: 2px solid $font-color;  
-//   border-radius: 0.5rem;
-//   padding: 0.2rem;
-//   float: right;
-//   margin: 0 0 0 1rem;
-//   z-index: 2;
-// }  
-
-// @media (min-width:1366px) {
-//   .sc-htpNat {
-//     width: 20rem;
-//   }
-// }
-
 .searchBox{
-	width: 40%;
-	margin-top: 1rem;
-	margin-left: 1rem;
+	width: 96%;
+	margin: 1rem 0 1rem 0;
 	position: relative;
 	border: 3px solid $font-color;  
 	border-radius: 0.5rem;
 	padding: 0.5rem;
 }
+
 .menu-container{
-	z-index: 500;
+	z-index: 100;
 	background-color: #E07050;
-	position: absolute;
+	// position: absolute;
 	// overflow-y: scroll;
 	overflow-x: hidden;
 	min-width:15rem;
-	max-width: 11rem;
+	border-radius: 1rem;
+	// max-width: 11rem;
 	max-height:50%;
-	margin-left:15rem;
+	// margin-left:15rem;
 }
 .menu {
 	background-color: white;

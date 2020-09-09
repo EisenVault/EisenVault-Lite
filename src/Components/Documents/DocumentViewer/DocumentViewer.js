@@ -5,28 +5,74 @@ import ProfilePic from "../../Avtar/Avtar";
 import DocumentDetails from "../../MoreDetails/MoreDetails";
 import "../DocumentViewer/DocumentViewer.scss"
 import { Item } from '../../backButton/backButton';
-import {getToken} from  "../../../Utils/Common";
+import {getToken, getUrl} from  "../../../Utils/Common";
 import axios from 'axios';
-import {MoreDetailToggleButton} from "../../MobileMenu/MobileMenu"
+import { Animated } from "react-animated-css";
+
+// import { instance } from '../../ApiUrl/endpointName.instatnce';
+
+function ToggleButton({ label, onClick }) {
+  
+  return (
+    <button className="toggle" onClick={onClick}>
+      {label} 
+    </button>
+  );
+}
+
+function AnimatedVisibility({ visible, children }) {
+  const [noDisplay, setNoDisplay] = useState(!visible);
+  useEffect(() => {
+    if (!visible) setTimeout(() => setNoDisplay(true), 650);
+    else setNoDisplay(false);
+  }, [visible]);
+
+  const style = noDisplay ? { display: "none" } : null;
+  return (
+    <Animated
+      isVisible={visible}
+      style={style}
+    >
+      {children}
+    </Animated>
+  );
+}
+
+function Sidebar({ open }) {
+  return (
+    <AnimatedVisibility
+      visible={open}
+      className="on-top"
+    >
+      <div className="sidebar">
+        <ul>
+          <li>{DocumentDetails()}</li>
+        </ul>
+      </div>
+    </AnimatedVisibility>
+  );
+}
 
 function DocPreview() {
     const [fileURI, setFileURI] = useState("");
     const [pdfFileURI, setPdfFileURI] = useState("");
-    const[moreDetails,setMoreDetails]=useState(false);
-
-    const [error, setError] = useState(null);
+    const [sidebarIsOpen, setSidebarOpen] = useState(false);
+    const cors = "https://cors-anywhere.herokuapp.com/";
     let params = useParams();
     const title = params.title;
-    const [dataType, setDataTypes] = useState("")
     const path = window.location.href; 
     console.log(path)
     const id =  path.slice(41,77)   
     const fileType = path.split('.').pop()
     console.log(fileType)
+    
+  function toggleSidebar() {
+    setSidebarOpen(!sidebarIsOpen);
+  }
 
   useEffect(() => {
     //First find out content type
-    axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`,
+    axios.get(cors+getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`,
         {
           headers: {
             Authorization: `Basic ${btoa(getToken())}`,
@@ -35,15 +81,9 @@ function DocPreview() {
       ).then((response) => {
         // setDataTypes(response.headers["content-type"])
         // console.log(dataType)
-        setFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
+        setFileURI(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
       });
   }, [id]);
-
-  let MoreDetailsHandler=()=>{
-    setMoreDetails((prevState)=>{
-      return {moreDetails: !prevState.moreDetails}
-    })
-  };
 
   function DisplayUsingOfficeApps() {
     var token = getToken();
@@ -54,32 +94,26 @@ function DocPreview() {
     console.log(fileURI);
     console.log(token);
     // document.getElementById('myFrame').src=url
+
     return (
       <Fragment>
-      {/* <MoreDetailToggleButton details={MoreDetailsHandler} /> */}
-      <button onClick={()=>{setMoreDetails(true)}}>More</button>
-      {setMoreDetails(true)? <DocumentDetails show={moreDetails}/>: null}
+
       <iframe src={url} 
       title='mydocframe' 
       id='mydocFrame'
-      width="700px" height="700px">
+      width="730rem" 
+      height="500rem" >
       </iframe>
       </Fragment>
     );
   }
 
-  useEffect(() => {axios.get(`https://cors-anywhere.herokuapp.com/https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,    
+  useEffect(() => {axios.get(cors+getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,    
    {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response)=>{
-        // setDataTypes(response.headers["content-type"])
-        // console.log(dataType)
-
-        // const file = new Blob([response.data],
-        //     {type: dataType});
-        
-        setPdfFileURI(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`)
+        setPdfFileURI(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`)
          })} , [id]) 
 
  const PdfViewer = () => {
@@ -88,14 +122,12 @@ function DocPreview() {
           <Fragment>
           
           <div className="docFrame">
-          <MoreDetailToggleButton details={MoreDetailsHandler} />
-          <DocumentDetails/>
 
             <iframe src={pdfFileURI} 
             title='myframe' 
             id='myFrame'
-            width="700px" 
-            height="700px" 
+            width="730rem" 
+            height="500rem" 
             marginWidth="1rem"
             allowFullScreen/>
           </div>
@@ -114,14 +146,30 @@ function Viewer() {
 return(
     <Fragment>
      <div id="second_section">
-     <div className="top-menu">
-
+      <div className="title">
         <h2>{title}</h2>
-        <Search />
         <ProfilePic />
+
+      </div>
+      <div className="search-profile">
+        <Search />
       </div>
       
-        <Item />
+      <div className="buttons">
+        <div className="back-button">
+        <Item/>
+        </div>
+
+        <div className="details">
+        <ToggleButton
+            label="More Details"
+            isOpen={sidebarIsOpen}
+            onClick={toggleSidebar}
+            />
+        <Sidebar open={sidebarIsOpen}/>
+        </div>
+      </div>
+
         <Viewer />
         
     </div>

@@ -1,6 +1,12 @@
 import axios from 'axios';
-import {getToken} from "../../Utils/Common"
+import {getUrl} from "../../Utils/Common"
+
+// export const instance = axios.create({
+//     baseURL: process.env.REACT_APP_INSTANCE_URL
+// })
+
+axios.defaults.baseURL = localStorage.getItem('url');
 
 export const instance = axios.create({
-    baseURL:"https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1"
+    baseURL: getUrl()
 })

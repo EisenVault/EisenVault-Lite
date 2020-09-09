@@ -3,15 +3,17 @@ import Modal from "../Modal/Modal";
 import { DeleteSummmary,RestoreSummary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
+import Axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import Search from '../SearchBar/SearchBar';
 // import '../MyUploads/MyUploads.scss';
+import alertify from 'alertifyjs';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
-import { getToken } from '../../Utils/Common';
+import { getToken,getUrl } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
+// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
@@ -31,7 +33,7 @@ function TrashDisplayFiles(props){
   },[]);
 
 const getDeletedData=()=>{
-  axios.get('https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
+  Axios.get(getUrl()+'/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
@@ -55,8 +57,6 @@ const indexOfLastPost = currentPage * postsPerPage;
 const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 
-// Change page
-const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 const closeModal=()=>{ //function to close modal after performing it's operations
   return (setmodalIsOpen(false),
@@ -67,7 +67,7 @@ const closeModal=()=>{ //function to close modal after performing it's operation
 const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-    axios.delete(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+    Axios.delete(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }
@@ -84,7 +84,7 @@ const permanentDeleteByIds=()=>{
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-       axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+       Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
         {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
@@ -98,22 +98,24 @@ const RestoreFileByIds=()=>{
       })}
 
       const handleDelete=(id)=>{ //method to delete documents without selecting by checkbox
-        axios.delete(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${id}`, 
+        Axios.delete(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getDeletedData();
            }).catch(err=>alert(err));}
      
      const handleRestore=(id)=>{ //method to restore documents without selecting by checkbox
-        axios.put(`https://systest.eisenvault.net/alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
+        Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
         {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
           console.log(data);
+          alertify.confirm().destroy(); 
           getDeletedData();
            }).catch(err=>alert(err));}
      
@@ -121,7 +123,7 @@ const RestoreFileByIds=()=>{
       function next(){  //function for pagination's next button
        document.getElementById("myprevBtn").disabled = false;
          console.log(skipCount);
-         axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
+         Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
          {headers:{
            Authorization: `Basic ${btoa(getToken())}`
          }}).then((response) => {
@@ -145,7 +147,7 @@ const RestoreFileByIds=()=>{
       function previous(){ 
         //function for pagination's previous button
         document.getElementById("myBtn").disabled = false;  
-        axios.get(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
+        Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
         {headers:{
           Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
@@ -171,11 +173,14 @@ const RestoreFileByIds=()=>{
   return(
     <Fragment>
         <div id="second_section">
-          <div className="top-menu">
-            <h2>Trash</h2>
-            <Search />
-            <ProfilePic />
-          </div>
+        <div className="title">
+          <h2>Trash</h2>
+          <ProfilePic />
+        </div>
+
+        <div className="search-profile">
+          <Search />
+        </div>
 
         <div className="filesUpload">
         <table id="doc_list">
@@ -229,9 +234,17 @@ const RestoreFileByIds=()=>{
                 <td className="deleted_t">{d.archivedAt}</td> 
                 <td className="delete-icon">
                 <FontAwesomeIcon icon={faTrash} className="TrashIcon" 
-                onClick={(e) => { if (window.confirm(`Are you sure you wish to delete ${d.name}`)) handleDelete(d.id) }}/>
+                onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                buttonFocus : "ok",
+                'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.name,'onok': () => {handleDelete(d.id)} ,
+                'oncancel': () => {alertify.confirm().destroy();}}).show()
+    }}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon" 
-                 onClick={(e) => { if (window.confirm(`Are you sure you wish to restore ${d.name}`)) handleRestore(d.id) }}/>
+                 onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                 buttonFocus : "ok",
+                 'message' : 'DO YOU WANT TO RESTORE THIS FILE '+ d.name,'onok': () => {handleRestore(d.id)} ,
+                 'oncancel': () => {alertify.confirm().destroy();}}).show()
+      }}/>
                  </td></tr>
                 ))}
         </tbody>

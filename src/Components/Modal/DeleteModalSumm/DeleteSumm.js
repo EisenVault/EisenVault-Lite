@@ -38,63 +38,33 @@ export const RestoreSummary= props =>{
   )
 }
 
-export const CreateDepartment = props =>{
-  return (
-    <Fragment>
-      <div id="popup2" class="popup-n">
+// export const CreateDepartment = props =>{
+//   return (
+//     <Fragment>
+//       <div id="popup2" class="popup-n">
             
-                <h2 class="head">Create Department</h2><br></br>
-                <div class="content">
-                    <p>
-                        <label>Name:</label>
-                        <input type="text" id="name" name="name"  {...props.departmentTitle}></input><br></br>
-                        <label>URL:</label>
-                        <input type="text" id="url" name="url"></input><br></br>
-                        <label class="describe">Description:</label>
-                        <textarea rows = "6" cols = "40" id = "desc"></textarea>  
-                        <div id="btns">
-                        <button id="btn03"  onClick={props.createDept}>Ok</button>
-                        <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
-                    </div>                   
-                    </p>
+//                 <h2 class="head">Create Department</h2><br></br>
+//                 <div class="content">
+//                     <p>
+//                         <label>Name:</label>
+//                         <input type="text" id="name" name="name"  {...props.departmentTitle}></input><br></br>
+//                         <label>URL:</label>
+//                         <input type="text" id="url" name="url"></input><br></br>
+//                         <label class="describe">Description:</label>
+//                         <textarea rows = "6" cols = "40" id = "desc"></textarea>  
+//                         <div id="btns">
+//                         <button id="btn03"  onClick={props.createDept}>Ok</button>
+//                         <button className="btn-cancel" onClick={props.clicked}>Cancel</button>
+//                     </div>                   
+//                     </p>
                    
-                </div>
+//                 </div>
             
-        </div>
+//         </div>
+//     </Fragment>
 
-
-       {/* <div className="modal-header">
-              <h2>Create Department</h2>
-            </div>
-            <div>
-          <div>
-           
-            <div className="label-input">
-              <label className="Dh2">Name:</label>
-              <input type="text" name="name" {...props.departmentTitle}>
-              </input>
-              </div>
-              <br></br>
-              <div className="label-input">
-              <label className="Dh2">URL:</label>
-              <input type="text" name="url"></input>
-              </div>
-              <br></br>
-              <div className="label-input">
-            <label className="Dh2">Description:</label>
-            <textarea row="8" col="60"></textarea>
-            </div>
-            
-          </div>
-        </div>
-        <div id="btns">
-          <button onClick={props.createDept} className="btn-continue">Create</button>
-          <button onClick={props.clicked} className="btn-cancel">Cancel</button>
-        </div> */}
-    </Fragment>
-
-  )
-}
+//   )
+// }
 
 export const ForgotPassword = props => {
   return(
@@ -167,44 +137,29 @@ export const DeleteDepartment = (props) => {
   )
 }
 
-export const ChangeTypes = (props) => {
-  return(
-    <Fragment>
-      <div className="modal-header">
-        <h2>{props.fileName}</h2>
-        </div>
-        <div>
-          <div>
-            <h3>Auto Identified Category: Aadhaar Card</h3>
+// export const ChangeTypes = (props) => {
+//   return(
+//     <Fragment>
+//       <div className="modal-header">
+//         <h2>{props.fileName}</h2>
+//         </div>
+//         <div>
+//           <div>
+//             <h3>Auto Identified Category: {props.documentType}</h3>
            
-            <div className="label-input">
-              <label>New Category: </label>
-              <input type="text" name="name">
-              </input>
-              </div>
-              <br></br>
-              <div className="label-input">
-              <label>URL:</label>
-              <input type="text" name="url"></input>
-              </div>
-              <br></br>
-              <div className="label-input">
-            <label>Description:</label>
-            <textarea row="8" col="60"></textarea>
-            </div>
-            
-            <div className="label-input">
-            <input type="checkbox"></input>
-            <label>Please confirm whether you want to delete the department and all its contents.</label>
-            </div>
-          </div>
-        </div>
-        <div id="btns">
+//             <div className="label-input">
+//               <label>New Category: </label>
+//               <select id="typeDropDown" value={props.docTypes}>
+//                   {props.docTypes}
+//               </select>
+//               </div>
+//           </div>
+//         </div>
+//         <div id="btns">
 
-          <button className="btn-continue">Delete Department</button>
-          <button className="btn-continue" onClick={props.deleteDept}>Delete</button>
-          <button onClick={props.clicked} className="btn-cancel">Cancel</button>
-        </div>
-    </Fragment>
-)
-}
+//           <button className="btn-continue" onClick={props.changeType}>Change</button>
+//           <button onClick={props.clicked} className="btn-cancel">Cancel</button>
+//         </div>
+//     </Fragment>
+// )
+// }

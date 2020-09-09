@@ -2,17 +2,17 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
-import axios from 'axios'
 
 import alertify from 'alertifyjs';
 
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
-import {instance} from '../../ApiUrl/endpointName.instatnce'
+// import {instance} from '../../ApiUrl/endpointName.instatnce'
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
-import {getToken} from "../../../Utils/Common";
+import {getToken,getUrl} from "../../../Utils/Common";
 import './SubDocument.scss';
+import Axios from 'axios';
 
 function SubDocument(){
   let history = useHistory();
@@ -30,14 +30,12 @@ function SubDocument(){
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  
   useEffect(()=>{
     getData()
   },[id]);
 
-
   const getData = () => {
-    instance.get(`/nodes/${id}/children?skipCount=0`,
+    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -50,7 +48,7 @@ function SubDocument(){
   };
   
 const handleDelete=(id,name)=>{
-      instance.delete(`/nodes/${id}`,
+      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
       {
       headers:{
           Authorization: `Basic ${btoa(getToken())}`
@@ -62,7 +60,6 @@ const handleDelete=(id,name)=>{
            }).catch(err=>alert(err));
       }
     
-
     function handleDocument(file , id, title){
       file ? history.push(`/document-details/${id}/${title}`): history.push(`/document/${id}`)
     }
@@ -70,11 +67,13 @@ const handleDelete=(id,name)=>{
     return( 
       <Fragment>
          <div id="second_section">
-         <div className="top-menu">
-
+         <div className="title">
             <h2>Document Library</h2>
-            <Search />
             <ProfilePic />
+            </div> 
+
+            <div className="search-profile">
+            <Search />
             </div> 
             
               <div className="filesShared">
