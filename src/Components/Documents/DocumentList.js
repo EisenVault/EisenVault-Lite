@@ -11,8 +11,8 @@ import {instance} from "../ApiUrl/endpointName.instatnce"
 import ProfilePic from "../Avtar/Avtar";
 import { getToken, getUser } from '../../Utils/Common';
 import Search from "../SearchBar/SearchBar";
-import ProfilePic from "../Avtar/Avtar";
-import { getToken, getUser } from '../../Utils/Common';
+
+
 import Modal from "../Modal/Modal";
 import { CreateDepartment, DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
