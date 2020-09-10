@@ -57,7 +57,7 @@ function DocPreview() {
     const [fileURI, setFileURI] = useState("");
     const [pdfFileURI, setPdfFileURI] = useState("");
     const [sidebarIsOpen, setSidebarOpen] = useState(false);
-    const cors = "https://cors-anywhere.herokuapp.com/";
+
     let params = useParams();
     const title = params.title;
     const path = window.location.href; 
@@ -65,6 +65,12 @@ function DocPreview() {
     const id =  path.slice(41,77)   
     const fileType = path.split('.').pop()
     console.log(fileType)
+
+    const cors = "https://cors-anywhere.herokuapp.com/";
+    const docUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`
+    const docUrlApi = cors+getUrl()+docUrl
+    const pdfUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`
+    const pdfUrlApi = cors+getUrl()+pdfUrl
     
   function toggleSidebar() {
     setSidebarOpen(!sidebarIsOpen);
@@ -72,7 +78,7 @@ function DocPreview() {
 
   useEffect(() => {
     //First find out content type
-    axios.get(cors+getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`,
+    axios.get(docUrlApi,
         {
           headers: {
             Authorization: `Basic ${btoa(getToken())}`,
@@ -81,7 +87,7 @@ function DocPreview() {
       ).then((response) => {
         // setDataTypes(response.headers["content-type"])
         // console.log(dataType)
-        setFileURI(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`)
+        setFileURI(getUrl()+docUrl)
       });
   }, [id]);
 
@@ -92,7 +98,6 @@ function DocPreview() {
       fileURI + "?alf_ticket=" +token;
     console.log(url);
     console.log(fileURI);
-    console.log(token);
     // document.getElementById('myFrame').src=url
 
     return (
@@ -108,12 +113,12 @@ function DocPreview() {
     );
   }
 
-  useEffect(() => {axios.get(cors+getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`,    
+  useEffect(() => {axios.get(pdfUrlApi,    
    {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response)=>{
-        setPdfFileURI(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`)
+        setPdfFileURI(getUrl()+pdfUrl)
          })} , [id]) 
 
  const PdfViewer = () => {
