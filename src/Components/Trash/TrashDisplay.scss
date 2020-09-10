@@ -84,3 +84,29 @@ th#action-trash{
     }
     
 }
+
+@media(min-width:1024px){
+    #icon01 input[type=checkbox] {
+        margin-left:0.8rem;
+      }
+   .created_t{
+       padding-left:1rem;
+    }
+   .deleted_t{
+       padding-left:1rem;
+   }
+   #created{
+       padding-right:1.3rem;
+       padding-left:0.6rem;
+       overflow:hidden;
+       white-space: nowrap;
+   }
+   #deleted{
+       padding-right:2rem;
+       overflow:hidden;
+       white-space: nowrap;
+ }
+   #action-trash{
+       padding-right:0.5rem;
+   }
+}

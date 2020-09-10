@@ -23,7 +23,7 @@ $icon-color: #ee9796;
   }
 
 .filesUpload td.file_icon1 input[type=checkbox] {
-     margin: 0.9rem 0.3rem 0.9rem 1.9rem;
+     margin: 0.9rem 0.3rem 0rem 1.9rem;
      height:1.4rem;
      width: 1.4rem;
  }
@@ -230,7 +230,7 @@ white-space: nowrap;
       }
   }
 #item-name{
-    padding-left:0.5rem;
+    padding-left:2rem;
 }
 
   #action label{
@@ -256,22 +256,29 @@ white-space: nowrap;
 }
 }
 
-@media(min-width:1024px) and (max-width:1130px){
+@media(min-width:1024px){
     #shared{
         padding-left:0rem;
+        
       }
       #action label{
-        padding-left:0.1rem;
+        padding-left:1.8rem;
     }
     .details-u{
-        padding-left:0.3rem;
+        padding-left:1.2rem;
     }
     .file_name-u{
         overflow: hidden;  
         white-space: nowrap; 
-        padding-left:0rem;
+        padding-left:1rem;
     }
     .delete-u{
-        padding-left:0rem;
+        padding-left:1.5rem;
     }
+   input[type=checkbox] {
+        margin-left:1.2rem;
+      }
+      #item-name{
+          padding-right:2.5rem;
+      }
 }
