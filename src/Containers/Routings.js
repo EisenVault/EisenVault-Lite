@@ -23,7 +23,7 @@ import DocPreview from "../Components/Documents/DocumentViewer/DocumentViewer";
 
 import PrivateRoute from '../Utils/PrivateRoutes';
 import './styles.scss';
-import { getToken, removeUserLocal, setUserLocal, getUrl } from "../Utils/Common";
+import { getToken, removeUserLocal, getUrl } from "../Utils/Common";
 import Backdrop from "../Components/Backdrop/Backdrop";
 // import { instance } from "../Components/ApiUrl/endpointName.instatnce";
 
@@ -38,7 +38,7 @@ const Routings = withRouter (({ location },props) => {
     }
   })
 
-  axios.get(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+  axios.get(getUrl()+`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`}
   }).then(response => {
