@@ -147,6 +147,7 @@ function DocPreview() {
     
 function Viewer() { 
   if (fileType === 'pdf') return PdfViewer() 
+  else if (fileType === 'jpeg') return PdfViewer()
   else if (fileType === 'png') return PdfViewer()
   else return DisplayUsingOfficeApps()
 }
