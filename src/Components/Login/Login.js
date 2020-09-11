@@ -5,7 +5,6 @@ import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
 import './LoginPage.scss';
 // import { instance } from '../ApiUrl/endpointName.instatnce';
-import { instance } from '../ApiUrl/endpointName.instatnce';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
@@ -16,24 +15,24 @@ const LoginPage = (props) => {
 
   const [err, setPswdError] = useState(null);
 
-  // setUrl(url.value)
-  // const userUrl = getUrl()
-  // console.log(userUrl)
-
   const userName = useFormInput ('');
   const password = useFormInput ('');
   const forgotPswdUserName = useFormInput ('');
 
-  const url = useFormInput('');
+  let url = useFormInput('');
+  console.log(url.value)
+  
+  let newUrl = url.value.replace(/\/?(\?|#|$)/, '/$1')
+  console.log(newUrl)
 
   const handleLogin = () => {
-    setUrl(url.value)
+    setUrl(newUrl)
 
     setError(null);
     setLoading(true);
     // Axios.post(getUrl()+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
 
-    axios.post(getUrl()+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
+    axios.post(getUrl()+'alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
       setLoading(false);
       setUserLocal(response.data.entry.id, response.data.entry.userId);
@@ -57,7 +56,7 @@ function HandleForgotPassword() {
   setPswdError(null);
   setPswdLoading(true);
 
-  axios.post(getUrl()+'/share/proxy/alfresco-noauth/com/flex-solution/reset-password',
+  axios.post(getUrl()+'share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
     setPswdLoading(false);
     closeModal();

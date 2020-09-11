@@ -62,9 +62,12 @@ function DocPreview() {
     const title = params.title;
     const path = window.location.href; 
     console.log(path)
-    const id =  path.slice(41,77)   
+    // const id =  path.slice(41,77)   
+    let nodeId =  path.split('/')
+    let id = nodeId[5]
+    console.log(nodeId)
+
     const fileType = path.split('.').pop()
-    console.log(fileType)
 
     const cors = "https://cors-anywhere.herokuapp.com/";
     const docUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`
@@ -89,7 +92,7 @@ function DocPreview() {
         // console.log(dataType)
         setFileURI(getUrl()+docUrl)
       });
-  }, [id]);
+  }, [docUrl,docUrlApi,id]);
 
   function DisplayUsingOfficeApps() {
     var token = getToken();

@@ -25,8 +25,10 @@ const DocumentDetails = (props) => {
     const title = params.title;
 
     const path = window.location.href; 
-    const id =  path.slice(41,77) 
-
+    let nodeId =  path.split('/')
+    let id = nodeId[5]
+    console.log(nodeId)
+    
     function bytesToSize(bytes, seperator = "") {
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
         if (bytes === 0) return 'n/a'
@@ -40,7 +42,7 @@ const DocumentDetails = (props) => {
     },[id])
 
     function DocDetails(){
-        Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
+        Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,
@@ -55,7 +57,7 @@ const DocumentDetails = (props) => {
     })}
 
     function DocumentShare () {
-        Axios.post(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links`,
+        Axios.post(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links`,
         {"nodeId":`${id}`},
         {
             headers: {
@@ -70,7 +72,7 @@ const DocumentDetails = (props) => {
     useEffect(()=>{AuditTrail()}, [id])
 
     function AuditTrail(){
-        Axios.get(getUrl()+`/alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
+        Axios.get(getUrl()+`alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
             headers: {
               Authorization: `Basic ${btoa(getToken())}`,
@@ -97,7 +99,7 @@ const DocumentDetails = (props) => {
         [id])
 
     function versions() {
-    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/versions`,
+    Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/versions`,
     {
         headers: {
           Authorization: `Basic ${btoa(getToken())}`,

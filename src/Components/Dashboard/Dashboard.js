@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   //API call to get the activities list.
   useEffect(() => {
-    axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
+    axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response) => {
@@ -38,7 +38,7 @@ const Dashboard = () => {
   function next(){
     //  setSkipCount(skipCount + 10)
      console.log(skipCount);
-     axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+     axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
      {headers:{
        Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
@@ -58,7 +58,7 @@ const Dashboard = () => {
   }
 
   function previous(){
-      axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+      axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`
       }}).then((response) => {

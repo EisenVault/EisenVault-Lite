@@ -35,7 +35,7 @@ function SubDocument(){
   },[id]);
 
   const getData = () => {
-    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
+    Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -48,7 +48,7 @@ function SubDocument(){
   };
   
 const handleDelete=(id)=>{
-      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
+      Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
       {
       headers:{
           Authorization: `Basic ${btoa(getToken())}`
