@@ -20,10 +20,13 @@ const LoginPage = (props) => {
   const forgotPswdUserName = useFormInput ('');
 
   let url = useFormInput('');
-  console.log(url.value)
-  
+  let urlHttps = new RegExp('^(https?|ftp)://');
+
+  if(!urlHttps.test(url.value)) {
+    url.value = "https://" + url.value;
+}
+
   let newUrl = url.value.replace(/\/?(\?|#|$)/, '/$1')
-  console.log(newUrl)
 
   const handleLogin = () => {
     setUrl(newUrl)
@@ -74,6 +77,11 @@ if (loading) {
   return <div><i className="fa fa-spinner fa-spin" /> Loading...</div>
 }
 
+const onEnter = (event) => {
+  if (event.key === "Enter")
+  handleLogin()
+}
+
     return(
 
       <Fragment>
@@ -88,7 +96,8 @@ if (loading) {
                 <input type="text" {...userName} 
                 id="user-name" placeholder="User Name" required/>
                   <br />
-                <input type="password" {...password}
+                <input type="password" {...password} 
+                onKeyPress={onEnter}
                 placeholder="Password" id="pswd" required/>
             </div>
 

@@ -9,7 +9,8 @@ import { faHome,
       faHeadset, 
       faKey, 
       faSignOutAlt, 
-      faTrash } from "@fortawesome/free-solid-svg-icons";
+      faTrash, 
+      faGreaterThanEqual} from "@fortawesome/free-solid-svg-icons";
 
 import  './NavigationItems.scss';
 import axios from 'axios';
@@ -93,7 +94,7 @@ function NavigationItems() {
               </a></li>
 
               <li><a target="_blank" rel="noopener noreferrer"
-              href="https://systest.eisenvault.net/share/page/"> 
+              href={getUrl()}> 
               <FontAwesomeIcon 
               className="Icon" 
               icon={faFileAlt}/>
