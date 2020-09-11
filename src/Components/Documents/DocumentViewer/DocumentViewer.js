@@ -7,6 +7,7 @@ import "../DocumentViewer/DocumentViewer.scss"
 import { Item } from '../../backButton/backButton';
 import {getToken, getUrl} from  "../../../Utils/Common";
 import axios from 'axios';
+
 import { Animated } from "react-animated-css";
 
 // import { instance } from '../../ApiUrl/endpointName.instatnce';
@@ -105,7 +106,6 @@ function DocPreview() {
 
     return (
       <Fragment>
-
       <iframe src={url} 
       title='mydocframe' 
       id='mydocFrame'
@@ -125,13 +125,16 @@ function DocPreview() {
          })} , [id]) 
 
  const PdfViewer = () => {
-  
+  let token = getToken();
+  let pdfFileUrl = pdfFileURI+"?alf_ticket=" +token
+  console.log(pdfFileUrl)
+
         return (
           <Fragment>
           
           <div className="docFrame">
 
-            <iframe src={pdfFileURI} 
+            <iframe src={pdfFileUrl} 
             title='myframe' 
             id='myFrame'
             width="730rem" 
