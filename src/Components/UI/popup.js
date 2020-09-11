@@ -44,7 +44,7 @@ import Popup from "reactjs-popup";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.restored}>RESTORE</button> </span>
+            <button className="btn-continue btn-d" onClick={props.defrestore}>RESTORE</button> </span>
            )}</Popup></div>
           <div>
          <Popup

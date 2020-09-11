@@ -80,6 +80,24 @@ const permanentDeleteByIds=()=>{
      };
     })}
 
+
+    const DefaultRestore=()=>{
+      TrashFileState.forEach(d=>{
+        if(d.id){
+           Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+            {headers:
+            {
+              Authorization: `Basic ${btoa( getToken() )}`
+            }
+        }).then((response)=>{
+              console.log(response.data);
+              closeModal();
+              getDeletedData();
+              }).catch(err=>alert(err));
+          };
+          })
+
+    }
 //function to collect nodeid of restored files
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
@@ -200,7 +218,7 @@ const RestoreFileByIds=()=>{
                 <th id="deleted">Deleted on</th>
                  <th id="action-trash">
 
-                  <NestedToolTip restored={()=>{RestoreFileByIds()}} deleted={()=>{permanentDeleteByIds()}}/>
+                  <NestedToolTip restored={()=>{RestoreFileByIds()}} defrestore={()=>{DefaultRestore()}} deleted={()=>{permanentDeleteByIds()}}/>
                   </th>  
 
                   <Modal show={deleting}>

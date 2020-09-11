@@ -1,6 +1,5 @@
 import React, {useEffect,useState,Fragment} from 'react'
-import Modal from "../Modal/Modal";
-import { DeleteSummmary } from "../Modal/DeleteModalSumm/DeleteSumm";
+import NestedToolTipuploads from '../UI/uploadPopups';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import './MyUploads.scss';
@@ -83,6 +82,22 @@ function MyUploads(props){
        };
       })}
       
+      const DefaultDelete=()=>{
+        FileState.forEach(d=>{
+          if(d.id){
+          Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+          {headers:{
+          Authorization: `Basic ${btoa(getToken())}`
+           }
+         }).then((data)=>{
+              console.log(data);
+              closeModal();
+              getData();
+               }).catch(err=>alert(err));
+           };
+          })
+      }
+
       const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
         Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
@@ -200,17 +215,13 @@ function MyUploads(props){
                     <th id="item-name">Item Name</th>
                     <th id="shared">Uploaded On</th>
                     <th id="action">
-                      <label>Action </label>
+                      <NestedToolTipuploads del={()=>{DefaultDelete()}} delsel={()=>{deleteFileByIds()}}/>
+                      {/* <label>Action </label>
                       <select id="action-t" onChange={() => {setmodalIsOpen(true);}}>
                         <option id="option" value="delete-a">Delete All</option>
                         <option id="option" value="delete-s">Delete Selected</option>
-                      </select>
+                      </select> */}
                     </th>
-                      <Modal show={modalIsOpen}>
-                      <DeleteSummmary deleted={()=>{deleteFileByIds()}} clicked={() => setmodalIsOpen(false)} 
-                    />
-                  
-                      </Modal>
                 </tr> 
                   
                   { FileState.map((d) => (
