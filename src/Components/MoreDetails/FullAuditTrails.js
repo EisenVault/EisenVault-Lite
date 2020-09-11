@@ -14,8 +14,10 @@ function FullAudittrails() {
     const title = params.title;
 
     const path = window.location.href; 
-    const id =  path.slice(32,68) 
-
+    let nodeId =  path.split('/')
+    let id = nodeId[5]
+    console.log(nodeId)
+    
     useEffect(() => {axios.get(getUrl()+
         `alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
