@@ -16,7 +16,7 @@ function ChangePassword(props){
 
 function handlechangePassword(){
     if (newPassword.value === confirmPassword.value){
-        axios.post(getUrl()+`/alfresco/service/api/person/changepassword/${userName}`,{
+        axios.post(getUrl()+`alfresco/service/api/person/changepassword/${userName}`,{
         newpw : newPassword.value, oldpw : oldPassword.value
         },
         {

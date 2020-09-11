@@ -38,7 +38,7 @@ const Routings = withRouter (({ location },props) => {
     }
   })
 
-  axios.get(getUrl()+`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+  axios.get(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`}
   }).then(response => {

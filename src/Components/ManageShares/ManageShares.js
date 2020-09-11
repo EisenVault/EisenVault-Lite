@@ -27,7 +27,7 @@ function ManageShares(){
 },[])
  
  const getDetailsData = () => {
-  Axios.get(getUrl()+'/alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
+  Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -36,7 +36,7 @@ function ManageShares(){
   setFileState(response.data.list.entries)
   console.log(response.data)
   response.data.list.entries.forEach(d=>{
-      Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.entry.nodeId}?include=properties`,
+      Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.entry.nodeId}?include=properties`,
       {headers:
         {
           Authorization: `Basic ${btoa(getToken())}`
@@ -64,7 +64,7 @@ function handleDocument(id,title){
 }
 
 function handleDelete(id){
-  Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,
+  Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
@@ -84,7 +84,7 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
+   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
    {headers:
      {
        Authorization: `Basic ${btoa(getToken())}`
@@ -104,7 +104,7 @@ function next(){
 }
 
 function previous(){
-  Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
+  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`

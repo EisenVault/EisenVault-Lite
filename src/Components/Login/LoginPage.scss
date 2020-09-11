@@ -12,14 +12,15 @@ $font-color:#073453;
 }
 
 .login-box{
-  margin: 0 auto 1rem auto;
+  margin: 0 auto 0 auto;
   height: auto;
-  width: 45%;
+  width: 55%;
   text-align: center;
   padding-top: 15rem;
-  background: url("/images/EisenVault-Lite-horizontal-01.png") $white-color no-repeat;
-  background-position: 4rem 1rem;
-  background-size: 30rem 12rem;
+  background: url(../../Assets/images/EisenVault-Lite-logo.png) 
+  $white-color no-repeat;
+  background-position: 2rem 1rem;
+  background-size: 26rem 12rem;
 
   & input {
       margin-bottom: 2.2rem;

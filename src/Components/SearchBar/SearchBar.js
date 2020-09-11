@@ -19,7 +19,7 @@ import { getToken,getUrl } from '../../Utils/Common';
       // useEffect(()=>{
             const fetchData =  ()=> {
                     try{
-                        Axios.get(getUrl()+`/alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
+                        Axios.get(getUrl()+`alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
                          
                              {headers:{
                                 Authorization: `Basic ${btoa(getToken())}`

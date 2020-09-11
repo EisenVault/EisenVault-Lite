@@ -33,7 +33,7 @@ function TrashDisplayFiles(props){
   },[]);
 
 const getDeletedData=()=>{
-  Axios.get(getUrl()+'/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
+  Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
@@ -67,7 +67,7 @@ const closeModal=()=>{ //function to close modal after performing it's operation
 const permanentDeleteByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-    Axios.delete(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+    Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }
@@ -84,7 +84,7 @@ const permanentDeleteByIds=()=>{
 const RestoreFileByIds=()=>{
   TrashFileState.forEach(d=>{
     if(d.select){
-       Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+       Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
         {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
@@ -98,7 +98,7 @@ const RestoreFileByIds=()=>{
       })}
 
       const handleDelete=(id)=>{ //method to delete documents without selecting by checkbox
-        Axios.delete(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${id}`, 
+        Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -109,7 +109,7 @@ const RestoreFileByIds=()=>{
            }).catch(err=>alert(err));}
      
      const handleRestore=(id)=>{ //method to restore documents without selecting by checkbox
-        Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
+        Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
         {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -123,7 +123,7 @@ const RestoreFileByIds=()=>{
       function next(){  //function for pagination's next button
        document.getElementById("myprevBtn").disabled = false;
          console.log(skipCount);
-         Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
+         Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
          {headers:{
            Authorization: `Basic ${btoa(getToken())}`
          }}).then((response) => {
@@ -147,7 +147,7 @@ const RestoreFileByIds=()=>{
       function previous(){ 
         //function for pagination's previous button
         document.getElementById("myBtn").disabled = false;  
-        Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
+        Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
         {headers:{
           Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {

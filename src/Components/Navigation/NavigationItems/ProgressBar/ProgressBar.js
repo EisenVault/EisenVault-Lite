@@ -18,7 +18,7 @@ const ProgressBar = () => {
   
   //API call
   useEffect(() => {
-    Axios.get(getUrl()+'/alfresco/s/aws-reposize',
+    Axios.get(getUrl()+'alfresco/s/aws-reposize',
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
     }

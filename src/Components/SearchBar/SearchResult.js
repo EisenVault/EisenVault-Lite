@@ -16,7 +16,7 @@ function SearchResult(){
    const result = params.result;
    
 useEffect(()=>{
-        Axios.get(getUrl()+`/alfresco/s/slingshot/search?term=${result}`,
+        Axios.get(getUrl()+`alfresco/s/slingshot/search?term=${result}`,
         {
           headers:
           {

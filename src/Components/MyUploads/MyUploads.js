@@ -29,7 +29,7 @@ function MyUploads(props){
 
   //api call 
     const getData=()=>{
-      Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
+      Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
       {
         "query": 
           {"query": `cm:creator:${getUser()}`},
@@ -71,7 +71,7 @@ function MyUploads(props){
   const deleteFileByIds=()=>{
     FileState.forEach(d=>{
       if(d.select){
-      Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -84,7 +84,7 @@ function MyUploads(props){
       })}
       
       const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
-        Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
+        Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -97,7 +97,7 @@ function MyUploads(props){
 
       function next(){
         document.getElementById("myprevBtn").disabled = false;
-        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
+        Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
@@ -135,7 +135,7 @@ function MyUploads(props){
     
       function previous(){
         document.getElementById("myBtn").disabled = false;
-        Axios.post(getUrl()+`/alfresco/api/-default-/public/search/versions/1/search`,
+        Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},

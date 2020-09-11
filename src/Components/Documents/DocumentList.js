@@ -53,7 +53,7 @@ const DocumentsList = () => {
   },[url]);
   
   const getDepartments=()=>{
-    Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
+    Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -68,7 +68,7 @@ const DocumentsList = () => {
   }
 
 function handleDocumentLibrary(key){
-  Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
+  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
   {
   headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -112,7 +112,7 @@ function handleDocumentLibrary(key){
 // }
 
 function handleDeleteDepartment(id){
-  Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
+  Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
   {
   headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -134,7 +134,7 @@ function next(){
   
   //  setSkipCount(skipCount + 10)
    console.log(skipCount);
-   Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
+   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
    }}).then((response) => {
@@ -155,7 +155,7 @@ function next(){
 }
 
 function previous(){
-  Axios.get(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
+  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
   }}).then((response) => {

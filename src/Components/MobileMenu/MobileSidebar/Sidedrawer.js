@@ -25,7 +25,7 @@ const SideDrawer=(props)=>{
   // handle click event of logout button
    const handleLogout = () => {
     
-      Axios.delete(getUrl()+`/alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+      Axios.delete(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {
