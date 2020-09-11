@@ -105,7 +105,7 @@ const handleDelete=(id)=>{
                     <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
                     <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
                     <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
-                    <td className="delete-u-s">
+                    <td className="delete-u-s-action">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle}
 
                     onClick={()=>{ alertify.confirm().setting({transition:'pulse',

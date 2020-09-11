@@ -9,7 +9,7 @@ $white-color: white;
     background-size: 12.8rem 5rem;
     background-position: 1rem 1rem;
     border-radius: 1.5rem;
-    height: 100%;
+    height: 115vh;
 }
 
 .signOut{
@@ -24,6 +24,10 @@ $white-color: white;
 .Icon{
   margin: 0 0.5rem;
   color: $white-color;
+}
+
+li{
+  margin:1rem;
 }
 
 h5{
@@ -42,7 +46,7 @@ ul{
 
   & #dashboard{
     margin-top: 6.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 
   & a{
@@ -61,11 +65,11 @@ ul{
   }
 
   & #middle_bar{
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
   }
 
   & #lower_bar{
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
 }
 

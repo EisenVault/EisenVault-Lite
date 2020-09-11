@@ -66,8 +66,34 @@
   @media (min-width:533px) and (max-width:1022px){
     tbody{
       margin: 1rem;
-
     }
+    th{
+      padding:0.4rem;
+      padding-top:1rem;
+      padding-bottom:1rem;
+      font-size: 0.9rem;
+    }
+    td{
+      font-size: 0.9rem;
+      padding:0.5rem;
+    }
+    #item-names{
+      padding-left: 1.2rem;;
+    }
+    .details-u-s{
+      padding-left: 1rem;
+    }
+    .fa-file-pdf {
+      margin-left:0.5rem;
+      margin-right: 0.5rem;
+  }
+    .details-u-s-action{
+      padding-left: 0.5rem;
+    }
+    .fa-times-circle {
+      color: #ee9796;
+      margin-left: 1rem;
+  }
     .ajs-body{
       font-size: 1rem;;
     }
