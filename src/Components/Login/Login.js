@@ -33,7 +33,6 @@ const LoginPage = (props) => {
 
     setError(null);
     setLoading(true);
-    // Axios.post(getUrl()+'/alfresco/api/-default-/public/authentication/versions/1/tickets', 
 
     axios.post(getUrl()+'alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {

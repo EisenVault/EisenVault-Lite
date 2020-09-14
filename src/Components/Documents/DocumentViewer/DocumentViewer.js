@@ -58,6 +58,7 @@ function DocPreview() {
     const [fileURI, setFileURI] = useState("");
     const [pdfFileURI, setPdfFileURI] = useState("");
     const [sidebarIsOpen, setSidebarOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     let params = useParams();
     const title = params.title;
@@ -81,6 +82,8 @@ function DocPreview() {
   }
 
   useEffect(() => {
+    setLoading(true);
+
     //First find out content type
     axios.get(docUrlApi,
         {
@@ -89,6 +92,8 @@ function DocPreview() {
          },
         }
       ).then((response) => {
+        setLoading(false);
+
         // setDataTypes(response.headers["content-type"])
         // console.log(dataType)
         setFileURI(getUrl()+docUrl)
@@ -100,33 +105,42 @@ function DocPreview() {
     var url =
       "https://view.officeapps.live.com/op/embed.aspx?src=" +
       fileURI + "?alf_ticket=" +token;
+      setLoading(false);
+
     console.log(url);
     console.log(fileURI);
     // document.getElementById('myFrame').src=url
 
     return (
       <Fragment>
-      <iframe src={url} 
-      title='mydocframe' 
-      id='mydocFrame'
-      width="730rem" 
-      height="500rem" >
-      </iframe>
+        <div className="docFrame">
+
+          <iframe src={url} 
+          title='mydocframe' 
+          id='mydocFrame'
+          width="730rem" 
+          height="500rem" >
+          </iframe>
+        </div>
       </Fragment>
     );
   }
 
-  useEffect(() => {axios.get(pdfUrlApi,    
+  useEffect(() => {
+    setLoading(true);
+    axios.get(pdfUrlApi,    
    {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
     }}).then((response)=>{
+      setLoading(false);
+
         setPdfFileURI(getUrl()+pdfUrl)
          })} , [id]) 
 
  const PdfViewer = () => {
   let token = getToken();
-  let pdfFileUrl = pdfFileURI+"?alf_ticket=" +token
+  let pdfFileUrl = pdfFileURI+"&alf_ticket=" +token
   console.log(pdfFileUrl)
 
         return (
@@ -182,7 +196,7 @@ return(
         </div>
       </div>
 
-        <Viewer />
+        <Viewer />                  
         
     </div>
     </Fragment>
