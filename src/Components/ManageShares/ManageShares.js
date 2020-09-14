@@ -88,8 +88,7 @@ function handleDelete(id){
 }
 
 function next(){
-  
-  //  setSkipCount(skipCount + 10)
+  document.getElementById("myprevBtn").disabled = false;
    console.log(skipCount);
    Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?&maxItems=10&skipCount=${skipCount}&include=properties`,
    {headers:
@@ -102,15 +101,18 @@ function next(){
      setMoreItems(response.data.list.pagination.hasMoreItems)
      if (response.data.list.pagination.hasMoreItems){
       setSkipCount(response.data.list.pagination.skipCount + 10)
+      document.getElementById("myBtn").disabled = false;
      }
      else{
-      setSkipCount(response.data.list.pagination.skipCount - 10)
+      //setSkipCount(response.data.list.pagination.skipCount - 10)
+      document.getElementById("myBtn").disabled = true;
      }
     });
  
 }
 
 function previous(){
+  document.getElementById("myBtn").disabled = false;
   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?&include=properties&maxItems=10&skipCount=${skipCount}`,
   {headers:
     {
@@ -121,9 +123,11 @@ function previous(){
       setMoreItems(response.data.list.pagination.hasMoreItems)
       if (response.data.list.pagination.skipCount > 0){
         setSkipCount(response.data.list.pagination.skipCount - 10)
+        document.getElementById("myprevBtn").disabled = false;
       }
       else{
-        setSkipCount(response.data.list.pagination.skipCount + 10)
+        //setSkipCount(response.data.list.pagination.skipCount + 10)
+        document.getElementById("myprevBtn").disabled = true;
       }
      });
  }

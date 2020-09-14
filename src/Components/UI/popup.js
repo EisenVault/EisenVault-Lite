@@ -1,9 +1,9 @@
 import React from "react";
 import Popup from "reactjs-popup";
-
+import "./popup.scss";
   //popup test
   const NestedToolTip = (props) => (
-    <Popup
+    <Popup 
       trigger= {<label id="label">Action </label>}
       position="bottom left"
       closeOnDocumentClick>{close=>(
@@ -18,7 +18,7 @@ import Popup from "reactjs-popup";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.deleted}>DELETE</button></span>
+            <button className="btn-continue btn-d" onClick={props.defdelete}>DELETE</button></span>
             </Popup></div>
         <div>
          <Popup

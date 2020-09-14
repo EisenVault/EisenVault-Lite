@@ -6,14 +6,12 @@ import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons
 import Axios from 'axios';
 import Pagination from '../Pagination/Pagination';
 import Search from '../SearchBar/SearchBar';
-// import '../MyUploads/MyUploads.scss';
 import alertify from 'alertifyjs';
 import './TrashDisplay.scss';
 import '../../Containers/styles.scss';
 import { getToken,getUrl } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
-// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 function TrashDisplayFiles(props){
   const[TrashFileState,setTrashFileState]=useState([]);
@@ -32,7 +30,7 @@ function TrashDisplayFiles(props){
     getDeletedData();
   },[]);
 
-const getDeletedData=()=>{
+const getDeletedData=()=>{  //content of trash page
   Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
@@ -58,13 +56,13 @@ const indexOfFirstPost = indexOfLastPost - postsPerPage;
 const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 
 
-const closeModal=()=>{ //function to close modal after performing it's operations
-  return (setmodalIsOpen(false),
-  deleteHandler(false)
-  )
-}
-//function to collect nodeid of deleted files
-const permanentDeleteByIds=()=>{
+// const closeModal=()=>{ //function to close modal after performing it's operations
+//   return (setmodalIsOpen(false),
+//   deleteHandler(false)
+//   )
+// }
+
+const permanentDeleteByIds=()=>{    //function to delete selected files permanently
   TrashFileState.forEach(d=>{
     if(d.select){
     Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
@@ -73,15 +71,26 @@ const permanentDeleteByIds=()=>{
      }
    }).then((response)=>{
         console.log(response.data);
-        closeModal();
         getDeletedData();
-      
-         }).catch(err=>alert(err));
+      }).catch(err=>alert(err));
      };
     })}
 
-
-    const DefaultRestore=()=>{
+    const DefaultDelete=()=>{  //function to delete all the files permanently 
+      TrashFileState.forEach(d=>{
+        if(d.id){
+        Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+        {headers:{
+        Authorization: `Basic ${btoa(getToken())}`
+         }
+       }).then((response)=>{
+            console.log(response.data);
+            getDeletedData();
+           }).catch(err=>alert(err));
+         };
+        })
+    }
+    const DefaultRestore=()=>{ //function to restore all the files
       TrashFileState.forEach(d=>{
         if(d.id){
            Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
@@ -91,15 +100,14 @@ const permanentDeleteByIds=()=>{
             }
         }).then((response)=>{
               console.log(response.data);
-              closeModal();
               getDeletedData();
               }).catch(err=>alert(err));
           };
           })
 
     }
-//function to collect nodeid of restored files
-const RestoreFileByIds=()=>{
+
+const RestoreFileByIds=()=>{  //function to restore selected files 
   TrashFileState.forEach(d=>{
     if(d.select){
        Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
@@ -109,13 +117,12 @@ const RestoreFileByIds=()=>{
         }
     }).then((response)=>{
           console.log(response.data);
-          closeModal();
           getDeletedData();
           }).catch(err=>alert(err));
       };
       })}
 
-      const handleDelete=(id)=>{ //method to delete documents without selecting by checkbox
+      const handleDelete=(id)=>{    //function to delete files by clicking on trash icon
         Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -130,7 +137,7 @@ const RestoreFileByIds=()=>{
           getDeletedData();
            }).catch(err=>alert(err));}
      
-     const handleRestore=(id)=>{ //method to restore documents without selecting by checkbox
+     const handleRestore=(id)=>{ //function to restore files by clicking on restore icon
         Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
         {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -226,10 +233,11 @@ const RestoreFileByIds=()=>{
                 <th id="deleted">Deleted on</th>
                  <th id="action-trash">
 
-                  <NestedToolTip restored={()=>{RestoreFileByIds()}} defrestore={()=>{DefaultRestore()}} deleted={()=>{permanentDeleteByIds()}}/>
+                  <NestedToolTip restored={()=>{RestoreFileByIds()}} defrestore={()=>{DefaultRestore()}}
+                  defdelete={()=>{DefaultDelete()}} deleted={()=>{permanentDeleteByIds()}}/>
                   </th>  
 
-                  <Modal show={deleting}>
+                  {/* <Modal show={deleting}>
                   <DeleteSummmary deleted={()=>{permanentDeleteByIds()}} 
                   clicked={()=>{deleteHandler(false)}}/>
                   </Modal>
@@ -237,7 +245,7 @@ const RestoreFileByIds=()=>{
                   <Modal show={modalIsOpen}>
                   <RestoreSummary deleted={()=>{RestoreFileByIds()}} 
                   clicked={() => setmodalIsOpen(false)}/>
-                  </Modal>
+                  </Modal> */}
                 </tr>
                 
                 {currentPosts.map((d,i) => (
@@ -263,14 +271,12 @@ const RestoreFileByIds=()=>{
                 onClick={()=>{ alertify.confirm().setting({transition:'pulse',
                 buttonFocus : "ok",
                 'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.name,'onok': () => {handleDelete(d.id)} ,
-                'oncancel': () => {alertify.confirm().destroy();}}).show()
-    }}/>
+                'oncancel': () => {alertify.confirm().destroy();}}).show() }}/>
                 <FontAwesomeIcon icon={faUndo} className="UndoIcon" 
                  onClick={()=>{ alertify.confirm().setting({transition:'pulse',
                  buttonFocus : "ok",
                  'message' : 'DO YOU WANT TO RESTORE THIS FILE '+ d.name,'onok': () => {handleRestore(d.id)} ,
-                 'oncancel': () => {alertify.confirm().destroy();}}).show()
-      }}/>
+                 'oncancel': () => {alertify.confirm().destroy();}}).show()}}/>
                  </td></tr>
                 ))}
         </tbody>
