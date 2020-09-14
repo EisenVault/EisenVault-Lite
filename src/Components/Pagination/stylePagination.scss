@@ -30,3 +30,19 @@ cursor: pointer;
   color: $font-color;
   background-color: white;
 }
+#myprevBtn{
+  background-color: $sidebar-color;
+  color: white;
+  margin-left: 0.4rem;
+  padding: 4px;
+  border: 1px solid $sidebar-color;
+  border-radius: 4px;
+}
+#myBtn{
+  background-color: $sidebar-color;
+  color: white;
+  margin-left: 0.4rem;
+  padding: 4px;
+  border: 1px solid $sidebar-color;
+  border-radius: 4px;
+}

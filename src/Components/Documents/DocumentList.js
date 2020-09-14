@@ -1,6 +1,8 @@
 import React,{Fragment , useEffect , useState} from 'react';
 import {getToken,getUser,getUrl} from "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -49,10 +51,13 @@ const DocumentsList = () => {
     }
   
   useEffect(()=>{
-    getDepartments();
+   
+    getDepartments()
+     
   },[url]);
   
   const getDepartments=()=>{
+    trackPromise(
     Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
     {
     headers:{
@@ -64,7 +69,8 @@ const DocumentsList = () => {
       setMoreItems(response.data.list.pagination.hasMoreItems) 
       setSkipCount(response.data.list.pagination.skipCount + 10)
       console.log(response.data.list.pagination)     
-    });
+    })
+    )
   }
 
 function handleDocumentLibrary(key){
@@ -119,8 +125,12 @@ function handleDeleteDepartment(id){
       } } 
   )
   .then(response => {
-    alert("Department successfully deleted");
+    
     alertify.confirm().destroy();
+    alertify.alert('Department Deleted Successfully').setting({
+      'message': 'Department Deleted Successfully',
+      'onok': () => {alertify.alert().destroy();} 
+    });
     getDepartments()
     console.log(response)
   }).catch(error => {
@@ -236,7 +246,9 @@ return (
                
           ))}
            </tbody>
+           
           </table> 
+          <LoadingIndicator/>
           <div className="col-md-6">
       <Pagination
        handlePrev={previous}

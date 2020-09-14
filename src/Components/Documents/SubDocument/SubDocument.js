@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Item } from '../../backButton/backButton';
 
 import alertify from 'alertifyjs';
-
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../../Utils/LoadingIndicator';
 import { faFile,faTimesCircle,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '../../Pagination/Pagination';
 // import {instance} from '../../ApiUrl/endpointName.instatnce'
@@ -35,6 +36,7 @@ function SubDocument(){
   },[id]);
 
   const getData = () => {
+    trackPromise(
     Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0`,
     {
     headers:{
@@ -45,6 +47,7 @@ function SubDocument(){
     setPaginationDefaultDoc(response.data.list.pagination) 
     console.log(response.data.list.pagination)
     })
+    )
   };
   
 const handleDelete=(id)=>{
@@ -55,7 +58,10 @@ const handleDelete=(id)=>{
           } }
       ).then((data)=>{
           console.log(data);
-          alertify.confirm().destroy(); 
+          alertify.confirm().destroy();
+          alertify.alert('Document Deleted Successfully').setting({
+            'onok': () => {alertify.alert().destroy();} 
+          }); 
           getData();
            }).catch(err=>alert(err));
       }
@@ -118,6 +124,8 @@ const handleDelete=(id)=>{
                 </tbody>
                 ) )}
               </table>
+              <LoadingIndicator/>
+
             </div>
             </div>
       <div className="col-md-6">

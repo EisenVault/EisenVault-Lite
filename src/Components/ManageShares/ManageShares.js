@@ -4,6 +4,8 @@ import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../Avtar/Avtar";
 import Axios from 'axios';
 import alertify from 'alertifyjs';
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 import './ManageShares.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
@@ -27,6 +29,7 @@ function ManageShares(){
 },[])
  
  const getDetailsData = () => {
+  trackPromise(
   Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
   {headers:
     {
@@ -52,7 +55,8 @@ function ManageShares(){
       .catch((error)=> console.log(error));
     }) 
 
-});
+})
+  )
   }
   console.log(DetailsState)
 const indexOfLastPost = currentPage * postsPerPage;
@@ -70,7 +74,10 @@ function handleDelete(id){
       Authorization: `Basic ${btoa(getToken())}`
     }}).then(response => {
     alertify.confirm().destroy();
-    alert("unshared"); 
+    alertify.alert('Document Unshared Successfully').setting({
+      'message': 'Document Unshared Successfully',
+      'onok': () => {alertify.alert().destroy();} 
+    }); 
     console.log(response)
   }).catch(error => {
     if (error.response.status===404){
@@ -179,8 +186,9 @@ return(
                   ) )}
                    
                    
-               
               </table>
+              <LoadingIndicator/>
+
             </div>
             </div>
       <div className="col-md-6">
