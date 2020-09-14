@@ -20,7 +20,7 @@ $white-color: white;
       }
     
     & li{   
-        padding-top: 2rem;
+        padding-top: 1rem;
         font-size: 16px;
         text-decoration: none;
 
@@ -43,3 +43,9 @@ $white-color: white;
     }
 }
 
+@media(min-height:1024px){
+    .Side-drawer li{
+        padding-top:3rem;
+    }
+
+}
