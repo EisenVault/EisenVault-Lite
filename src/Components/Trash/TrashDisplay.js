@@ -123,6 +123,10 @@ const RestoreFileByIds=()=>{
      }).then((data)=>{
           console.log(data);
           alertify.confirm().destroy(); 
+          alertify.alert('Document Deleted Successfully').setting({
+            'message': 'Department Deleted Successfully',
+            'onok': () => {alertify.alert().destroy();} 
+          });
           getDeletedData();
            }).catch(err=>alert(err));}
      
@@ -134,6 +138,10 @@ const RestoreFileByIds=()=>{
      }).then((data)=>{
           console.log(data);
           alertify.confirm().destroy(); 
+          alertify.alert('Document Restored Successfully').setting({
+            'message': 'Document Restored Successfully',
+            'onok': () => {alertify.alert().destroy();} 
+          });
           getDeletedData();
            }).catch(err=>alert(err));}
      

@@ -105,7 +105,11 @@ function MyUploads(props){
        }
      }).then((data)=>{
           console.log(data);
-          alertify.confirm().destroy(); 
+          alertify.confirm().destroy();
+          alertify.alert('Document Deleted Successfully').setting({
+            'message': 'Department Deleted Successfully',
+            'onok': () => {alertify.alert().destroy();} 
+          }); 
           getData();
            }).catch(err=>alert(err));
       }

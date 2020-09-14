@@ -94,8 +94,8 @@ white-space: nowrap;
 .details-u {
 padding-left: 2rem;
 color:$font-color;
-overflow: hidden;  
-white-space: nowrap;  
+// overflow: hidden;  
+// white-space: nowrap;  
 }  
 .file_name-u{
     padding-left:2rem;
@@ -269,7 +269,7 @@ white-space: nowrap;
     }
     .file_name-u{
         overflow: hidden;  
-        white-space: nowrap; 
+        // white-space: nowrap; 
         padding-left:1rem;
     }
     .delete-u{

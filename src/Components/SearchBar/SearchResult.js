@@ -3,6 +3,8 @@ import { useParams , useHistory } from 'react-router-dom';
 import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios';
 import { getToken,getUrl } from  "../../Utils/Common";
@@ -16,6 +18,7 @@ function SearchResult(){
    const result = params.result;
    
 useEffect(()=>{
+  trackPromise(
         Axios.get(getUrl()+`alfresco/s/slingshot/search?term=${result}`,
         {
           headers:
@@ -28,7 +31,8 @@ useEffect(()=>{
       }).catch((error) => {
         console.log(error);
       }
-      );
+      )
+  )
     },[result]);
 
     function handleDocument(id , name , type){
@@ -72,6 +76,7 @@ useEffect(()=>{
                 </tbody>
                 ) )}
               </table>
+              <LoadingIndicator/>
             </div>
             </div>
 
