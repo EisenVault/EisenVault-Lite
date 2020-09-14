@@ -20,13 +20,11 @@ const LoginPage = (props) => {
   const forgotPswdUserName = useFormInput ('');
 
   let url = useFormInput('');
-  let urlHttps = new RegExp('^(https?|ftp)://');
+  let newUrl
 
-  if(!urlHttps.test(url.value)) {
-    url.value = "https://" + url.value;
-}
-
-  let newUrl = url.value.replace(/\/?(\?|#|$)/, '/$1')
+  url.value.startsWith("https://") ?   
+  newUrl = url.value.replace(/\/?(\?|#|$)/, '/$1'):
+  newUrl = "https://" + url.value.replace(/\/?(\?|#|$)/, '/$1')
 
   const handleLogin = () => {
     setUrl(newUrl)
