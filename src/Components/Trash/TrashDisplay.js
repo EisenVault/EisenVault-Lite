@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios';
 import Pagination from '../Pagination/Pagination';
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 import Search from '../SearchBar/SearchBar';
 import alertify from 'alertifyjs';
 import './TrashDisplay.scss';
@@ -31,6 +33,7 @@ function TrashDisplayFiles(props){
   },[]);
 
 const getDeletedData=()=>{  //content of trash page
+  trackPromise(
   Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
@@ -48,7 +51,8 @@ const getDeletedData=()=>{  //content of trash page
           archivedAt:d.entry.archivedAt.split('T')[0],
           type:d.entry.isFile
         }})) 
-      }).catch(err=>alert(err));
+      }).catch(err=>alert(err))
+  )
 };
 // Get current posts
 const indexOfLastPost = currentPage * postsPerPage;
@@ -281,6 +285,7 @@ const RestoreFileByIds=()=>{  //function to restore selected files
                 ))}
         </tbody>
       </table>
+      <LoadingIndicator/>
     </div>
   </div>
 

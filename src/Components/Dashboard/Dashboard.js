@@ -8,6 +8,8 @@ import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
 import Search from "../SearchBar/SearchBar";
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 // import { instance } from '../ApiUrl/endpointName.instatnce';
 import axios from 'axios';
 
@@ -23,6 +25,7 @@ const Dashboard = () => {
 
   //API call to get the activities list.
   useEffect(() => {
+    trackPromise(
     axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
     {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -32,7 +35,8 @@ const Dashboard = () => {
       setSkipCount(response.data.list.pagination.skipCount + 10)
       console.log(response.data.list.entries)
       console.log(response.data.list.pagination)
-    });
+    })
+    )
   }, []);
 
   function next(){
@@ -128,6 +132,7 @@ const Dashboard = () => {
                   </tbody>
             ))}
         </table>
+        <LoadingIndicator/> 
       </div>
   </div>
   
