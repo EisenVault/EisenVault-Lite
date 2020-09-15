@@ -9,6 +9,8 @@ import Axios from 'axios';
 import { getToken,getUser, getUrl} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 import alertify from 'alertifyjs';
 // import { instance } from '../ApiUrl/endpointName.instatnce';
 
@@ -28,6 +30,7 @@ function MyUploads(props){
 
   //api call 
     const getData=()=>{
+      trackPromise(
       Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
       {
         "query": 
@@ -54,7 +57,8 @@ function MyUploads(props){
                 type:d.entry.isFile
               }
             })) 
-            }).catch(err=>alert(err));
+            }).catch(err=>alert(err))
+      )
   };
 
   // Get current posts
@@ -263,7 +267,7 @@ function MyUploads(props){
                 ))}
              </tbody>  
             </table>
-              
+            <LoadingIndicator/>   
           </div>
         </div>
 
