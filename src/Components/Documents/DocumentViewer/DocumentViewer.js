@@ -63,11 +63,11 @@ function DocPreview() {
     let params = useParams();
     const title = params.title;
     const path = window.location.href; 
-    console.log(path)
+    // console.log(path)
     // const id =  path.slice(41,77)   
     let nodeId =  path.split('/')
     let id = nodeId[5]
-    console.log(nodeId)
+    // console.log(nodeId)
 
     const fileType = path.split('.').pop()
 
@@ -107,21 +107,21 @@ function DocPreview() {
       fileURI + "?alf_ticket=" +token;
       setLoading(false);
 
-    console.log(url);
-    console.log(fileURI);
+    // console.log(url);
+    // console.log(fileURI);
     // document.getElementById('myFrame').src=url
 
     return (
       <Fragment>
-        <div className="docFrame">
+      <div className="docFrame">
 
-          <iframe src={url} 
-          title='mydocframe' 
-          id='mydocFrame'
-          width="730rem" 
-          height="500rem" >
-          </iframe>
-        </div>
+      <iframe src={url} 
+      title='mydocframe' 
+      id='mydocFrame'
+      width="730rem" 
+      height="500rem" >
+      </iframe>
+      </div>
       </Fragment>
     );
   }
@@ -136,19 +136,19 @@ function DocPreview() {
       setLoading(false);
 
         setPdfFileURI(getUrl()+pdfUrl)
-         })} , [id]) 
+         })} , [pdfUrl,pdfUrlApi,id]) 
 
  const PdfViewer = () => {
   let token = getToken();
   let pdfFileUrl = pdfFileURI+"&alf_ticket=" +token
-  console.log(pdfFileUrl)
+  // console.log(pdfFileUrl)
 
         return (
           <Fragment>
           
           <div className="docFrame">
 
-            <iframe src={pdfFileUrl} 
+            <iframe src="https://image.freepik.com/free-vector/young-people-jumping-together-illustration_52683-27019.jpg" 
             title='myframe' 
             id='myFrame'
             width="730rem" 
