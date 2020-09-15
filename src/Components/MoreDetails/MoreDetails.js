@@ -27,7 +27,7 @@ const DocumentDetails = (props) => {
     const path = window.location.href; 
     let nodeId =  path.split('/')
     let id = nodeId[5]
-    console.log(nodeId)
+    // console.log(nodeId)
     
     function bytesToSize(bytes, seperator = "") {
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
