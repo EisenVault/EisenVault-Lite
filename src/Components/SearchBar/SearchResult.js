@@ -8,7 +8,7 @@ import LoadingIndicator from '../../Utils/LoadingIndicator';
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios';
 import { getToken,getUrl } from  "../../Utils/Common";
-// import { instance } from '../ApiUrl/endpointName.instatnce';
+import Pagination from '../Pagination/Pagination';
 
 function SearchResult(){
   let history = useHistory();
@@ -16,27 +16,119 @@ function SearchResult(){
 
    let params = useParams();
    const result = params.result;
-   
-useEffect(()=>{
-  trackPromise(
-        Axios.get(getUrl()+`alfresco/s/slingshot/search?term=${result}`,
-        {
-          headers:
-          {
-            Authorization: `Basic ${btoa(getToken())}`
+   const [hasMoreItems , setMoreItems] = useState('');
+  const [skipCount , setSkipCount ] = useState('');
+// useEffect(()=>{
+//   trackPromise(
+//         Axios.get(getUrl()+`alfresco/s/slingshot/search?term=${result}`,
+//         {
+//           headers:
+//           {
+//             Authorization: `Basic ${btoa(getToken())}`
+//           }
+//           }).then((response) => {
+//         console.log(response.data)
+//         setDocuments(response.data.items)
+//       }).catch((error) => {
+//         console.log(error);
+//       }
+//       )
+//   )
+//     },[result]);
+
+  useEffect(()=>{
+    trackPromise(
+    Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
+            {
+              "query": {
+                "query": `${result}`
+              },
+              "include": [ "properties","path"],
+              "paging": {
+                "maxItems": "10",
+                "skipCount": "0"
+              }
+            },
+            {
+              headers:
+              {
+                Authorization: `Basic ${btoa(getToken())}`
+              }
+              }).then((response) => {
+            console.log(response.data)
+            setDocuments(response.data.list.entries)
+          }).catch((error) => {
+            console.log(error);
           }
-          }).then((response) => {
-        console.log(response.data)
-        setDocuments(response.data.items)
-      }).catch((error) => {
-        console.log(error);
+          )
+    )
+  },[result])
+
+  function next(){
+    document.getElementById("myprevBtn").disabled = false;
+    Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
+    {
+      "query": {
+        "query": `${result}`
+      },
+      "include": [ "properties","path"],
+      "paging": {
+        "maxItems": "10",
+        "skipCount": `${skipCount}`
       }
-      )
-  )
-    },[result]);
+    },
+    {headers:{
+       Authorization: `Basic ${btoa(getToken())}`
+     }}).then((response) => {
+      console.log(response.data)
+      setDocuments(response.data.list.entries)
+       setMoreItems(response.data.list.pagination.hasMoreItems)
+     if (response.data.list.pagination.hasMoreItems){
+      setSkipCount(response.data.list.pagination.skipCount + 10)
+      document.getElementById("myBtn").disabled = false;
+     }
+     else{
+      document.getElementById("myBtn").disabled = true;
+     }
+     
+   console.log(response.data.list.entries)
+   console.log(response.data.list.pagination.skipCount)
+     });
+   
+  }
+    
+  function previous(){
+    document.getElementById("myBtn").disabled = false;
+    Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
+    {
+      "query": {
+        "query": `${result}`
+      },
+      "include": [ "properties","path"],
+      "paging": {
+        "maxItems": "10",
+        "skipCount": `${skipCount}`
+      }
+    },
+    {headers:{
+       Authorization: `Basic ${btoa(getToken())}`
+     }}).then((response) => {
+      console.log(response.data)
+      setDocuments(response.data.list.entries)
+      setMoreItems(response.data.list.pagination.hasMoreItems)
+      if (response.data.list.pagination.skipCount > 0){
+        setSkipCount(response.data.list.pagination.skipCount - 10)
+        document.getElementById("myprevBtn").disabled = false;
+      }else{
+        document.getElementById("myprevBtn").disabled = true;
+      }
+      console.log(response.data.list.entries)
+      console.log(response.data.list.pagination)
+      console.log(response.data.list.pagination.skipCount)
+    }); }
 
     function handleDocument(id , name , type){
-      type === "document" ? history.push(`/document-details/${id}/${name}`) : history.push(`/document/${id}`)
+      type  ? history.push(`/document-details/${id}/${name}`) : history.push(`/document/${id}`)
    }
     
     return( 
@@ -56,19 +148,20 @@ useEffect(()=>{
                   </tr>
                   </thead>
                   { documents.map((d) => (
-                  <tbody key={d.nodeRef}>
+                  <tbody key={d.entry.id}>
                     <tr id="first_details">
                     <td className="file_name-u"  
                     onClick={() => handleDocument(
-                      d.nodeRef.substring(24),
-                      d.name,
-                      d.type)}
+                      d.entry.id,
+                      // d.nodeRef.substring(24),
+                      d.entry.name,
+                      d.entry.isFile)}
                    ><FontAwesomeIcon 
                    className="pdf-file fas fa-file-pdf" 
-                     icon={d.type === "document" ? faFile : faFolder} 
+                     icon={d.entry.isFile  ? faFile : faFolder} 
                        />
-                    {d.name}</td>
-                    <td className="details-u-s">{d.path}</td>
+                    {d.entry.name}</td>
+                    <td className="details-u-s">{d.entry.path.name}</td>
                     <td className="delete-u-s">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} />
                   </td>
@@ -80,9 +173,14 @@ useEffect(()=>{
             </div>
             </div>
 
-      <div className="col-md-6">
-      
-        </div>
+        <div className="col-md-6">
+        <Pagination
+          handlePrev={previous}
+          handleNext={next}
+          hasMoreItems={hasMoreItems}
+          skipCount={skipCount}
+              />  
+      </div>
     </Fragment>
 
           )
