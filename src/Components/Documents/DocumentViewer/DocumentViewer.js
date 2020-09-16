@@ -7,6 +7,7 @@ import "../DocumentViewer/DocumentViewer.scss"
 import { Item } from '../../backButton/backButton';
 import {getToken, getUrl} from  "../../../Utils/Common";
 import axios from 'axios';
+import LoadingIndicator from '../../../Utils/LoadingIndicator';
 
 import { Animated } from "react-animated-css";
 
@@ -71,52 +72,67 @@ function DocPreview() {
 
     const fileType = path.split('.').pop()
 
-    const cors = "https://cors-anywhere.herokuapp.com/";
-    const docUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`
-    const docUrlApi = cors+getUrl()+docUrl
-    const pdfUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`
-    const pdfUrlApi = cors+getUrl()+pdfUrl
+    // const cors = "https://cors-anywhere.herokuapp.com/";
+    // const docUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content`
+    // const docUrlApi = cors+getUrl()+docUrl
+    // const pdfUrl = `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false`
+    // const pdfUrlApi = cors+getUrl()+pdfUrl
     
   function toggleSidebar() {
     setSidebarOpen(!sidebarIsOpen);
   }
 
-  useEffect(() => {
-    setLoading(true);
+  function Viewer() { 
+  if (fileType === 'pdf') return PdfViewer() 
+  else if (fileType === 'jpeg') return PdfViewer()
+  else if (fileType === 'PNG') return PdfViewer()
+  else if (fileType === 'png') return PdfViewer()
+  else return DisplayUsingOfficeApps()
+}
 
-    //First find out content type
-    axios.get(docUrlApi,
-        {
-          headers: {
-            Authorization: `Basic ${btoa(getToken())}`,
-         },
-        }
-      ).then((response) => {
-        setLoading(false);
+// useEffect(() => {
+//   msOfficePreviewApi()
+//   console.log("Inside UseEffect");
+//   }, [msOfficePreviewApi]);
 
-        // setDataTypes(response.headers["content-type"])
-        // console.log(dataType)
-        setFileURI(getUrl()+docUrl)
-      });
-  }, [docUrl,docUrlApi,id]);
+//   const msOfficePreviewApi =  useCallback ( () => { 
+//     setTimeout(() => {
+//     if (docUrl && docUrlApi && id) {
+//       setLoading(true);
+//       //First find out content type
+//       axios
+//         .get(docUrlApi, {
+//           headers: {
+//             Authorization: `Basic ${btoa(getToken())}`
+//           }
+//         }).then((response) => {
+//           setLoading(false);
+//           // setDataTypes(response.headers["content-type"])
+//           // console.log(dataType)
+//           setFileURI(getUrl() + docUrl);
+//         });
+//     }
+//   }, 2000 )}, [])
 
   function DisplayUsingOfficeApps() {
     var token = getToken();
-    var url =
-      "https://view.officeapps.live.com/op/embed.aspx?src=" +
-      fileURI + "?alf_ticket=" +token;
-      setLoading(false);
+    // var url =
+    //   "https://view.officeapps.live.com/op/embed.aspx?src=" +
+    //   fileURI + "?alf_ticket=" +token;
+    //   setLoading(false);
 
     // console.log(url);
-    // console.log(fileURI);
+    //console.log(fileURI);
     // document.getElementById('myFrame').src=url
 
     return (
       <Fragment>
       <div className="docFrame">
-
-      <iframe src={url} 
+      <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=`+
+      getUrl()+
+      `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?alf_ticket=${token}`} 
       title='mydocframe' 
+      onLoad={() => 'null'}
       id='mydocFrame'
       width="730rem" 
       height="500rem" >
@@ -126,48 +142,49 @@ function DocPreview() {
     );
   }
 
-  useEffect(() => {
-    setLoading(true);
-    axios.get(pdfUrlApi,    
-   {headers:
-    {
-      Authorization: `Basic ${btoa(getToken())}`
-    }}).then((response)=>{
-      setLoading(false);
+  // useEffect(() => {
+  //   pdfPreviewerApi()
+  //   } , []) 
 
-        setPdfFileURI(getUrl()+pdfUrl)
-         })} , [pdfUrl,pdfUrlApi,id]) 
+  // function pdfPreviewerApi() {
+  //   if (pdfUrl && pdfUrlApi && id) {
+
+  //     setLoading(true);
+  //     axios.get(pdfUrlApi,    
+  //    {headers:
+  //     {
+  //       Authorization: `Basic ${btoa(getToken())}`
+  //     }}).then((response)=>{
+  //       setLoading(false);
+  
+  //         setPdfFileURI(getUrl()+pdfUrl)
+  //          })}
+  // }
 
  const PdfViewer = () => {
   let token = getToken();
-  let pdfFileUrl = pdfFileURI+"&alf_ticket=" +token
-  // console.log(pdfFileUrl)
+  // console.log(pdfFileURI+"&alf_ticket=" +token)
 
         return (
           <Fragment>
           
           <div className="docFrame">
 
-            <iframe src="https://image.freepik.com/free-vector/young-people-jumping-together-illustration_52683-27019.jpg" 
+            <iframe src={getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?attachment=false&alf_ticket=${token}`}
+            onLoad={() => 'null'}
             title='myframe' 
             id='myFrame'
             width="730rem" 
             height="500rem" 
             marginWidth="1rem"
-            allowFullScreen/>
+            allowFullScreen>
+          </iframe>
           </div>
           </Fragment>
         ); 
         
         //document.getElementById('myFrame').src=pdfPreviewUrl
     }
-    
-function Viewer() { 
-  if (fileType === 'pdf') return PdfViewer() 
-  else if (fileType === 'jpeg') return PdfViewer()
-  else if (fileType === 'png') return PdfViewer()
-  else return DisplayUsingOfficeApps()
-}
 
 return(
     <Fragment>

@@ -105,7 +105,10 @@ const DocumentDetails = (props) => {
           Authorization: `Basic ${btoa(getToken())}`,
        },
       }).then((response)=>{
-        setLatestVersion(response.data.list.entries[0].entry.id)
+        if (response.data.list.entries === !null){
+        setLatestVersion(response.data.list.entries[0].entry.id)}
+        else setLatestVersion("1.0")
+
     })
     }
 
