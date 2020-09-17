@@ -9,7 +9,7 @@ import LoadingIndicator from '../../Utils/LoadingIndicator';
 import './ManageShares.scss';
 import { useHistory } from 'react-router-dom';
 import Search from "../SearchBar/SearchBar";
-import { getToken, getUrl } from '../../Utils/Common';
+import { getToken, getUrl , getUser} from '../../Utils/Common';
 import Pagination from '../Pagination/Pagination';
 // import {instance} from "../ApiUrl/endpointName.instatnce"
 
@@ -30,7 +30,7 @@ function ManageShares(){
  
  const getDetailsData = () => {
   trackPromise(
-  Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties',
+  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties&where=(sharedByUser=${getUser()})`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
