@@ -3,9 +3,13 @@ $icon-color: #ee9796;
 th#item-names{
     border-left: 1px solid #073453;
     border-top-left-radius: 1rem;
-   border-bottom-left-radius: 1rem;
-   
+   border-bottom-left-radius: 1rem; 
 }
+
+.delete-u-s{
+    cursor: pointer;
+}
+
 th#action{
     border-right: 1px solid #073453;
     border-top-right-radius: 1rem;

@@ -7,7 +7,7 @@ export const Item = () => {
 
     return (
         <div>
-          <button onClick={() => history.goBack()} class="backButton">Back</button>
+          <button onClick={() => history.goBack()} className="backButton">Back</button>
         </div>
     );
 };

@@ -2,10 +2,13 @@ $font-color:#073453;
 $icon-color: #ee9796;
 
 .TrashIcon{
-  color:$icon-color;
-  margin-left:0.5rem;
+    cursor: pointer;
+    color:$icon-color;
+    margin-left:0.5rem;
 }
+
 .UndoIcon{
+    cursor: pointer;
     color:$icon-color;
     margin-left:0.5rem; 
 }
@@ -23,6 +26,11 @@ th#action-trash {
    border-bottom-right-radius: 1rem;
 
 }
+
+.btn-cancel, .btn-continue{
+    cursor: pointer;
+}
+
 #label{
     cursor:pointer;
 }
