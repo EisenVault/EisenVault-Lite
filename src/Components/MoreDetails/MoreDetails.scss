@@ -24,11 +24,12 @@ $white-color: white;
 .pdf-preview {
     display: inline-block;
     position: absolute;
-    // z-index:200;
-    width: 30%;
-    height: auto;
-    margin-left: 30rem;
-    padding: 2rem 2rem 3.4rem 3.6rem;
+    color: $font-color;
+    width: 38%;
+    height: 80%;
+    border-radius: 1rem;
+    margin-left: 33rem;
+    padding: 1.5rem 2rem 2rem 2.6rem;
     background-color: $sidebar-color;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5);
     list-style: none;
@@ -49,6 +50,10 @@ $white-color: white;
 
 #second_section .details-p p{
     font-size: 15px;
+}
+
+.shareLink, #audit-trail{
+    cursor: pointer;
 }
 
 .pdf-preview.open{

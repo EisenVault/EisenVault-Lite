@@ -119,7 +119,8 @@ const DocumentDetails = (props) => {
                     <div className="details-p">
                         {/* <button onClick={() => history.goBack()}>&times;</button> */}
 
-                        <button onClick={()=> (DocumentShare())}>
+                        <button className="shareLink"
+                        onClick={()=> (DocumentShare())}>
                         <FontAwesomeIcon className="Icon" icon={faShareAlt}/>Click here to share</button> 
 
                         <p className="top-heaading">Document Type:{documentType} </p>

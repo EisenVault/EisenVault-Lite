@@ -81,12 +81,9 @@ th#action {
     padding-left:3.5rem;
     overflow: hidden;  
     white-space: nowrap;
-
-
 }
 #action label #action-t{
     margin-right:1rem;
-
 }
 #shared{
     padding-left:2rem;
@@ -107,6 +104,7 @@ color:$font-color;
     padding-left:2rem;
 }
 .delete-u{
+    cursor: pointer;
     padding-left:2rem;
 }
 

@@ -3,7 +3,6 @@ $font-color:#073453;
 
 .pagination{
 text-align: center;
-cursor: pointer;
 }
 
 .prevButton,
@@ -31,6 +30,7 @@ cursor: pointer;
   background-color: white;
 }
 #myprevBtn{
+  cursor: pointer;
   background-color: $sidebar-color;
   color: white;
   margin-left: 0.4rem;
@@ -39,6 +39,7 @@ cursor: pointer;
   border-radius: 4px;
 }
 #myBtn{
+  cursor: pointer;
   background-color: $sidebar-color;
   color: white;
   margin-left: 0.4rem;
