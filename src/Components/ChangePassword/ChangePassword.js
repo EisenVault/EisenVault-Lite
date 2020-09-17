@@ -3,7 +3,9 @@ import axios from 'axios';
 import {getToken,getUser,getUrl} from  "../../Utils/Common";
 import './ChangePassword.scss';
 import ProfilePic from "../Avtar/Avtar";
-
+import alertify from 'alertifyjs';
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
 import '../../Containers/styles.scss';
 import Search from '../SearchBar/SearchBar';;
 
@@ -15,8 +17,10 @@ function ChangePassword(props){
     const confirmPassword = useFormInput('');
 
 function handlechangePassword(){
+    
     if (newPassword.value === confirmPassword.value){
-        axios.post(getUrl()+`alfresco/service/api/person/changepassword/${userName}`,{
+        trackPromise(
+        axios.post(getUrl()+`alfresco/service/api/person/changepassword/${user}`,{
         newpw : newPassword.value, oldpw : oldPassword.value
         },
         {
@@ -25,18 +29,23 @@ function handlechangePassword(){
                     Authorization: `Basic ${btoa(getToken())}`
                 }
         }).then(response => {
-            alert("Password Successfully changed");
             console.log(response)
+            alertify.alert('Password Changed Successfully').setting({
+                'message': 'Password Changed Successfully',
+                'onok': () => {alertify.alert().destroy();} 
+              });
         }).catch(error => {
             if (error.response.status===401){
                 alert("Unauthenticated!! please enter correct password");
               }
             console.log(error)
-        });
+        })
+        )
     }
     else {
         alert('Password does not match');
     }
+    
 }
 
 return(
@@ -67,6 +76,7 @@ return(
                 <button className="btn01" type="button" onClick={handlechangePassword}>Change</button>
                 <button className="btn02" type="button">Cancel</button>
             </div>
+            <LoadingIndicator/>
             </div>
                 
           </Fragment>

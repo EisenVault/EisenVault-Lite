@@ -191,9 +191,10 @@ function MyUploads(props){
           console.log(response.data.list.pagination.skipCount)
         }); }
 
-    function handleDocument(id,title){
-        history.push(`/document-details/${id}/${title}`)
-      }
+        function handleDocument(file , id, title){
+          file ? history.push(`/document-details/${id}/${title}`)
+          : history.push(`/document/${id}`)
+        }
       return( 
       <Fragment>
          <div id="second_section">
@@ -248,6 +249,7 @@ function MyUploads(props){
                       
                     <td className="file_name-u"
                     onClick={() => handleDocument(
+                      d.type,
                       d.id,
                       d.name) }>
                     <FontAwesomeIcon className="pdf-file fas fa-file-pdf" 
