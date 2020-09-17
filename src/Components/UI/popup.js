@@ -18,7 +18,7 @@ import "./popup.scss";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.defdelete}>DELETE</button></span>
+            <button className="btn-continue btn-d" onClick={async()=>{await props.defdelete(close)}}>DELETE</button></span>
             </Popup></div>
         <div>
          <Popup
@@ -31,7 +31,7 @@ import "./popup.scss";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.deleted}>DELETE</button> </span>
+            <button className="btn-continue btn-d" onClick={async ()=>{await props.deleted(close)}}>DELETE</button> </span>
         </Popup></div>
         <div>
         <Popup
@@ -44,7 +44,7 @@ import "./popup.scss";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.defrestore}>RESTORE</button> </span>
+            <button className="btn-continue btn-d" onClick={async()=>{await props.defrestore(close)}}>RESTORE</button> </span>
            )}</Popup></div>
           <div>
          <Popup
@@ -57,7 +57,7 @@ import "./popup.scss";
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}
             >CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.restored}>RESTORE</button> </span>
+            <button className="btn-continue btn-d" onClick={async ()=>{await props.restored(close)}}>RESTORE</button> </span>
           </Popup></div> </div> )}      
     </Popup>
   );

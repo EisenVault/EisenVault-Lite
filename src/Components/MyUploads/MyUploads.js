@@ -71,31 +71,39 @@ function MyUploads(props){
   }
   
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
-  const deleteFileByIds=()=>{
-    FileState.forEach(d=>{
+  const deleteFileByIds=(close)=>{
+    FileState.forEach(async d=>{
       if(d.select){
-      Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+      await Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
           console.log(data);
-          closeModal();
+          close();
+          alertify.alert('Document Deleted Successfully').setting({
+            'message': 'Document Deleted Successfully',
+            'onok': () => {alertify.alert().destroy();} 
+          });
           getData();
            }).catch(err=>alert(err));
        };
       })}
       
-      const DefaultDelete=()=>{
-        FileState.forEach(d=>{
+       const DefaultDelete=(close)=>{
+        FileState.forEach(async d=>{
           if(d.id){
-          Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+         await Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
           {headers:{
           Authorization: `Basic ${btoa(getToken())}`
            }
          }).then((data)=>{
               console.log(data);
-              closeModal();
+              close();
+              alertify.alert('Document Restored Successfully').setting({
+                'message': 'Document Restored Successfully',
+                'onok': () => {alertify.alert().destroy();} 
+              });
               getData();
                }).catch(err=>alert(err));
            };
@@ -111,7 +119,7 @@ function MyUploads(props){
           console.log(data);
           alertify.confirm().destroy();
           alertify.alert('Document Deleted Successfully').setting({
-            'message': 'Department Deleted Successfully',
+            'message': 'Document Deleted Successfully',
             'onok': () => {alertify.alert().destroy();} 
           }); 
           getData();
@@ -224,7 +232,7 @@ function MyUploads(props){
                     <th id="item-name">Item Name</th>
                     <th id="shared">Uploaded On</th>
                     <th id="action">
-                      <NestedToolTipuploads del={()=>{DefaultDelete()}} delsel={()=>{deleteFileByIds()}}/>
+                      <NestedToolTipuploads del={DefaultDelete} delsel={deleteFileByIds}/>
                       {/* <label>Action </label>
                       <select id="action-t" onChange={() => {setmodalIsOpen(true);}}>
                         <option id="option" value="delete-a">Delete All</option>
@@ -262,7 +270,7 @@ function MyUploads(props){
                      buttonFocus : "ok",
                      'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.name,'onok': () => {handleDelete(d.id)} ,
                      'oncancel': () => {alertify.confirm().destroy();}}).show()
-         }}                   //{handleDelete(d.id,d.name)}}
+                        }} 
                       />
                 </td>
               </tr>

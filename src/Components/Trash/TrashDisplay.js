@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios';
 import Pagination from '../Pagination/Pagination';
+import { useHistory } from 'react-router-dom';
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
 import Search from '../SearchBar/SearchBar';
@@ -16,6 +17,7 @@ import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
 
 function TrashDisplayFiles(props){
+  let history = useHistory();
   const[TrashFileState,setTrashFileState]=useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const[deleting,deleteHandler]=useState(false);
@@ -66,44 +68,59 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 //   )
 // }
 
-const permanentDeleteByIds=()=>{    //function to delete selected files permanently
-  TrashFileState.forEach(d=>{
+const permanentDeleteByIds=(close)=>{    //function to delete selected files permanently
+  TrashFileState.forEach(async d=>{
     if(d.select){
-    Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+    await Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }
    }).then((response)=>{
         console.log(response.data);
+        close();
+        alertify.alert('Document Deleted Successfully').setting({
+          'message': 'Document Deleted Successfully',
+          'onok': () => {alertify.alert().destroy();} 
+        });
         getDeletedData();
       }).catch(err=>alert(err));
      };
     })}
 
-    const DefaultDelete=()=>{  //function to delete all the files permanently 
-      TrashFileState.forEach(d=>{
+    const DefaultDelete=(close)=>{  //function to delete all the files permanently 
+      TrashFileState.forEach(async d=>{
         if(d.id){
-        Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+        await Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
         {headers:{
         Authorization: `Basic ${btoa(getToken())}`
          }
        }).then((response)=>{
             console.log(response.data);
+            close();
+            alertify.alert('Document Deleted Successfully').setting({
+              'message': 'Document Deleted Successfully',
+              'onok': () => {alertify.alert().destroy();} 
+            });
             getDeletedData();
            }).catch(err=>alert(err));
          };
         })
     }
-    const DefaultRestore=()=>{ //function to restore all the files
-      TrashFileState.forEach(d=>{
+    const DefaultRestore=(close)=>{ //function to restore all the files
+      TrashFileState.forEach(async d=>{
         if(d.id){
-           Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+          await Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
             {headers:
             {
               Authorization: `Basic ${btoa( getToken() )}`
             }
         }).then((response)=>{
               console.log(response.data);
+              close();
+              alertify.alert('Document Restored Successfully').setting({
+                'message': 'Document Restored Successfully',
+                'onok': () => {alertify.alert().destroy();} 
+              });
               getDeletedData();
               }).catch(err=>alert(err));
           };
@@ -111,16 +128,21 @@ const permanentDeleteByIds=()=>{    //function to delete selected files permanen
 
     }
 
-const RestoreFileByIds=()=>{  //function to restore selected files 
-  TrashFileState.forEach(d=>{
+const RestoreFileByIds=(close)=>{  //function to restore selected files 
+  TrashFileState.forEach(async d=>{
     if(d.select){
-       Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+      await Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
         {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
         }
     }).then((response)=>{
           console.log(response.data);
+          close();
+          alertify.alert('Document Restored Successfully').setting({
+            'message': 'Document Restored Successfully',
+            'onok': () => {alertify.alert().destroy();} 
+          });
           getDeletedData();
           }).catch(err=>alert(err));
       };
@@ -135,7 +157,7 @@ const RestoreFileByIds=()=>{  //function to restore selected files
           console.log(data);
           alertify.confirm().destroy(); 
           alertify.alert('Document Deleted Successfully').setting({
-            'message': 'Department Deleted Successfully',
+            'message': 'Document Deleted Successfully',
             'onok': () => {alertify.alert().destroy();} 
           });
           getDeletedData();
@@ -206,6 +228,10 @@ const RestoreFileByIds=()=>{  //function to restore selected files
             console.log(response.data.list.pagination.skipCount)
            });
        }
+        
+       function handleDocument(file,id,title){
+        file ? history.push(`/document-details/${id}/${title}`) : history.push(`/document/${id}`)
+      }
       
   return(
     <Fragment>
@@ -237,8 +263,8 @@ const RestoreFileByIds=()=>{  //function to restore selected files
                 <th id="deleted">Deleted on</th>
                  <th id="action-trash">
 
-                  <NestedToolTip restored={()=>{RestoreFileByIds()}} defrestore={()=>{DefaultRestore()}}
-                  defdelete={()=>{DefaultDelete()}} deleted={()=>{permanentDeleteByIds()}}/>
+                  <NestedToolTip restored={RestoreFileByIds} defrestore={DefaultRestore}
+                  defdelete={DefaultDelete} deleted={permanentDeleteByIds}/>
                   </th>  
 
                   {/* <Modal show={deleting}>
@@ -264,7 +290,10 @@ const RestoreFileByIds=()=>{  //function to restore selected files
                     }));
                    }} type="checkbox" checked={d.select}
                     /> </td> 
-                 <td className="file_name-u">
+                 <td className="file_name-u"
+                 onClick={() => handleDocument(d.type,
+                  d.id,
+                  d.name) }>
                  <FontAwesomeIcon className="pdf-file fas fa-file-pdf" 
                      icon={d.type ? faFile : faFolder}/> 
                     {d.name}</td>         

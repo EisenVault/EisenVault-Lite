@@ -18,7 +18,7 @@ import Popup from "reactjs-popup";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.del}>DELETE</button></span>
+            <button className="btn-continue btn-d" onClick={async()=>{await props.del(close)}}>DELETE</button></span>
             </Popup></div>
         <div>
          <Popup
@@ -31,7 +31,7 @@ import Popup from "reactjs-popup";
             <button
               className="btn-cancel btn-c" 
               onClick={()=>{close()}}>CANCEL</button>
-            <button className="btn-continue btn-d" onClick={props.delsel}>DELETE</button> </span>
+            <button className="btn-continue btn-d" onClick={async()=>{await props.delsel(close)}}>DELETE</button> </span>
         </Popup></div>
            </div>)}
            </Popup>

@@ -31,6 +31,7 @@ $icon-color: #ee9796;
   height:1.4rem;
   width: 1.4rem;
   margin-left:1.9rem;
+  cursor:pointer;
 }
 
  th#icon01 {
@@ -59,6 +60,7 @@ th#action {
    
    td.file_name-u{
     color:$font-color;
+    cursor:pointer;
    }
 
 .fa-file-pdf{
@@ -94,9 +96,13 @@ white-space: nowrap;
 .details-u {
 padding-left: 2rem;
 color:$font-color;
+
 // overflow: hidden;  
 // white-space: nowrap;  
 }  
+.fa-times-circle{
+    cursor:pointer;
+}
 .file_name-u{
     padding-left:2rem;
 }
