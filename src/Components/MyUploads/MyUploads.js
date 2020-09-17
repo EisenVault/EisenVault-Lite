@@ -72,9 +72,9 @@ function MyUploads(props){
   
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=(close)=>{
-    FileState.forEach(async d=>{
+    FileState.forEach( d=>{
       if(d.select){
-      await Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+       Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
@@ -91,9 +91,9 @@ function MyUploads(props){
       })}
       
        const DefaultDelete=(close)=>{
-        FileState.forEach(async d=>{
+        FileState.forEach( d=>{
           if(d.id){
-         await Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
+          Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
           {headers:{
           Authorization: `Basic ${btoa(getToken())}`
            }

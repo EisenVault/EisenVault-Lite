@@ -69,9 +69,9 @@ const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 // }
 
 const permanentDeleteByIds=(close)=>{    //function to delete selected files permanently
-  TrashFileState.forEach(async d=>{
+  TrashFileState.forEach(d=>{
     if(d.select){
-    await Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+    Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
     {headers:{
     Authorization: `Basic ${btoa(getToken())}`
      }
@@ -88,9 +88,9 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
     })}
 
     const DefaultDelete=(close)=>{  //function to delete all the files permanently 
-      TrashFileState.forEach(async d=>{
+      TrashFileState.forEach( d=>{
         if(d.id){
-        await Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+         Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
         {headers:{
         Authorization: `Basic ${btoa(getToken())}`
          }
@@ -107,9 +107,9 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
         })
     }
     const DefaultRestore=(close)=>{ //function to restore all the files
-      TrashFileState.forEach(async d=>{
+      TrashFileState.forEach( d=>{
         if(d.id){
-          await Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+           Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
             {headers:
             {
               Authorization: `Basic ${btoa( getToken() )}`
@@ -129,9 +129,9 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
     }
 
 const RestoreFileByIds=(close)=>{  //function to restore selected files 
-  TrashFileState.forEach(async d=>{
+  TrashFileState.forEach( d=>{
     if(d.select){
-      await Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+       Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
         {headers:
         {
           Authorization: `Basic ${btoa( getToken() )}`
