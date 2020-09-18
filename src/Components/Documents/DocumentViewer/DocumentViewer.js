@@ -1,4 +1,4 @@
-import React , { Fragment,useState,useEffect } from 'react';
+import React , { Fragment,useState,useEffect, version } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
@@ -71,13 +71,14 @@ function DocPreview() {
     setSidebarOpen(!sidebarIsOpen);
   }
 
-  const acceptedFileTypes = ["pdf", "jpeg", "PNG", "png"]
+const acceptedFileTypes = ["pdf", "jpeg", "PNG", "png"]
+const acceptedMsOfficeTypes = ["ppt", "pptx", "doc", "docx", "xlsx", "xls", "odt"]
 
-  function Viewer() { 
+function Viewer() { 
   if (acceptedFileTypes.includes(fileType)) return PdfViewer() 
-  else if (fileType === 'csv') return DisplayCsvFiles()
-  else if (fileType === 'mp4') return DisplayCsvFiles()
-  else return DisplayUsingOfficeApps()
+  else if (acceptedMsOfficeTypes.includes(fileType)) 
+  return DisplayUsingOfficeApps()
+  else return error()
 }
 
 function error(){
@@ -85,33 +86,17 @@ function error(){
   console.log("Error Occured")
     return (
     <Fragment>
-    <h1>The selected file type is not supported or 
-      file is not found</h1>
-      <p>Please Click here to view the file in full version
-        <a href={getUrl()}> full version</a>
-      </p>
+    <iframe 
+    id="errorFrame"
+    title="error"
+    src={"data:text/html,"
+    +encodeURIComponent("This document can't be previewed. Please visit the full version.")}
+    width="730rem" 
+    height="500rem">
+      </iframe>
       </Fragment>
     )
   }
-
-function DisplayCsvFiles () {
-  
-  return (
-    <Fragment>
-    <div className="docFrame">
-    <iframe src={`https://docs.google.com/gview?embedded=true&url=`+
-    getUrl()+
-    `alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/content?alf_ticket=${token}`} 
-    title='mydocframe' 
-    onLoad={() => 'null'}
-    id='mydocFrame'
-    width="730rem" 
-    height="500rem" >
-    </iframe>
-    </div>
-    </Fragment>
-  );
-}
 
   function DisplayUsingOfficeApps() {
     return (
