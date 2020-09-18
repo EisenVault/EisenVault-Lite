@@ -188,8 +188,7 @@ return(
                   </tr>
                   </tbody>
                   ) )}
-                   
-                   
+                
               </table>
               <LoadingIndicator/>
 

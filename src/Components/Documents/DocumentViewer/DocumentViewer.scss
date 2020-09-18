@@ -6,6 +6,11 @@ $sidebar-color: #E07050;
     float: left;
 }
 
+#errorFrame body{
+    text-align: center;
+    padding: 10rem;
+}
+
 .docFrame{
     background:url(../../../Assets/images/LoadingSpinner.gif) 
     center center no-repeat;
