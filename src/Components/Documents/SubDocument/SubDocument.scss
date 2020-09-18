@@ -13,8 +13,8 @@
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     padding-top: 0.9rem;
-    background: #E07050;
-    border: 1px solid;
+    background: rgb(253, 246, 246);
+    // border: 1px solid ;
     border-radius: 4px;
   }
   .alertify-text {
@@ -33,14 +33,16 @@
 	}
   .alertify-inner {
     text-align: center;
+    
   }
   .ajs-button{
     font-weight: 600;
     font-family: 'Open Sans', sans-serif;
+    margin:1rem;
     margin-top: 1.4rem;
     padding: 0.5rem;
     width: 12rem;
-    background-color:black;
+    background-color:#E07050;
     color: white;
     font-size: 16px;
     border-radius: 1rem;
@@ -59,10 +61,12 @@
     margin-top: 2.5rem;
   }
   .ajs-body{
-    font-size: 1.4rem;;
+    font-size: 1.4rem;
+    color:#073453;
   }
   .ajs-no-overflow{
-    background-color: rgba(184, 182, 182, 0.5);
+    background-color:rgba(0, 0, 0, 0.5);
+    z-index: 999;
   }
   @media (min-width:533px) and (max-width:1022px){
     tbody{
@@ -96,7 +100,8 @@
       margin-left: 1rem;
   }
     .ajs-body{
-      font-size: 1rem;;
+      font-size: 1rem;
+      color:#073453;
     }
     .alertify {
       width: 400px;
@@ -110,7 +115,7 @@
       margin-top: 1.4rem;
       padding: 0.4rem;
       width: 7rem;
-      background-color:black;
+      background-color:#E07050;
       color: white;
       font-size: 14px;
       border-radius: 1rem;
