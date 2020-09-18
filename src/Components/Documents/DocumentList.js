@@ -44,10 +44,10 @@ const DocumentsList = () => {
   //Condition to fetch departments
     if(user === "admin")
     {
-     url=`/sites?`
+     url=`/sites?maxItems=10`
     }
     else{
-      url = "/sites?where=(visibility='PRIVATE')&"
+      url = "/sites?maxItems=100"
     }
   
   useEffect(()=>{
@@ -58,7 +58,7 @@ const DocumentsList = () => {
   
   const getDepartments=()=>{
     trackPromise(
-    Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=0`,
+    Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=0`,
     {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -143,7 +143,7 @@ function handleDeleteDepartment(id){
 function next(){
   document.getElementById("myprevBtn").disabled = false;
    console.log(skipCount);
-   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
+   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=${skipCount}`,
    {headers:{
      Authorization: `Basic ${btoa(getToken())}`
    }}).then((response) => {
@@ -167,7 +167,7 @@ function next(){
   
 function previous(){
   document.getElementById("myBtn").disabled = false;
-  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}maxItems=10&skipCount=${skipCount}`,
+  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=${skipCount}`,
   {headers:{
     Authorization: `Basic ${btoa(getToken())}`
   }}).then((response) => {
@@ -214,9 +214,9 @@ return (
           
            <table id="doc_list">
            <tbody >
-          {currentPosts.map(department => (
-            
-                  <tr className='details'>
+          {departments.map(department => (
+                  department.entry.role ? 
+                  <tr className='details' key={department.entry.id}>
                   <td className='fileicon'>
                   
                     <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
@@ -246,7 +246,7 @@ return (
                       }
                       
                     </td>
-                   </tr>
+                   </tr> : null
                
           ))}
            </tbody>

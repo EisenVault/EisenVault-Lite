@@ -30,7 +30,7 @@ function ManageShares(){
  
  const getDetailsData = () => {
   trackPromise(
-  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties&where=(sharedByUser=${getUser()})`,
+  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties&where=(sharedByUser='-me-')`,
   {headers:
     {
       Authorization: `Basic ${btoa(getToken())}`
