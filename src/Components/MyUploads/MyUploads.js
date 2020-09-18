@@ -100,8 +100,8 @@ function MyUploads(props){
          }).then((data)=>{
               console.log(data);
               close();
-              alertify.alert('Document Restored Successfully').setting({
-                'message': 'Document Restored Successfully',
+              alertify.alert('Document Deleted Successfully').setting({
+                'message': 'Document Deleted Successfully',
                 'onok': () => {alertify.alert().destroy();} 
               });
               getData();
@@ -223,7 +223,7 @@ function MyUploads(props){
                     <th id="icon01">
                       <input type="checkbox" onChange={(e)=>{
                         let checked=e.target.checked;
-                        setFileState(currentPosts.map((d)=>{
+                        setFileState(FileState.map((d)=>{
                           d.select=checked;
                           return d;
                         }));

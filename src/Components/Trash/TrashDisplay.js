@@ -101,11 +101,11 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
               'message': 'Document Deleted Successfully',
               'onok': () => {alertify.alert().destroy();} 
             });
-            getDeletedData();
+            //getDeletedData();
            }).catch(err=>alert(err));
          };
-        })
-    }
+        }) }
+    
     const DefaultRestore=(close)=>{ //function to restore all the files
       TrashFileState.forEach( d=>{
         if(d.id){
