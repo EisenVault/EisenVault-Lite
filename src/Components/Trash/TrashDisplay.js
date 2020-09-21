@@ -88,9 +88,8 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
     })}
 
     const DefaultDelete=(close)=>{  //function to delete all the files permanently 
-      TrashFileState.forEach( d=>{
-        if(d.id){
-         Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+      
+         Axios.delete(getUrl()+`alfresco/s/api/archive/workspace/SpacesStore`, 
         {headers:{
         Authorization: `Basic ${btoa(getToken())}`
          }
@@ -101,10 +100,10 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
               'message': 'Document Deleted Successfully',
               'onok': () => {alertify.alert().destroy();} 
             });
-            //getDeletedData();
+            getDeletedData();
            }).catch(err=>alert(err));
          };
-        }) }
+        
     
     const DefaultRestore=(close)=>{ //function to restore all the files
       TrashFileState.forEach( d=>{
