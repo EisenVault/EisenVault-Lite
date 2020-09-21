@@ -89,6 +89,9 @@ const Dashboard = () => {
     history.push(`/document-details/${id}/${title}`)
   }
 
+  const noPreviewIcon = ["file-deleted", "user-role-changed", 
+                          "folders-deleted", "folder-added"]
+
   return (
   <Fragment>
 
@@ -123,11 +126,18 @@ const Dashboard = () => {
                             {document.entry.postedAt.split('T')[0]} </td>
                           <td className='fileActivity'>
                             {document.entry.activityType.split('.')[3]}</td>
-                          <td className='view'
+                            {noPreviewIcon.includes(document.entry.activityType.split('.')[3])?
+                            "":<td className='view'
+                            onClick={() => handleDocument(
+                              document.entry.activitySummary.objectId,
+                              document.entry.activitySummary.title) }>
+                                <FontAwesomeIcon icon={faEye} /></td>}
+                          
+                          {/* <td className='view'
                           onClick={() => handleDocument(
                             document.entry.activitySummary.objectId,
                             document.entry.activitySummary.title) }>
-                              <FontAwesomeIcon icon={faEye} /></td>
+                              <FontAwesomeIcon icon={faEye} /></td> */}
                       </tr>
                   </tbody>
             ))}
