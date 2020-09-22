@@ -48,7 +48,6 @@ const Dashboard = () => {
      }}).then((response) => {
        setDocuments(response.data.list.entries)
        setMoreItems(response.data.list.pagination.hasMoreItems)
-       setMoreItems(response.data.list.pagination.hasMoreItems)
      if (response.data.list.pagination.hasMoreItems){
       setSkipCount(response.data.list.pagination.skipCount + 10)
       document.getElementById("myBtn").disabled = false;

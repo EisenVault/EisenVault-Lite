@@ -62,7 +62,6 @@ export const RestoreSummary= props =>{
             
 //         </div>
 //     </Fragment>
-
 //   )
 // }
 
@@ -77,9 +76,11 @@ export const ForgotPassword = props => {
             <h3>You will recieve an email link to reset password.</h3>
            
             <div className="label-input">
+            <label>URL:</label>
+              <input type="text" {...props.url} id="url" required/>
+                <br/>
               <label>Username:</label>
-              <input type="text" {...props.forgotPswdUserName}>
-              </input>
+              <input type="text" {...props.forgotPswdUserName} required/>
             </div>
 
           </div>
@@ -87,7 +88,10 @@ export const ForgotPassword = props => {
 
         <div id="btns">
           <button className="btn-continue-p" 
-          onClick={props.resetPassword}>Email</button>
+          onClick= {props.resetPassword}>{props.pswdloading? 
+          <h5>Sending Email</h5>
+             :<h5>Email</h5>}
+            </button>
           <button onClick={props.clicked} className="btn-cancel-p">
             Cancel</button>
         </div>
