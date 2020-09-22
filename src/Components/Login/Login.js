@@ -8,7 +8,7 @@ import './LoginPage.scss';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
-  const [pswdloading, setPswdLoading] = useState(false);
+  const [pswdloading, setPswdLoading] = useState(true);
 
   const [error, setError] = useState(null);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -54,7 +54,7 @@ const LoginPage = (props) => {
 
 function HandleForgotPassword() {
   setPswdError(null);
-  setPswdLoading(true);
+  setUrl(newUrl)
 
   axios.post(getUrl()+'share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
@@ -110,18 +110,19 @@ const onEnter = (event) => {
 
                 <Modal show={modalIsOpen}>
                 
-                  <ForgotPassword                   
+                  <ForgotPassword     
+                  pswdloading={pswdloading}              
                   resetPassword={HandleForgotPassword}
                   clicked={() => setmodalIsOpen(false)}
-                  forgotPswdUserName={forgotPswdUserName}/>
+                  forgotPswdUserName={forgotPswdUserName}
+                  url={url}/>
 
                   {err && <><small style={{ color: 'red' }}>
                   {err}</small><br /></>}
                 </Modal>     
 
-                <button id="btn_forgotPassword" type="button" 
-                  onClick={() => {return(setmodalIsOpen(true)
-                    )}}>
+               <button id="btn_forgotPassword" type="button" 
+                  onClick={() => {return(setmodalIsOpen(true))}}>
                     Forgot Password?</button>
                     
             </div> 
