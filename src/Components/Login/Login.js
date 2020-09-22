@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
+import alertify from 'alertifyjs';
+
 import Modal from '../Modal/Modal';
 import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
@@ -8,7 +10,7 @@ import './LoginPage.scss';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
-  const [pswdloading, setPswdLoading] = useState(true);
+  const [pswdloading, setPswdLoading] = useState(false);
 
   const [error, setError] = useState(null);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -48,18 +50,23 @@ const LoginPage = (props) => {
   const closeModal=()=>{ 
     //function to close modal after performing it's operations
   return (setmodalIsOpen(false)
-  // setPasswordHandler(false)
   )
 }
 
 function HandleForgotPassword() {
   setPswdError(null);
   setUrl(newUrl)
+  setPswdLoading(true);
 
   axios.post(getUrl()+'share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
     setPswdLoading(false);
     closeModal();
+    
+    alertify.alert('Please Check your registered email id.').setting({
+      'message': 'Please Check your registered email id.',
+      'onok': () => {alertify.alert().destroy();} 
+    });
     console.log("Email Sent");
     console.log(response);
   }).catch(err => {
@@ -88,7 +95,8 @@ const onEnter = (event) => {
         <div className="login-box">
             <div className="login-details">
               <input type="text" {...url} 
-                id="url" placeholder="URL" required/>
+                id="url" placeholder="URL" required
+                />
                 <br/>
                 <input type="text" {...userName} 
                 id="user-name" placeholder="User Name" required/>
@@ -99,7 +107,6 @@ const onEnter = (event) => {
             </div>
 
             <div id="btns_new">
-                
                 {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
                 <br />
                 <button id="btn_login" type="button" 

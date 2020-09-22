@@ -64,10 +64,11 @@
     font-size: 1.4rem;
     color:#073453;
   }
-  .ajs-no-overflow{
+  .ajs-no-overflow{ 
     background-color:rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 99999;
   }
+  
   @media (min-width:533px) and (max-width:1022px){
     tbody{
       margin: 1rem;

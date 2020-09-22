@@ -112,7 +112,7 @@ const Dashboard = () => {
         <table className='documentsList'>
             {documents.map(document => (               
             <tbody key={document.entry.id} >
-                <tr >
+                <tr>
                   <td className='fileName'>                             
                     <FontAwesomeIcon icon={faFile} />
                         <h4>
@@ -130,14 +130,8 @@ const Dashboard = () => {
                             onClick={() => handleDocument(
                               document.entry.activitySummary.objectId,
                               document.entry.activitySummary.title) }>
-                                <FontAwesomeIcon icon={faEye} /></td>}
-                          
-                          {/* <td className='view'
-                          onClick={() => handleDocument(
-                            document.entry.activitySummary.objectId,
-                            document.entry.activitySummary.title) }>
-                              <FontAwesomeIcon icon={faEye} /></td> */}
-                      </tr>
+                                <FontAwesomeIcon icon={faEye} /></td>} 
+                                </tr>
                   </tbody>
             ))}
         </table>
