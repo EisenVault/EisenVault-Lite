@@ -77,20 +77,19 @@ export const ForgotPassword = props => {
            
             <div className="label-input">
             <label>URL:</label>
-              <input type="text" {...props.url} id="url" required/>
+              <input type="text" {...props.url} id="urlFrgtPswd" required/>
                 <br/>
               <label>Username:</label>
               <input type="text" {...props.forgotPswdUserName} required/>
             </div>
-
           </div>
         </div>
 
         <div id="btns">
           <button className="btn-continue-p" 
-          onClick= {props.resetPassword}>{props.pswdloading? 
-          <h5>Sending Email</h5>
-             :<h5>Email</h5>}
+          onClick= {props.resetPassword}>
+          {props.pswdloading? 
+          ("Please Wait while we are sending email...") :("Email")}
             </button>
           <button onClick={props.clicked} className="btn-cancel-p">
             Cancel</button>
@@ -140,30 +139,3 @@ export const DeleteDepartment = (props) => {
     </Fragment>
   )
 }
-
-// export const ChangeTypes = (props) => {
-//   return(
-//     <Fragment>
-//       <div className="modal-header">
-//         <h2>{props.fileName}</h2>
-//         </div>
-//         <div>
-//           <div>
-//             <h3>Auto Identified Category: {props.documentType}</h3>
-           
-//             <div className="label-input">
-//               <label>New Category: </label>
-//               <select id="typeDropDown" value={props.docTypes}>
-//                   {props.docTypes}
-//               </select>
-//               </div>
-//           </div>
-//         </div>
-//         <div id="btns">
-
-//           <button className="btn-continue" onClick={props.changeType}>Change</button>
-//           <button onClick={props.clicked} className="btn-cancel">Cancel</button>
-//         </div>
-//     </Fragment>
-// )
-// }
