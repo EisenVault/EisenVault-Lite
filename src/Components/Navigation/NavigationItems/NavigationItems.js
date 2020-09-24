@@ -9,12 +9,10 @@ import { faHome,
       faHeadset, 
       faKey, 
       faSignOutAlt, 
-      faTrash, 
-      faGreaterThanEqual} from "@fortawesome/free-solid-svg-icons";
+      faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import  './NavigationItems.scss';
 import axios from 'axios';
-// import {instance} from "../../ApiUrl/endpointName.instatnce"
 import { getToken,getUser,getUrl } from '../../../Utils/Common';
 
 function NavigationItems() {
@@ -23,8 +21,8 @@ function NavigationItems() {
   const [error, setError] = useState(null);
 
   const user = getUser();
-  // handle click event of logout button
-   const handleLogout = () => {    
+
+  const handleLogout = () => {  // handle click event of logout button  
       axios.delete(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
@@ -75,13 +73,6 @@ function NavigationItems() {
               icon={faShareAlt}/>
               <p>&nbsp;MANAGE SHARES</p>
               </li></Link>
-
-              {/* <Link to="/sharedWithMe">
-              <li> <FontAwesomeIcon 
-              className="Icon" 
-              icon={faShareSquare}/>
-              <p>SHARED WITH ME</p>
-              </li></Link> */}
           </div>
 
           <div id="lower_bar">

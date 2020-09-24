@@ -4,12 +4,10 @@ import Modal from '../Modal/Modal';
 import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
 import './LoginPage.scss';
-// import { instance } from '../ApiUrl/endpointName.instatnce';
 
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [pswdloading, setPswdLoading] = useState(false);
-
   const [error, setError] = useState(null);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
 
@@ -45,11 +43,9 @@ const LoginPage = (props) => {
     });
   }
 
-  const closeModal=()=>{ 
-    //function to close modal after performing it's operations
+  const closeModal=()=>{ //function to close modal after performing it's operations
   return (setmodalIsOpen(false)
-  // setPasswordHandler(false)
-  )
+   )
 }
 
 function HandleForgotPassword() {

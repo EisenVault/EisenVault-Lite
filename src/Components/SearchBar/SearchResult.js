@@ -2,7 +2,6 @@ import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
@@ -18,23 +17,6 @@ function SearchResult(){
    const result = params.result;
    const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
-// useEffect(()=>{
-//   trackPromise(
-//         Axios.get(getUrl()+`alfresco/s/slingshot/search?term=${result}`,
-//         {
-//           headers:
-//           {
-//             Authorization: `Basic ${btoa(getToken())}`
-//           }
-//           }).then((response) => {
-//         console.log(response.data)
-//         setDocuments(response.data.items)
-//       }).catch((error) => {
-//         console.log(error);
-//       }
-//       )
-//   )
-//     },[result]);
 
   useEffect(()=>{
     trackPromise(
@@ -55,7 +37,6 @@ function SearchResult(){
                 Authorization: `Basic ${btoa(getToken())}`
               }
               }).then((response) => {
-            console.log(response.data)
             setDocuments(response.data.list.entries)
           }).catch((error) => {
             console.log(error);
@@ -80,7 +61,6 @@ function SearchResult(){
     {headers:{
        Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
-      console.log(response.data)
       setDocuments(response.data.list.entries)
        setMoreItems(response.data.list.pagination.hasMoreItems)
      if (response.data.list.pagination.hasMoreItems){
@@ -90,9 +70,6 @@ function SearchResult(){
      else{
       document.getElementById("myBtn").disabled = true;
      }
-     
-   console.log(response.data.list.entries)
-   console.log(response.data.list.pagination.skipCount)
      });
    
   }
@@ -113,7 +90,6 @@ function SearchResult(){
     {headers:{
        Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
-      console.log(response.data)
       setDocuments(response.data.list.entries)
       setMoreItems(response.data.list.pagination.hasMoreItems)
       if (response.data.list.pagination.skipCount > 0){
@@ -122,9 +98,6 @@ function SearchResult(){
       }else{
         document.getElementById("myprevBtn").disabled = true;
       }
-      console.log(response.data.list.entries)
-      console.log(response.data.list.pagination)
-      console.log(response.data.list.pagination.skipCount)
     }); }
 
     function handleDocument(id , name , type){
@@ -153,7 +126,6 @@ function SearchResult(){
                     <td className="file_name-u"  
                     onClick={() => handleDocument(
                       d.entry.id,
-                      // d.nodeRef.substring(24),
                       d.entry.name,
                       d.entry.isFile)}
                    ><FontAwesomeIcon 
@@ -177,8 +149,6 @@ function SearchResult(){
         <Pagination
           handlePrev={previous}
           handleNext={next}
-          hasMoreItems={hasMoreItems}
-          skipCount={skipCount}
               />  
       </div>
     </Fragment>

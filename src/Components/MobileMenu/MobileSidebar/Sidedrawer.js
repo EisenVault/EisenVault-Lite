@@ -15,7 +15,6 @@ import "../MobileMenu.scss"
 import "../MobileSidebar/Sidedrawer.scss"
 import Auxiliary from '../../../hoc/Auxiliary';
 import { getUser ,getToken,getUrl} from "../../../Utils/Common";
-// import { instance } from '../../ApiUrl/endpointName.instatnce';
 
 const SideDrawer=(props)=>{
   const history = useHistory();
@@ -82,13 +81,6 @@ const SideDrawer=(props)=>{
               icon={faShareAlt}/>
               <p>&nbsp;MANAGE SHARES</p>
               </li></Link>
-
-              {/* <Link to="/sharedWithMe">
-              <li> <FontAwesomeIcon 
-              className="Icon" 
-              icon={faShareSquare}/>
-              <p>SHARED WITH ME</p>
-              </li></Link> */}
           </div>
 
           <div id="lower_bar">

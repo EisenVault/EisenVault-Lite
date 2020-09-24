@@ -2,9 +2,7 @@ import React , { Fragment,useRef,useEffect, useState } from 'react';
 import { useHistory,useParams } from "react-router-dom";
 import axios from 'axios';
 import {getToken, getUrl} from "../../Utils/Common";
-// import { instance } from '../ApiUrl/endpointName.instatnce';
 import "./MoreDetails.scss"
-// useEffect(()=>{FullAudittrails()},[])
 
 function FullAudittrails() {
     let history = useHistory();

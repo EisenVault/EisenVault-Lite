@@ -3,17 +3,13 @@ import {getToken,getUser,getUrl} from "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
-
 import { useHistory} from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
 import './DocumentList.scss';
 import alertify from 'alertifyjs';
-// import {instance} from "../ApiUrl/endpointName.instatnce"
 import Search from "../SearchBar/SearchBar";
-
-
 import Modal from "../Modal/Modal";
 import { DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
 import Pagination from '../Pagination/Pagination';
@@ -21,26 +17,17 @@ import Axios from 'axios';
 
 const DocumentsList = () => {
   const user = getUser();
-  const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
-  const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
   let history = useHistory();
   let url;
+  const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
+  const [lastButtonClicked, setLastButtonClicked] = useState("");
+  const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
   const [ departments , setDepartments ] = useState([]);
   const [ documents , setDocuments ] = useState([]);
-  
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const [postsPerPage] = useState(10);
-  const departmentTitle = useFormInput ('');
   const [hasMoreItems , setMoreItems] = useState('');
-
+  const [totalitems,settotalitems]=useState('');
   const [skipCount , setSkipCount ] = useState(0);
-  // Get current posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = departments.slice(indexOfFirstPost, indexOfLastPost);
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+  
   //Condition to fetch departments
     if(user === "admin")
     {
@@ -51,10 +38,8 @@ const DocumentsList = () => {
     }
   
   useEffect(()=>{
-   
-    getDepartments()
-     
-  },[url]);
+   getDepartments()
+     },[url]);
   
   const getDepartments=()=>{
     trackPromise(
@@ -63,12 +48,11 @@ const DocumentsList = () => {
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
-      console.log(response.data)
       setDepartments(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
+      settotalitems(response.data.list.pagination.totalItems)
       setMoreItems(response.data.list.pagination.hasMoreItems) 
-      setSkipCount(response.data.list.pagination.skipCount + 10)
-      console.log(response.data.list.pagination)     
+      setSkipCount(response.data.list.pagination.skipCount + 10)    
     })
     )
   }
@@ -83,7 +67,6 @@ function handleDocumentLibrary(key){
   ).then((response) => {
         console.log(response.data)
         setDocuments(response.data.list.entries)
-        
         response.data.list.entries.map(d => (
           d.entry.name === 'documentLibrary' ?  
           history.push(`/document/${d.entry.id}`)
@@ -95,28 +78,6 @@ function handleDocumentLibrary(key){
       })     
 }
 
-// function handleCreateDepartment(){
-//   Axios.post(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/sites`,
-//   {
-//    title: departmentTitle.value , visibility: "PRIVATE"
-//   },
-//   {
-//   headers:{
-//       Authorization: `Basic ${btoa(getToken())}`
-//       } }
-//   ).then(response => {
-//     alert("Department successfully created");
-//     getDepartments()
-//     console.log(response)
-//   }).catch(error => {
-//     if (error.response.status===409){
-//       alert("Department with this name already exists");
-//     }
-//     console.log(error)
-// });
-// createsetmodalIsOpen(false)
-// }
-
 function handleDeleteDepartment(id){
   Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
   {
@@ -125,7 +86,6 @@ function handleDeleteDepartment(id){
       } } 
   )
   .then(response => {
-    
     alertify.confirm().destroy();
     alertify.alert('Department Deleted Successfully').setting({
       'message': 'Department Deleted Successfully',
@@ -140,144 +100,148 @@ function handleDeleteDepartment(id){
     console.log(error)
 });
 }
-function next(){
-  document.getElementById("myprevBtn").disabled = false;
-   console.log(skipCount);
-   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=${skipCount}`,
-   {headers:{
-     Authorization: `Basic ${btoa(getToken())}`
-   }}).then((response) => {
-    console.log(response.data)
-    setDepartments(response.data.list.entries)
-    setPaginationDefaultDept(response.data.list.pagination) 
-    console.log(response.data.list.pagination)
-     setMoreItems(response.data.list.pagination.hasMoreItems)
-     if (response.data.list.pagination.hasMoreItems){
-      setSkipCount(response.data.list.pagination.skipCount + 10)
-      document.getElementById("myBtn").disabled = false;
-     }
-     else{
-      //setSkipCount(response.data.list.pagination.skipCount - 10)
-      document.getElementById("myBtn").disabled = true;
-     }
-     console.log(response.data.list.entries)
-     console.log(response.data.list.pagination.skipCount)
-   }); 
-}
-  
-function previous(){
-  document.getElementById("myBtn").disabled = false;
-  Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=${skipCount}`,
-  {headers:{
-    Authorization: `Basic ${btoa(getToken())}`
-  }}).then((response) => {
-   console.log(response.data)
-   setDepartments(response.data.list.entries)
-   setPaginationDefaultDept(response.data.list.pagination) 
-      setMoreItems(response.data.list.pagination.hasMoreItems)
-      if (response.data.list.pagination.skipCount > 0){
-        setSkipCount(response.data.list.pagination.skipCount - 10)
+ 
+
+  function next(){
+     var localSkipCount = skipCount;
+    if (lastButtonClicked === "previous")
+          {
+            if(totalitems>20){
+            if(localSkipCount===0)
+              {
+                localSkipCount=localSkipCount + 10 
+              }else{
+                localSkipCount = localSkipCount + 20;}
+            }
+           else{
+            localSkipCount=localSkipCount + 0 ;
+          }}
         document.getElementById("myprevBtn").disabled = false;
+        Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=${localSkipCount}`,
+        {headers:{
+          Authorization: `Basic ${btoa(getToken())}`
+        }}).then((response) => {
+          setDepartments(response.data.list.entries)
+          setPaginationDefaultDept(response.data.list.pagination) 
+          setMoreItems(response.data.list.pagination.hasMoreItems)
+          if (response.data.list.pagination.hasMoreItems){
+            setSkipCount(response.data.list.pagination.skipCount + 10)
+            document.getElementById("myBtn").disabled = false;
+          }
+          else{
+            document.getElementById("myBtn").disabled = true;
+          }
+          setLastButtonClicked("next");
+        }); 
       }
-      else{
-        //setSkipCount(response.data.list.pagination.skipCount + 10)
-        document.getElementById("myprevBtn").disabled = true;
-      }
-     
-      console.log(response.data.list.entries)
-      console.log(response.data.list.pagination)
-      console.log(response.data.list.pagination.skipCount)
-    });
- }
-return (
-  <Fragment>
-    <div id="second_section">
-
-    <div className="title">
-      <h2>My Departments</h2>
-      <ProfilePic className="profile_picture"/>
-      </div>
-      
-      <div className="search-profile">
-        <Search />
-        </div>
-
-            {/* <Modal show={createmodalIsOpen}>
-            <CreateDepartment createDept={handleCreateDepartment} 
-            clicked={() => createsetmodalIsOpen(false)} 
-            departmentTitle={departmentTitle}/>
-            </Modal>
-              <IconBar 
-                toggleadd = {() =>{createsetmodalIsOpen(true)}}
-              /> */}
-      <div className='files'>
-          
-           <table id="doc_list">
-           <tbody >
-          {departments.map(department => (
-                  department.entry.role ? 
-                  <tr className='details' key={department.entry.id}>
-                  <td className='fileicon'>
-                  
-                    <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
-                    {department.entry.title}</td>
-                    <td className='fileDetails' 
-                    onClick={() => handleDocumentLibrary(department.entry.guid)}>
-                    Document Library
-                    {document.folders} </td>
-                    <td>
-                      { user === 'admin' && 
-                      <Modal show={deletemodalIsOpen}>
-                          <DeleteDepartment 
-                            clicked={() => deletesetmodalIsOpen(false)}>
-                          </DeleteDepartment>
-                          <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
-                        </Modal> &&
-                      <div>
-                    <FontAwesomeIcon icon={faTrashAlt} 
-                        onClick={()=>{ alertify.confirm().setting({transition:'pulse',
-                                buttonFocus : "ok",
-                                'message' : 'DO YOU WANT TO DELETE THIS DEPARTMENT '+ department.entry.title,'onok': () => {handleDeleteDepartment(department.entry.id)} ,
-                                'oncancel': () => {alertify.confirm().destroy();}}).show()
-                    }}
-                        className="icon-item delete"/>
-                      </div>
   
-                      }
-                      
-                    </td>
-                   </tr> : null
-               
-          ))}
-           </tbody>
-           
-          </table> 
-          <LoadingIndicator/>
-          <div className="col-md-6">
-      <Pagination
-       handlePrev={previous}
-       handleNext={next}
-       hasMoreItems={hasMoreItems}
-       skipCount={skipCount-10}
-        />
-        </div>
-      </div>
-      </div>
-     
-  </Fragment>
-      )
+    function previous(){
+      var localSkipCount = skipCount;
+      if (lastButtonClicked === "next") {
+        if(localSkipCount===10)
+        {
+          localSkipCount = localSkipCount - 10;
+        }
+        else{
+      localSkipCount = localSkipCount - 20;}
     }
-    const useFormInput = initialValue => {
-      const [value, setValue] = useState(initialValue);
-     
-      const handleChange = e => {
-        setValue(e.target.value);
-      }
-      return {
-        value,
-        onChange: handleChange
-      }
+      document.getElementById("myBtn").disabled = false;
+      Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=${localSkipCount}`,
+      {headers:{
+        Authorization: `Basic ${btoa(getToken())}`
+      }}).then((response) => {
+      setDepartments(response.data.list.entries)
+      setPaginationDefaultDept(response.data.list.pagination) 
+          setMoreItems(response.data.list.pagination.hasMoreItems)
+          if (response.data.list.pagination.skipCount > 0){
+            setSkipCount(response.data.list.pagination.skipCount - 10)
+            document.getElementById("myprevBtn").disabled = false;
+          }
+          else{
+            document.getElementById("myprevBtn").disabled = true;
+          }
+          setLastButtonClicked("previous")
+        });
     }
 
+
+    return (
+      <Fragment>
+        <div id="second_section">
+
+        <div className="title">
+          <h2>My Departments</h2>
+          <ProfilePic className="profile_picture"/>
+          </div>
+          
+          <div className="search-profile">
+            <Search />
+            </div>
+          <div className='files'>
+              
+              <table id="doc_list">
+              <tbody >
+              {departments.map(department => (
+                      department.entry.role ? 
+                      <tr className='details' key={department.entry.id}>
+                      <td className='fileicon'>
+                      
+                        <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
+                        {department.entry.title}</td>
+                        <td className='fileDetails' 
+                        onClick={() => handleDocumentLibrary(department.entry.guid)}>
+                        Document Library
+                        {document.folders} </td>
+                        <td>
+                          { user === 'admin' && 
+                          <Modal show={deletemodalIsOpen}>
+                              <DeleteDepartment 
+                                clicked={() => deletesetmodalIsOpen(false)}>
+                              </DeleteDepartment>
+                              <DeleteDepartment  clicked={() => deletesetmodalIsOpen(false)}></DeleteDepartment>
+                            </Modal> &&
+                          <div>
+                        <FontAwesomeIcon icon={faTrashAlt} 
+                            onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                                    buttonFocus : "ok",
+                                    'message' : 'DO YOU WANT TO DELETE THIS DEPARTMENT '+ department.entry.title,'onok': () => {handleDeleteDepartment(department.entry.id)} ,
+                                    'oncancel': () => {alertify.confirm().destroy();}}).show()
+                        }}
+                            className="icon-item delete"/>
+                          </div>
+      
+                          }
+                          
+                        </td>
+                      </tr> : null
+                  
+              ))}
+              </tbody>
+              
+              </table> 
+              <LoadingIndicator/>
+              <div className="col-md-6">
+          <Pagination
+          handlePrev={previous}
+          handleNext={next}
+            />
+            </div>
+          </div>
+          </div>
+        
+      </Fragment>
+          )
+        }
+        const useFormInput = initialValue => {
+          const [value, setValue] = useState(initialValue);
+        
+          const handleChange = e => {
+            setValue(e.target.value);
+          }
+          return {
+            value,
+            onChange: handleChange
+          }
+        }
 export default DocumentsList;
 

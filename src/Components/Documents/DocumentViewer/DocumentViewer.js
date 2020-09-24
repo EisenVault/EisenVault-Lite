@@ -6,14 +6,11 @@ import DocumentDetails from "../../MoreDetails/MoreDetails";
 import "../DocumentViewer/DocumentViewer.scss"
 import { Item } from '../../backButton/backButton';
 import {getToken, getUrl} from  "../../../Utils/Common";
-
 import { Animated } from "react-animated-css";
 
-// import { instance } from '../../ApiUrl/endpointName.instatnce';
-
-function ToggleButton({ label, onClick }) {
-  
-  return (
+function ToggleButton({ label, onClick })
+ {
+   return (
     <button className="toggle" onClick={onClick}>
       {label} 
     </button>

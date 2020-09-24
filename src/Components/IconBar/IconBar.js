@@ -1,12 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, 
-  faPlus, 
-  faTrashAlt } 
+import { faPlus } 
   from "@fortawesome/free-solid-svg-icons";
-
 import "./IconBar.scss";
-
 import {getUser} from  "../../Utils/Common";
 
 const IconBar = (props) => {
@@ -14,9 +10,6 @@ const IconBar = (props) => {
   return(
   <div className="icons">
     <h3 className="departments">My Departments</h3>
-    {/* <div>
-      <FontAwesomeIcon icon={faPen} onClick={props.toggleedit} className="icon-item"/>
-    </div> */}
 
     <div >
     { user === 'admin' &&

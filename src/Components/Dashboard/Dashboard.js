@@ -1,7 +1,6 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
 import { useParams, useHistory } from 'react-router-dom';
-
 import { getToken, getUser, getUrl } from "../../Utils/Common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +9,6 @@ import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
-// import { instance } from '../ApiUrl/endpointName.instatnce';
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -21,7 +19,9 @@ const Dashboard = () => {
   
   const [ documents , setDocuments ] = useState([]);
   const [hasMoreItems , setMoreItems] = useState('');
+  const [lastButtonClicked, setLastButtonClicked] = useState("");
   const [skipCount , setSkipCount ] = useState('');
+  const [totalitems,settotalitems] =useState('');
 
   //API call to get the activities list.
   useEffect(() => {
@@ -33,16 +33,27 @@ const Dashboard = () => {
       setDocuments(response.data.list.entries)
       setMoreItems(response.data.list.pagination.hasMoreItems)
       setSkipCount(response.data.list.pagination.skipCount + 10)
-      console.log(response.data.list.entries)
-      console.log(response.data.list.pagination)
+      settotalitems(response.data.list.pagination.totalItems);
     })
     )
   }, []);
 
-  function next(){
+  function next(){ //pagination next button
+    var localSkipCount = skipCount;
+    if (lastButtonClicked === "previous")
+     {
+      if(totalitems>20){
+       if(localSkipCount===0)
+         {
+          localSkipCount=localSkipCount + 10 
+         }else{
+          localSkipCount = localSkipCount + 20;}
+      }
+      else{
+      localSkipCount=localSkipCount + 10 ;
+    }}
     document.getElementById("myprevBtn").disabled = false;
-     console.log(skipCount);
-     axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+    axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${localSkipCount}&who=me&maxItems=10`,
      {headers:{
        Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
@@ -54,34 +65,37 @@ const Dashboard = () => {
       document.getElementById("myBtn").disabled = false;
      }
      else{
-      //setSkipCount(response.data.list.pagination.skipCount - 10)
       document.getElementById("myBtn").disabled = true;
      }
-       console.log(response.data.list.entries)
-       console.log(response.data.list.pagination.skipCount)
+       setLastButtonClicked("next");
      });
-   
-  }
+   }
 
-  function previous(){
+  function previous(){ //pagination previous button
+    var localSkipCount = skipCount;
+    if (lastButtonClicked === "next") {
+      if(localSkipCount===10){
+        localSkipCount = localSkipCount - 10;
+      }
+      else{
+     localSkipCount = localSkipCount - 20;}
+    }
     document.getElementById("myBtn").disabled = false;
-      axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${skipCount}&who=me&maxItems=10`,
+    axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=${localSkipCount}&who=me&maxItems=10`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`
       }}).then((response) => {
         setDocuments(response.data.list.entries)
         setMoreItems(response.data.list.pagination.hasMoreItems)
-        if (response.data.list.pagination.skipCount > 0){
+        if (response.data.list.pagination.skipCount > 0)
+        {
           setSkipCount(response.data.list.pagination.skipCount - 10)
           document.getElementById("myprevBtn").disabled = false;
         }
         else{
-          //setSkipCount(response.data.list.pagination.skipCount + 10)
           document.getElementById("myprevBtn").disabled = true;
         }
-        console.log(response.data.list.entries)
-        console.log(response.data.list.pagination)
-        console.log(response.data.list.pagination.skipCount)
+        setLastButtonClicked("previous")
       });
    }
 
@@ -112,8 +126,8 @@ const Dashboard = () => {
 
         <table className='documentsList'>
             {documents.map(document => (               
-            <tbody key={document.entry.id} >
-                <tr >
+            <tbody key={document.entry.id}>
+                <tr>
                   <td className='fileName'>                             
                     <FontAwesomeIcon icon={faFile} />
                         <h4>
@@ -132,12 +146,6 @@ const Dashboard = () => {
                               document.entry.activitySummary.objectId,
                               document.entry.activitySummary.title) }>
                                 <FontAwesomeIcon icon={faEye} /></td>}
-                          
-                          {/* <td className='view'
-                          onClick={() => handleDocument(
-                            document.entry.activitySummary.objectId,
-                            document.entry.activitySummary.title) }>
-                              <FontAwesomeIcon icon={faEye} /></td> */}
                       </tr>
                   </tbody>
             ))}
@@ -150,8 +158,6 @@ const Dashboard = () => {
      <Pagination
      handlePrev={previous}
      handleNext={next}
-     hasMoreItems={hasMoreItems}
-     skipCount={skipCount}
         />  
     </div>
 
