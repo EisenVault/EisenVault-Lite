@@ -38,6 +38,13 @@ text-align: center;
   border: 1px solid $sidebar-color;
   border-radius: 4px;
 }
+
+#myprevBtn[disabled],
+#myBtn[disabled]{
+  color: $font-color;
+  background-color: #ddd;
+}
+
 #myBtn{
   cursor: pointer;
   background-color: $sidebar-color;

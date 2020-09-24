@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
+import alertify from 'alertifyjs';
+
 import Modal from '../Modal/Modal';
 import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
@@ -50,12 +52,18 @@ const LoginPage = (props) => {
 
 function HandleForgotPassword() {
   setPswdError(null);
+  setUrl(newUrl)
   setPswdLoading(true);
 
   axios.post(getUrl()+'share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
     setPswdLoading(false);
     closeModal();
+    
+    alertify.alert('Please Check your registered email id.').setting({
+      'message': 'Please Check your registered email id.',
+      'onok': () => {alertify.alert().destroy();} 
+    });
     console.log("Email Sent");
     console.log(response);
   }).catch(err => {
@@ -84,7 +92,8 @@ const onEnter = (event) => {
         <div className="login-box">
             <div className="login-details">
               <input type="text" {...url} 
-                id="url" placeholder="URL" required/>
+                id="url" placeholder="URL" required
+                />
                 <br/>
                 <input type="text" {...userName} 
                 id="user-name" placeholder="User Name" required/>
@@ -95,7 +104,6 @@ const onEnter = (event) => {
             </div>
 
             <div id="btns_new">
-                
                 {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
                 <br />
                 <button id="btn_login" type="button" 
@@ -106,18 +114,19 @@ const onEnter = (event) => {
 
                 <Modal show={modalIsOpen}>
                 
-                  <ForgotPassword                   
+                  <ForgotPassword     
+                  pswdloading={pswdloading}              
                   resetPassword={HandleForgotPassword}
                   clicked={() => setmodalIsOpen(false)}
-                  forgotPswdUserName={forgotPswdUserName}/>
+                  forgotPswdUserName={forgotPswdUserName}
+                  url={url}/>
 
                   {err && <><small style={{ color: 'red' }}>
                   {err}</small><br /></>}
                 </Modal>     
 
-                <button id="btn_forgotPassword" type="button" 
-                  onClick={() => {return(setmodalIsOpen(true)
-                    )}}>
+               <button id="btn_forgotPassword" type="button" 
+                  onClick={() => {return(setmodalIsOpen(true))}}>
                     Forgot Password?</button>
                     
             </div> 

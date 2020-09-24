@@ -3,14 +3,18 @@
     z-index: 500;
     background-color: white;
     width: 50%;
-    height:55%;
+    height:70%;
     border: 1px solid #ccc;
     box-shadow: 1px 1px 1px black;
     padding: 16px;
     left: 35%;
-    top: 30%;
+    top: 20%;
     box-sizing: border-box;
     transition: all 0.3s ease-out;
+  }
+
+  .btn-continue-p{
+    margin-bottom: 1rem;
   }
   
   .btn-continue {

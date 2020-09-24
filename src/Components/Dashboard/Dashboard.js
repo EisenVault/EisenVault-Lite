@@ -59,7 +59,6 @@ const Dashboard = () => {
      }}).then((response) => {
        setDocuments(response.data.list.entries)
        setMoreItems(response.data.list.pagination.hasMoreItems)
-       setMoreItems(response.data.list.pagination.hasMoreItems)
      if (response.data.list.pagination.hasMoreItems){
       setSkipCount(response.data.list.pagination.skipCount + 10)
       document.getElementById("myBtn").disabled = false;
@@ -125,7 +124,7 @@ const Dashboard = () => {
         <h3>My Recent Activities</h3>
 
         <table className='documentsList'>
-            {documents.map(document => (               
+            {documents.map(document => (              
             <tbody key={document.entry.id}>
                 <tr>
                   <td className='fileName'>                             
@@ -144,7 +143,7 @@ const Dashboard = () => {
                             "":<td className='view'
                             onClick={() => handleDocument(
                               document.entry.activitySummary.objectId,
-                              document.entry.activitySummary.title) }>
+                              document.entry.activitySummary.title ) }>
                                 <FontAwesomeIcon icon={faEye} /></td>}
                       </tr>
                   </tbody>

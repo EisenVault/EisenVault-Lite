@@ -12,17 +12,21 @@ export const ForgotPassword = props => {
             <h3>You will recieve an email link to reset password.</h3>
            
             <div className="label-input">
+            <label>URL:</label>
+              <input type="text" {...props.url} id="urlFrgtPswd" required/>
+                <br/>
               <label>Username:</label>
-              <input type="text" {...props.forgotPswdUserName}>
-              </input>
+              <input type="text" {...props.forgotPswdUserName} required/>
             </div>
-
           </div>
         </div>
 
         <div id="btns">
           <button className="btn-continue-p" 
-          onClick={props.resetPassword}>Email</button>
+          onClick= {props.resetPassword}>
+          {props.pswdloading? 
+          ("Please Wait while we are sending email...") :("Email")}
+            </button>
           <button onClick={props.clicked} className="btn-cancel-p">
             Cancel</button>
         </div>
