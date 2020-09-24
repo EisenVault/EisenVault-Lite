@@ -1,6 +1,4 @@
 import React, { Fragment,useEffect,useState} from 'react';
-import Modal from "../Modal/Modal";
-import { DeleteSummmary,RestoreSummary } from "../Modal/DeleteModalSumm/DeleteSumm";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios';
@@ -19,15 +17,14 @@ import NestedToolTip from "../UI/popup";
 function TrashDisplayFiles(props){
   let history = useHistory();
   const[TrashFileState,setTrashFileState]=useState([]);
-  const [modalIsOpen, setmodalIsOpen] = useState(false);
-  const[deleting,deleteHandler]=useState(false);
+  const [lastButtonClicked, setLastButtonClicked] = useState("");
   const [ currentPage, setCurrentPage ] = useState(1);
   const [postsPerPage] = useState(10);
   const [ paginationDefualt, setPaginationDefault ] = useState([]);
   const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
   const [count,setCount]=useState('');
-  const[Entrieslength,setEntrieslength]=useState('')
+  const [totalitems,settotalitems]=useState('')
 
   //API CALL
   useEffect(()=>{
@@ -41,8 +38,8 @@ const getDeletedData=()=>{  //content of trash page
     Authorization: `Basic ${btoa(getToken())}`
      }}).then((response) => {
       let FileData=response.data;
-      console.log(FileData);
       setPaginationDefault(response.data.list.pagination)
+      settotalitems(response.data.list.pagination.totalItems)
       setSkipCount(response.data.list.pagination.skipCount+10)
       setTrashFileState(response.data.list.entries.map(d=>{
         return {
@@ -56,45 +53,35 @@ const getDeletedData=()=>{  //content of trash page
       }).catch(err=>alert(err))
   )
 };
-// Get current posts
-const indexOfLastPost = currentPage * postsPerPage;
-const indexOfFirstPost = indexOfLastPost - postsPerPage;
-const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 
-
-// const closeModal=()=>{ //function to close modal after performing it's operations
-//   return (setmodalIsOpen(false),
-//   deleteHandler(false)
-//   )
-// }
-
-const permanentDeleteByIds=(close)=>{    //function to delete selected files permanently
-  TrashFileState.forEach(d=>{
-    if(d.select){
-    Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
-    {headers:{
-    Authorization: `Basic ${btoa(getToken())}`
-     }
-   }).then((response)=>{
-        console.log(response.data);
-        close();
-        alertify.alert('Document Deleted Successfully').setting({
-          'message': 'Document Deleted Successfully',
-          'onok': () => {alertify.alert().destroy();} 
-        });
-        getDeletedData();
-      }).catch(err=>alert(err));
-     };
-    })}
+  const permanentDeleteByIds=(close)=>{    //function to delete selected files permanently
+    TrashFileState.forEach(d=>{
+      if(d.select){
+      Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
+      {headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+      }
+    }).then((response)=>{
+          close();
+          alertify.alert('Document Deleted Successfully').setting({
+            'message': 'Document Deleted Successfully',
+            'onok': () => {alertify.alert().destroy();} 
+          });
+          getDeletedData();
+        }).catch(err=>alert(err));
+      };
+      })}
 
     const DefaultDelete=(close)=>{  //function to delete all the files permanently 
-      
-         Axios.delete(getUrl()+`alfresco/s/api/archive/workspace/SpacesStore`, 
+       Axios.delete(getUrl()+`alfresco/s/api/archive/workspace/SpacesStore`, 
         {headers:{
         Authorization: `Basic ${btoa(getToken())}`
          }
        }).then((response)=>{
-            console.log(response.data);
             close();
             alertify.alert('Document Deleted Successfully').setting({
               'message': 'Document Deleted Successfully',
@@ -104,8 +91,7 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
            }).catch(err=>alert(err));
          };
         
-    
-    const DefaultRestore=(close)=>{ //function to restore all the files
+     const DefaultRestore=(close)=>{ //function to restore all the files
       TrashFileState.forEach( d=>{
         if(d.id){
            Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
@@ -114,7 +100,6 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
               Authorization: `Basic ${btoa( getToken() )}`
             }
         }).then((response)=>{
-              console.log(response.data);
               close();
               alertify.alert('Document Restored Successfully').setting({
                 'message': 'Document Restored Successfully',
@@ -124,36 +109,33 @@ const permanentDeleteByIds=(close)=>{    //function to delete selected files per
               }).catch(err=>alert(err));
           };
           })
+      }
 
-    }
+    const RestoreFileByIds=(close)=>{  //function to restore selected files 
+      TrashFileState.forEach( d=>{
+        if(d.select){
+          Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
+            {headers:
+            {
+              Authorization: `Basic ${btoa( getToken() )}`
+            }
+        }).then((response)=>{
+              close();
+              alertify.alert('Document Restored Successfully').setting({
+                'message': 'Document Restored Successfully',
+                'onok': () => {alertify.alert().destroy();} 
+              });
+              getDeletedData();
+              }).catch(err=>alert(err));
+          };
+          })}
 
-const RestoreFileByIds=(close)=>{  //function to restore selected files 
-  TrashFileState.forEach( d=>{
-    if(d.select){
-       Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
-        {headers:
-        {
-          Authorization: `Basic ${btoa( getToken() )}`
-        }
-    }).then((response)=>{
-          console.log(response.data);
-          close();
-          alertify.alert('Document Restored Successfully').setting({
-            'message': 'Document Restored Successfully',
-            'onok': () => {alertify.alert().destroy();} 
-          });
-          getDeletedData();
-          }).catch(err=>alert(err));
-      };
-      })}
-
-      const handleDelete=(id)=>{    //function to delete files by clicking on trash icon
-        Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, 
+     const handleDelete=(id)=>{    //function to delete files by clicking on trash icon
+      Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
-          console.log(data);
           alertify.confirm().destroy(); 
           alertify.alert('Document Deleted Successfully').setting({
             'message': 'Document Deleted Successfully',
@@ -168,7 +150,6 @@ const RestoreFileByIds=(close)=>{  //function to restore selected files
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
-          console.log(data);
           alertify.confirm().destroy(); 
           alertify.alert('Document Restored Successfully').setting({
             'message': 'Document Restored Successfully',
@@ -179,13 +160,24 @@ const RestoreFileByIds=(close)=>{  //function to restore selected files
      
      
       function next(){  //function for pagination's next button
+      var localSkipCount = skipCount;
+      if (lastButtonClicked === "previous")
+         {
+          if(totalitems>20){
+           if(localSkipCount===0)
+             {
+               localSkipCount=localSkipCount + 10 
+             }else{
+              localSkipCount = localSkipCount + 20;}
+          }
+       else{
+          localSkipCount=localSkipCount + 0 ;
+        }}
        document.getElementById("myprevBtn").disabled = false;
-         console.log(skipCount);
-         Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
+         Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${localSkipCount}&maxItems=10`,
          {headers:{
            Authorization: `Basic ${btoa(getToken())}`
          }}).then((response) => {
-          console.log(response.data)
           setTrashFileState(response.data.list.entries.map(d=>{
             return {
               select:false,
@@ -199,13 +191,22 @@ const RestoreFileByIds=(close)=>{  //function to restore selected files
               if(response.data.list.entries.length===0){
                 document.getElementById("myBtn").disabled = true;  
               }
-          });
+              setLastButtonClicked("next");
+        });
         }
       
-      function previous(){ 
-        //function for pagination's previous button
+      function previous(){ //function for pagination's previous button
+        var localSkipCount = skipCount;
+        if (lastButtonClicked === "next") {
+          if(localSkipCount===10){
+              
+              localSkipCount = localSkipCount - 10;
+          }
+          else{
+         localSkipCount = localSkipCount - 20;}
+      }
         document.getElementById("myBtn").disabled = false;  
-        Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${skipCount}&maxItems=10`,
+        Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=${localSkipCount}&maxItems=10`,
         {headers:{
           Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
@@ -224,7 +225,7 @@ const RestoreFileByIds=(close)=>{  //function to restore selected files
             }else{
               document.getElementById("myprevBtn").disabled = true;
             }
-            console.log(response.data.list.pagination.skipCount)
+            setLastButtonClicked("previous")
            });
        }
         
@@ -265,16 +266,6 @@ const RestoreFileByIds=(close)=>{  //function to restore selected files
                   <NestedToolTip restored={RestoreFileByIds} defrestore={DefaultRestore}
                   defdelete={DefaultDelete} deleted={permanentDeleteByIds}/>
                   </th>  
-
-                  {/* <Modal show={deleting}>
-                  <DeleteSummmary deleted={()=>{permanentDeleteByIds()}} 
-                  clicked={()=>{deleteHandler(false)}}/>
-                  </Modal>
-                  
-                  <Modal show={modalIsOpen}>
-                  <RestoreSummary deleted={()=>{RestoreFileByIds()}} 
-                  clicked={() => setmodalIsOpen(false)}/>
-                  </Modal> */}
                 </tr>
                 
                 {currentPosts.map((d,i) => (
@@ -321,9 +312,6 @@ const RestoreFileByIds=(close)=>{  //function to restore selected files
       <Pagination
              handlePrev={previous}
              handleNext={next}
-             hasMoreItems={hasMoreItems}
-             skipCount={skipCount}
-             Count={count}
         />
     </div>
 </Fragment>

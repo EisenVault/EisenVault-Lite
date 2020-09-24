@@ -1,13 +1,9 @@
 import React,{ useState, useEffect} from "react";
 import {useHistory } from 'react-router-dom';
 import Axios from 'axios';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-//import ReactSearchBox from "react-search-box";
 import OutsideClickHandler from 'react-outside-click-handler';
 import "./styleSearchBar.scss";
 import { getToken,getUrl } from '../../Utils/Common';
-// import { instance } from "../ApiUrl/endpointName.instatnce";
 
  const Search = () => {
   let history = useHistory();
@@ -16,7 +12,6 @@ import { getToken,getUrl } from '../../Utils/Common';
     const [result , setResult] = useState("");
     const [show , setShow] = useState(false);
 
-      // useEffect(()=>{
             const fetchData =  ()=> {
                     try{
                         Axios.get(getUrl()+`alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
@@ -25,8 +20,6 @@ import { getToken,getUrl } from '../../Utils/Common';
                                 Authorization: `Basic ${btoa(getToken())}`
                                 }
                               }).then((response) => {
-                                       console.log("received")
-                                     console.log(response.data)
                                      setData(response.data.items);
                                       setFilterd(response.data.items);
                                       setShow(true)

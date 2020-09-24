@@ -38,21 +38,16 @@ th#action-trash {
     cursor:pointer;
 }
 th#created{
-    // padding-left:2.2rem;
     overflow:hidden;
-    // white-space: nowrap;
 }
 th#deleted{
-    // padding-left:2rem;
     overflow:hidden;
-    // white-space: nowrap;
 }
 th#action-trash{
     padding-left:0rem;
 }
 .file_name_t{
     overflow:hidden;
-    // white-space: nowrap;
 }
 
 @media (min-width:533px) and (max-width:784px){

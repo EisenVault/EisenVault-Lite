@@ -48,7 +48,6 @@ const DocumentDetails = (props) => {
               Authorization: `Basic ${btoa(getToken())}`,
            }
           }).then((response) => {
-            console.log(response.data.entry)
             setmodificationDate(response.data.entry.modifiedAt.split('T')[0])
             setDocumentType(response.data.entry.nodeType.split(':')[1])
             setDocSize(response.data.entry.content)
@@ -79,7 +78,6 @@ const DocumentDetails = (props) => {
            },
           }).then((response)=>{
               let MoreData=response.data;
-              console.log(MoreData)
 
         setAuditDetails(MoreData.data.slice(0,5).map(d=>{
                     return{
@@ -117,8 +115,6 @@ const DocumentDetails = (props) => {
             <div className="pdf-preview">
                 <div id="details-pdf" className="pdf_details">
                     <div className="details-p">
-                        {/* <button onClick={() => history.goBack()}>&times;</button> */}
-
                         <button className="shareLink"
                         onClick={()=> (DocumentShare())}>
                         <FontAwesomeIcon className="Icon" icon={faShareAlt}/>Click here to share</button> 

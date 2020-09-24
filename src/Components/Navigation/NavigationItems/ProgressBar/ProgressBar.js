@@ -24,7 +24,6 @@ const ProgressBar = () => {
     }
     })
     .then((response) =>{
-    console.log(response.data)
     getData(response.data)
     setLoading(false) 
   }).catch((error) => {

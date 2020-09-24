@@ -64,9 +64,16 @@
     font-size: 1.4rem;
     color:#073453;
   }
-  .ajs-no-overflow{ 
-    background-color:rgba(0, 0, 0, 0.5);
-    z-index: 99999;
+
+  .ajs-no-overflow{
+    width:100%;
+    height:100%;
+    position:fixed;
+    z-index:100;
+    left:0;
+    opacity:1;
+    top:0;
+    background-color: rgba(41, 40, 40, 0.5);
   }
   
   @media (min-width:533px) and (max-width:1022px){

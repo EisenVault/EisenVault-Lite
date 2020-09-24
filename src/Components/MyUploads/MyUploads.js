@@ -12,64 +12,55 @@ import Pagination from '../Pagination/Pagination';
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
 import alertify from 'alertifyjs';
-// import { instance } from '../ApiUrl/endpointName.instatnce';
 
-function MyUploads(props){
-  let history = useHistory();
 
-  const [modalIsOpen, setmodalIsOpen] = useState(false);
-  const[FileState,setFileState]=useState([]);
-  useEffect(()=>{
-    getData();
-  },[]);
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const [postsPerPage] = useState(10);
-  //const [ paginationDefualt, setPaginationDefault ] = useState([]);
-  const [hasMoreItems , setMoreItems] = useState('');
-  const [skipCount , setSkipCount ] = useState('');
 
-  //api call 
-    const getData=()=>{
-      trackPromise(
-      Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
-      {
-        "query": 
-          {"query": `cm:creator:${getUser()}`},
-          "paging": {
-            "maxItems": "10",
-            "skipCount": "0"
-          }
-      },
-       {headers:{
-        Authorization: `Basic ${btoa(getToken())}`
-         }}).then((response)=>{
-             let FileData=response.data;
-             console.log(FileData);
-            //setPaginationDefault(response.data.totalRecords) 
-            setMoreItems(response.data.list.pagination.hasMoreItems)
-            setSkipCount(response.data.list.pagination.skipCount + 10)
-            setFileState(FileData.list.entries.map(d=>{
-              return {
-                select:false,
-                id:d.entry.id,
-                name:d.entry.name,
-                uploadedOn:d.entry.createdAt.split('T')[0],
-                type:d.entry.isFile
-              }
-            })) 
-            }).catch(err=>alert(err))
-      )
-  };
+  function MyUploads(props){
+    let history = useHistory();
 
-  // Get current posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = FileState.slice(indexOfFirstPost, indexOfLastPost);
+    const [lastButtonClicked, setLastButtonClicked] = useState("");
+    const[FileState,setFileState]=useState([]);
+    const [hasMoreItems , setMoreItems] = useState('');
+    const [skipCount , setSkipCount ] = useState('');
+    const [totalitems,settotalitems] =useState('');
 
-  const closeModal=()=>{ //function to close modal after performing it's operations
-    return  setmodalIsOpen(false)
-  }
-  
+    useEffect(()=>{
+      getData();
+     },[]);
+   
+    //api call 
+      const getData=()=>{
+        trackPromise(
+        Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
+        {
+          "query": 
+            {"query": `cm:creator:${getUser()}`},
+            "paging": {
+              "maxItems": "10",
+              "skipCount": "0"
+            }
+        },
+        {headers:{
+          Authorization: `Basic ${btoa(getToken())}`
+          }}).then((response)=>{
+              let FileData=response.data;
+              setMoreItems(response.data.list.pagination.hasMoreItems)
+              setSkipCount(response.data.list.pagination.skipCount + 10)
+              settotalitems(response.data.list.pagination.totalItems)
+              setFileState(FileData.list.entries.map(d=>{
+                return {
+                  select:false,
+                  id:d.entry.id,
+                  name:d.entry.name,
+                  uploadedOn:d.entry.createdAt.split('T')[0],
+                  type:d.entry.isFile
+                }
+              })) 
+              }).catch(err=>alert(err))
+        )
+    };
+
+
   //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
   const deleteFileByIds=(close)=>{
     FileState.forEach( d=>{
@@ -79,7 +70,6 @@ function MyUploads(props){
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
-          console.log(data);
           close();
           alertify.alert('Document Deleted Successfully').setting({
             'message': 'Document Deleted Successfully',
@@ -90,7 +80,7 @@ function MyUploads(props){
        };
       })}
       
-       const DefaultDelete=(close)=>{
+       const DefaultDelete=(close)=>{ //Delete all files
         FileState.forEach( d=>{
           if(d.id){
           Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
@@ -98,7 +88,6 @@ function MyUploads(props){
           Authorization: `Basic ${btoa(getToken())}`
            }
          }).then((data)=>{
-              console.log(data);
               close();
               alertify.alert('Document Deleted Successfully').setting({
                 'message': 'Document Deleted Successfully',
@@ -116,7 +105,6 @@ function MyUploads(props){
       Authorization: `Basic ${btoa(getToken())}`
        }
      }).then((data)=>{
-          console.log(data);
           alertify.confirm().destroy();
           alertify.alert('Document Deleted Successfully').setting({
             'message': 'Document Deleted Successfully',
@@ -126,7 +114,20 @@ function MyUploads(props){
            }).catch(err=>alert(err));
       }
 
-      function next(){
+    function next(){ //pagination next button
+        var localSkipCount = skipCount;
+        if (lastButtonClicked === "previous")
+         {
+          if(totalitems>20){
+           if(localSkipCount===0)
+             {
+               localSkipCount=localSkipCount + 10 
+             }else{
+              localSkipCount = localSkipCount + 20;}
+          }
+         else{
+          localSkipCount=localSkipCount + 0 ;
+        }}
         document.getElementById("myprevBtn").disabled = false;
         Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
         {
@@ -134,7 +135,7 @@ function MyUploads(props){
             {"query": `cm:creator:${getUser()}`},
             "paging": {
               "maxItems": "10",
-              "skipCount": `${skipCount}`
+              "skipCount": `${localSkipCount}`
             }
         },
         {headers:{
@@ -149,30 +150,35 @@ function MyUploads(props){
               type:d.entry.isFile
             }
           }))
-           setMoreItems(response.data.list.pagination.hasMoreItems)
-         if (response.data.list.pagination.hasMoreItems){
-          setSkipCount(response.data.list.pagination.skipCount + 10)
-          document.getElementById("myBtn").disabled = false;
-         }
-         else{
-          document.getElementById("myBtn").disabled = true;
-         }
-         
-       console.log(response.data.list.entries)
-       console.log(response.data.list.pagination.skipCount)
-         });
-       
-      }
-    
-      function previous(){
-        document.getElementById("myBtn").disabled = false;
-        Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
+          setMoreItems(response.data.list.pagination.hasMoreItems)
+          if (response.data.list.pagination.hasMoreItems){
+            setSkipCount(response.data.list.pagination.skipCount + 10)
+            document.getElementById("myBtn").disabled = false;
+          }
+          else{
+            document.getElementById("myBtn").disabled = true;
+          }
+            setLastButtonClicked("next");
+          });
+          }
+      
+  function previous(){ //pagination previous button
+        var localSkipCount = skipCount;
+      if (lastButtonClicked === "next") {
+        if(localSkipCount<=20){
+           localSkipCount = localSkipCount - 10;
+        }
+        else{
+       localSkipCount = localSkipCount - 20;}
+    }
+    document.getElementById("myBtn").disabled = false;
+      Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
         {
           "query": 
             {"query": `cm:creator:${getUser()}`},
             "paging": {
               "maxItems": "10",
-              "skipCount": `${skipCount}`
+              "skipCount": `${localSkipCount}`
             }
         },
         {headers:{
@@ -194,16 +200,16 @@ function MyUploads(props){
           }else{
             document.getElementById("myprevBtn").disabled = true;
           }
-          console.log(response.data.list.entries)
-          console.log(response.data.list.pagination)
-          console.log(response.data.list.pagination.skipCount)
-        }); }
+          setLastButtonClicked("previous")
+        }); 
+      }
 
-        function handleDocument(file , id, title){
+       function handleDocument(file , id, title){
           file ? history.push(`/document-details/${id}/${title}`)
           : history.push(`/document/${id}`)
         }
-      return( 
+    
+    return( 
       <Fragment>
          <div id="second_section">
 
@@ -233,11 +239,6 @@ function MyUploads(props){
                     <th id="shared">Uploaded On</th>
                     <th id="action">
                       <NestedToolTipuploads del={DefaultDelete} delsel={deleteFileByIds}/>
-                      {/* <label>Action </label>
-                      <select id="action-t" onChange={() => {setmodalIsOpen(true);}}>
-                        <option id="option" value="delete-a">Delete All</option>
-                        <option id="option" value="delete-s">Delete Selected</option>
-                      </select> */}
                     </th>
                 </tr> 
                   
@@ -285,8 +286,6 @@ function MyUploads(props){
         <Pagination
           handlePrev={previous}
           handleNext={next}
-          hasMoreItems={hasMoreItems}
-          skipCount={skipCount}
               />  
       </div>
     </Fragment>
