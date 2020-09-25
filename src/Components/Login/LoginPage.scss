@@ -5,22 +5,27 @@ $sidebar-color: #E07050;
 $white-color: whitesmoke;
 $font-color:#073453;
 
+body{
+  margin: 0;
+}
+
 #bg-bar{
-  height: 80%;
+  height: 100%;
   width: 100%;
+  padding: 3rem 0;
   background-color: $sidebar-color;
 }
 
 .login-box{
-  margin: 0 auto 0 auto;
+  margin: 0 auto;
   height: auto;
   width: 55%;
   text-align: center;
-  padding-top: 15rem;
+  padding-top: 12rem;
   background: url(../../Assets/images/EisenVault-Lite-logo.png) 
   $white-color no-repeat;
-  background-position: 2rem 1rem;
-  background-size: 26rem 12rem;
+  background-position: top;
+  background-size: 20rem 10rem;
 
   & input {
       margin-bottom: 2.2rem;
