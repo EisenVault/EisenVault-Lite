@@ -5,10 +5,10 @@ $sidebar-color: #E07050;
 $white-color: whitesmoke;
 $font-color:#073453;
 
-body{
-  margin: 0;
-}
-
+ body{
+   margin: 0;
+ } 
+ 
 #bg-bar{
   height: 100%;
   width: 100%;
@@ -16,10 +16,18 @@ body{
   background-color: $sidebar-color;
 }
 
+// @media (min-height: 600px),(max-height: 768px){
+// #bg-bar{
+//   padding: 8rem 0;
+//   height: 650px;
+// }
+// }
+
 .login-box{
+  overflow: hidden;
   margin: 0 auto;
   height: auto;
-  width: 55%;
+  width: 65%;
   text-align: center;
   padding-top: 12rem;
   background: url(../../Assets/images/EisenVault-Lite-logo.png) 
