@@ -16,12 +16,26 @@ $font-color:#073453;
   background-color: $sidebar-color;
 }
 
-// @media (min-height: 600px),(max-height: 768px){
-// #bg-bar{
-//   padding: 8rem 0;
-//   height: 650px;
-// }
-// }
+@media (min-height: 600px),(max-height: 768px){
+#bg-bar{
+  padding: 8rem 0;
+  height: 640px;
+}
+}
+
+@media (min-height: 1050px){
+  #bg-bar{
+    padding: 8rem 0;
+    height: 850px;
+  }
+  }
+
+  @media (min-height: 1200px){
+    #bg-bar{
+      padding: 8rem 0;
+      height: 944px;
+    }
+    }
 
 .login-box{
   overflow: hidden;
