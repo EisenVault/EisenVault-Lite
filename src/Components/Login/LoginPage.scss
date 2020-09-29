@@ -10,32 +10,65 @@ $font-color:#073453;
  } 
  
 #bg-bar{
-  height: 100%;
+  height: 1000px;
   width: 100%;
   padding: 3rem 0;
   background-color: $sidebar-color;
 }
 
-@media (min-height: 600px),(max-height: 768px){
+@media (min-height: 600px){
 #bg-bar{
-  padding: 8rem 0;
-  height: 640px;
+  height: 550px;
 }
+}
+
+@media(min-height: 768px){
+  #bg-bar{
+    height: 670px;
+  }
+}
+
+@media(min-height: 900px){
+  #bg-bar{
+    padding: 7rem 0;
+    height: 677px;
+  }
+}
+
+@media(min-height: 950px){
+  #bg-bar{
+    padding: 8rem 0;
+    height: 694px;
+  }
 }
 
 @media (min-height: 1050px){
   #bg-bar{
     padding: 8rem 0;
-    height: 850px;
+    height: 794px;
   }
   }
 
-  @media (min-height: 1200px){
+  @media (min-height: 1080px){
     #bg-bar{
-      padding: 8rem 0;
-      height: 944px;
+      padding: 10rem 0;
+      height: 760px;
     }
     }
+
+  @media (min-height: 1120px){
+    #bg-bar{
+      padding: 10rem 0;
+      height: 800px;
+    }
+    }
+
+  @media (min-height: 1200px){
+      #bg-bar{
+        padding: 10rem 0;
+        height: 880px;
+      }
+      }
 
 .login-box{
   overflow: hidden;
