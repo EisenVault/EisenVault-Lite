@@ -1,7 +1,23 @@
+/******************************************
+* File: popup.js
+* Desc: popup summary of Trash page
+* @author: Vanshika Bhatt, 6 october 2020
+********************************************/
+
 import React from "react";
 import Popup from "reactjs-popup";
 import "./popup.scss";
-  //popup test
+  
+/**
+   * arrow function to show popup's.
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   * @props {defdelete}, delete all files by clicking on DELETE button.
+   * @props {defrestore}, restore all the files by clicking on RESTORE button.
+   * @props {deleted}, delete selected files by clicking on DELETE button.
+   * @props {restored}, restore selected files by clicking on RESTORE button.
+   */
+  //
+ 
   const NestedToolTip = (props) => (
     <Popup 
       trigger= {<label id="label">Action </label>}

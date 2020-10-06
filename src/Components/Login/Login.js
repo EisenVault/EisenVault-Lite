@@ -3,7 +3,7 @@ import axios from 'axios';
 import alertify from 'alertifyjs';
 
 import Modal from '../Modal/Modal';
-import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
+import { ForgotPassword } from '../Modal/modalSummary/ModalSummary';
 import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
 import './LoginPage.scss';
 

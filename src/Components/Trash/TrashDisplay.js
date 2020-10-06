@@ -1,18 +1,28 @@
+/******************************************
+* File: TrashDisplay.js
+* Desc: Trash page where user's can see files which are deleted by them.
+* @author: Vanshika Bhatt, 6 october 2020.
+* @returns content of trash page.
+********************************************/
+
 import React, { Fragment,useEffect,useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
-import Axios from 'axios';
-import Pagination from '../Pagination/Pagination';
 import { useHistory } from 'react-router-dom';
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
+import Axios from 'axios';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash,faUndo,faFile,faFolder} from "@fortawesome/free-solid-svg-icons";
+
+import Pagination from '../Pagination/Pagination';
 import Search from '../SearchBar/SearchBar';
 import alertify from 'alertifyjs';
-import './TrashDisplay.scss';
-import '../../Containers/styles.scss';
-import { getToken,getUrl } from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import NestedToolTip from "../UI/popup";
+import { getToken,getUrl } from '../../Utils/Common';
+
+import './TrashDisplay.scss';
+import '../../Containers/styles.scss';
 
 function TrashDisplayFiles(props){
   let history = useHistory();
@@ -30,8 +40,13 @@ function TrashDisplayFiles(props){
   useEffect(()=>{
     getDeletedData();
   },[]);
-
-const getDeletedData=()=>{  //content of trash page
+ 
+  /**
+   * api call to display Documents which are deleted by user
+   * @return Documents id,name,type(whether file or folder)and date when 
+   *          it is created and archived by user.
+   */
+ const getDeletedData=()=>{ 
   trackPromise(
   Axios.get(getUrl()+'alfresco/api/-default-/public/alfresco/versions/1/deleted-nodes?skipCount=0&maxItems=50',
     {headers:{
@@ -58,7 +73,13 @@ const getDeletedData=()=>{  //content of trash page
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = TrashFileState.slice(indexOfFirstPost, indexOfLastPost);
 
-  const permanentDeleteByIds=(close)=>{    //function to delete selected files permanently
+ /**
+   * arrow function to permanently delete selected files.
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   * @param {id},nodeid of document.
+   */
+  //
+  const permanentDeleteByIds=(close)=>{    
     TrashFileState.forEach(d=>{
       if(d.select){
       Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${d.id}`, 
@@ -76,7 +97,14 @@ const getDeletedData=()=>{  //content of trash page
       };
       })}
 
-    const DefaultDelete=(close)=>{  //function to delete all the files permanently 
+  /**
+   * arrow function to delete all the files permanently .
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   * @param {id},nodeid of document.
+   * @returns empty trashcan.
+   */
+  //
+    const DefaultDelete=(close)=>{ 
        Axios.delete(getUrl()+`alfresco/s/api/archive/workspace/SpacesStore`, 
         {headers:{
         Authorization: `Basic ${btoa(getToken())}`
@@ -90,8 +118,13 @@ const getDeletedData=()=>{  //content of trash page
             getDeletedData();
            }).catch(err=>alert(err));
          };
-        
-     const DefaultRestore=(close)=>{ //function to restore all the files
+ /**
+   * Attempts to restore all the deleted nodes nodeId to its original location.
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   * @param {id},nodeid of document.
+   */
+  //      
+     const DefaultRestore=(close)=>{
       TrashFileState.forEach( d=>{
         if(d.id){
            Axios.put(getUrl()+`/alfresco/s/api/archive/archive/SpacesStore/${d.id}`, {},
@@ -110,7 +143,12 @@ const getDeletedData=()=>{  //content of trash page
           };
           })
       }
-
+ /**
+   * Attempts to restore the deleted node nodeId to its original location 
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   * @param {id},nodeid of document.
+   */
+  //
     const RestoreFileByIds=(close)=>{  //function to restore selected files 
       TrashFileState.forEach( d=>{
         if(d.select){
@@ -130,7 +168,12 @@ const getDeletedData=()=>{  //content of trash page
           };
           })}
 
-     const handleDelete=(id)=>{    //function to delete files by clicking on trash icon
+   /**
+   * Arrow function to delete the files by clicking on trash icon 
+   * @param {id},nodeid of document.
+   */
+  //
+     const handleDelete=(id)=>{   
       Axios.delete(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -143,8 +186,14 @@ const getDeletedData=()=>{  //content of trash page
           });
           getDeletedData();
            }).catch(err=>alert(err));}
-     
-     const handleRestore=(id)=>{ //function to restore files by clicking on restore icon
+
+  
+   /**
+   * Arrow function to restore the files by clicking on restore icon 
+   * @param {id},nodeid of document.
+   */
+  //
+     const handleRestore=(id)=>{ 
         Axios.put(getUrl()+`alfresco/s/api/archive/archive/SpacesStore/${id}`, {},
         {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -157,9 +206,16 @@ const getDeletedData=()=>{  //content of trash page
           });
           getDeletedData();
            }).catch(err=>alert(err));}
+  
+   /**
+   * function to get next items
+   * desc:connected to 'next' button of pagination.
+   * @param {getUser()}, to get user name.
+   * @returns next items id,name,type and date when item was created and archived.
+   */
+  //  
      
-     
-      function next(){  //function for pagination's next button
+      function next(){  
       var localSkipCount = skipCount;
       if (lastButtonClicked === "previous")
          {
@@ -194,8 +250,15 @@ const getDeletedData=()=>{  //content of trash page
               setLastButtonClicked("next");
         });
         }
-      
-      function previous(){ //function for pagination's previous button
+  
+   /**
+   * function to get previous items
+   * desc:connected to 'previous' button of pagination.
+   * @param {getUser()}, to get user name.
+   * @returns next items id,name,type and date when item was created and archived.
+   */
+  //      
+      function previous(){ 
         var localSkipCount = skipCount;
         if (lastButtonClicked === "next") {
           if(localSkipCount===10){
