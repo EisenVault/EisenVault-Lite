@@ -1,3 +1,10 @@
+/******************************************
+* File: NavigationItems.js
+* Desc: This a navigationBar common for all pages.This navigationBar helps to navigate between different pages.
+* @returns: Navigation Bar
+* @author: Shrishti Raghav, 6 October 2020
+********************************************/
+
 import React, { useState} from 'react';
 import { useHistory,Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,9 +26,14 @@ function NavigationItems() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  // name of user loggedIn
   const user = getUser();
 
+    /**
+   * Redirects to the login page.
+   *
+   * @return  Redirects to the login page.
+   */
   const handleLogout = () => {  // handle click event of logout button  
       axios.delete(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{

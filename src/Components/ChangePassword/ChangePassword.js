@@ -1,3 +1,11 @@
+/******************************************
+* File: ChangePassword.js
+* Desc: Takes a old password and new password as input and changes the password.
+* @returns: Changed Password
+* @author: Shrishti Raghav, 6 October 200
+* @todo: 
+********************************************/
+
 import React, { Fragment , useState} from 'react';
 import axios from 'axios';
 import {getToken,getUser,getUrl} from  "../../Utils/Common";
@@ -10,12 +18,18 @@ import '../../Containers/styles.scss';
 import Search from '../SearchBar/SearchBar';;
 
 function ChangePassword(props){
+    // name of user loggedIn
     const user = getUser()
     const userName = user[0].toUpperCase()+user.slice(1);
     const oldPassword = useFormInput ('');
     const newPassword = useFormInput ('');
     const confirmPassword = useFormInput('');
 
+/**
+   * function for changePassword api call that changes password on success.
+   *
+   * @return  alert of Password Changed Successfully on success else will display an alert message of failure.
+   */
 function handlechangePassword(){
     
     if (newPassword.value === confirmPassword.value){
@@ -83,6 +97,12 @@ return(
 );
 }
 
+/**
+ * handles user inputs onChange and return the updated state.
+ *
+ * @param {text} initialValue The node Id of document.
+ * @return  Return updated state of user input.
+ */
 const useFormInput = initialValue => {
     const [value, setValue] = useState(initialValue);
    

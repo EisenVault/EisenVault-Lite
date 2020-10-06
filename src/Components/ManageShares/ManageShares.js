@@ -1,3 +1,10 @@
+/******************************************
+* File: ManageShares.js
+* Desc: This page gives the list of files shared by user, we can see the effective dates, preview files and unshare them.
+* @returns: List of shared files
+* @author: Shrishti Raghav, 6 October 2020
+********************************************/
+
 import React, {useEffect,useState,Fragment} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
@@ -27,7 +34,18 @@ function ManageShares(){
   getDetailsData();
 },[])
  
+
+ /**
+   * Function to fetch data of shared files.
+   *
+   * @return  list of shared files.
+   */
  const getDetailsData = () => {
+    /**
+   * Track the api call promise helps the show the loading indicator till the api fetch a results.
+   *
+   * @return  A loading indicator.
+   */
   trackPromise(
   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links?skipCount=0&maxItems=10&include=properties&where=(sharedByUser='-me-')`,
   {headers:
@@ -40,6 +58,7 @@ function ManageShares(){
   settotalitems(response.data.list.pagination.totalItems)
   setMoreItems(response.data.list.pagination.hasMoreItems)
   response.data.list.entries.forEach(d=>{
+    //Api call to fetch details of shared files
       Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.entry.nodeId}?include=properties`,
       {headers:
         {
@@ -55,10 +74,25 @@ function ManageShares(){
 }))
   }
 
+
+/**
+ * Redirects to document preview page .
+ *
+ * @param {number} id The node Id of document.
+ * @param {text} title The name of document.
+ * @return  Redirects to a new page.
+ */
 function handleDocument(id,title){
   history.push(`/document-details/${id}/${title}`)
 }
 
+
+/**
+ * Function to delete a document .
+ *
+ * @param {number} id The node Id of document.
+ * @return   alert message of successfully unshared on success or an alert of failure..
+ */
 function handleDelete(id){
   Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links/${id}`,
   {headers:
@@ -77,7 +111,11 @@ function handleDelete(id){
 });
 }
 
-
+ /**
+   * Fetch next 10 documents and update the list of documents.
+   *
+   * @return  updated list of documents to display.
+   */
   function next(){
     
     var localSkipCount = skipCount;
@@ -137,6 +175,11 @@ function handleDelete(id){
       });
   }
 
+   /**
+   * Fetch previous 10 documents and update the list of documents.
+   *
+   * @return  updated list of documents to display.
+   */
     function previous(){
       var localSkipCount = skipCount;
       if (lastButtonClicked === "next") {
@@ -222,6 +265,7 @@ function handleDelete(id){
                         ))}
                         <td className="delete-u-s">
                         <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
+                        //display a alert for confirmation
                           onClick={()=>{ alertify.confirm().setting({transition:'pulse',
                           buttonFocus : "ok",
                           'message' : 'DO YOU WANT TO UNSHARE THIS FILE '+ d.entry.name,'onok': () => {handleDelete(d.entry.id)} ,

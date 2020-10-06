@@ -1,3 +1,10 @@
+/******************************************
+* File: SearchBar.js
+* Desc: Takes a search keyword and suggest files, we can preview them.On enter it will redirect to another page which returns list of all document which matches with search keyword.
+* @returns: list of searched documents.
+* @author: Shrishti Raghav, 6 October 2020
+********************************************/
+
 import React,{ useState, useEffect} from "react";
 import {useHistory } from 'react-router-dom';
 import Axios from 'axios';
@@ -12,6 +19,11 @@ import { getToken,getUrl } from '../../Utils/Common';
     const [result , setResult] = useState("");
     const [show , setShow] = useState(false);
 
+      /**
+   * Fetch data using search api.
+   *
+   * @return  list of search result.
+   */
             const fetchData =  ()=> {
                     try{
                         Axios.get(getUrl()+`alfresco/s/slingshot/live-search-docs?t=${result}&limit=5`,
@@ -31,10 +43,23 @@ import { getToken,getUrl } from '../../Utils/Common';
                         throw new Error(err);
                     }
                      };
-                
+      
+      /**
+   * Handles click events outside the search result list.
+   *
+   * @param {text} event The type of event occurred.
+   * @return  true or false state to show search result.
+   */
       const  handleOutsideClick = (e) => {
         setShow(false)
       }
+
+      /**
+   *  call fetchData function and pass search word given in input as parameter of fetchData Function.
+   *
+   * @param {text} e The type of event occurred.
+   * @return  call fetchData function and pass search word as parameter.
+   */
       const onChange =(e)=> {
             setResult(e.target.value);
             if (result.length !== 0)
@@ -47,11 +72,26 @@ import { getToken,getUrl } from '../../Utils/Common';
             }
         }
       
+      
+  /**
+   * Redirects to a SearchResult.js page.
+   *
+   * @param {text} event The type of event occurred.
+   * @return  Redirects to a SearchResult.js page.
+   */
       const onEnter = (event) => {
         if (event.key === "Enter")
         history.push(`/search/${result}`)
       }
 
+      
+  /**
+   * Redirects to document preview page .
+   *
+   * @param {number} id The node Id of document.
+   * @param {text} name The name of document.
+   * @return  Redirects to a new page.
+   */
         function handleDocument(id , name){
            history.push(`/document-details/${id}/${name}`)
         }

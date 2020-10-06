@@ -1,9 +1,18 @@
+/******************************************
+* File: SearchResult.js
+* Desc: List the documents whih matches our search keyword or contain search keyword in its content.We can preiew documents, can see the full path of location where document actually exists.
+* @param: (1) search keyword
+* @returns: search result 
+* @author: Shrishti Raghav, 6 October 2020
+********************************************/
+
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { Item } from '../backButton/backButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
+import alertify from 'alertifyjs';
 import { faTimesCircle, faFile , faFolder} from "@fortawesome/free-solid-svg-icons";
 import Axios from 'axios';
 import { getToken,getUrl } from  "../../Utils/Common";
@@ -14,12 +23,19 @@ function SearchResult(){
   const[documents,setDocuments]=useState([]);
 
    let params = useParams();
+   // search keyword
    const result = params.result;
    const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
 
   useEffect(()=>{
+    /**
+   * Track the api call promise helps the show the loading indicator till the api fetch a results.
+   *
+   * @return  A loading indicator.
+   */
     trackPromise(
+      // Api call to fetch search result
     Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
             {
               "query": {
@@ -45,8 +61,14 @@ function SearchResult(){
     )
   },[result])
 
+  /**
+   * Fetch next 10 documents and update the list of documents.
+   *
+   * @return  updated list of documents to display.
+   */
   function next(){
     document.getElementById("myprevBtn").disabled = false;
+    // Api call to fetch search result
     Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
     {
       "query": {
@@ -73,9 +95,15 @@ function SearchResult(){
      });
    
   }
-    
+  
+  /**
+   * Fetch previous 10 documents and update the list of documents.
+   *
+   * @return  updated list of documents to display.
+   */
   function previous(){
     document.getElementById("myBtn").disabled = false;
+    // Api call to fetch search result
     Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
     {
       "query": {
@@ -100,10 +128,38 @@ function SearchResult(){
       }
     }); }
 
+  /**
+   * Redirects to document preview page or subfolder page based on type of document.
+   *
+   * @param {number} id The node Id of document.
+   * @param {text} name The name of document.
+   * @param {text} type The type of document.
+   * @return  Redirects to a new page.
+   */
     function handleDocument(id , name , type){
       type  ? history.push(`/document-details/${id}/${name}`) : history.push(`/document/${id}`)
    }
     
+   /**
+ * Function to delete a document .
+ *
+ * @param {number} id The node Id of document.
+ * @return  alert message of successfully deleted on success or an alert of failure.
+ */
+const handleDelete=(id)=>{
+  Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
+  {
+  headers:{
+      Authorization: `Basic ${btoa(getToken())}`
+      } }
+  ).then((data)=>{
+      console.log(data);
+      alertify.confirm().destroy();
+      alertify.alert('Document Deleted Successfully').setting({
+        'onok': () => {alertify.alert().destroy();} 
+      }); 
+       }).catch(err=>alert(err));
+  }
     return( 
       <Fragment>
          <div id="second_section">
@@ -135,7 +191,13 @@ function SearchResult(){
                     {d.entry.name}</td>
                     <td className="details-u-s">{d.entry.path.name}</td>
                     <td className="delete-u-s">
-                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} />
+                    <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle} 
+                     onClick={()=>{ alertify.confirm().setting({transition:'pulse',
+                     buttonFocus : "ok",
+                     'message' : 'DO YOU WANT TO DELETE THIS FILE '+ d.entry.name,'onok': () => {handleDelete(d.entry.id)} ,
+                     'oncancel': () => {alertify.confirm().destroy();}}).show()
+         }}
+                    />
                   </td>
                   </tr>
                 </tbody>
