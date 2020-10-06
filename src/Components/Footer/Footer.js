@@ -1,6 +1,7 @@
 import React from 'react';
 import "./styleFooter.scss";
 
+//Function to display footer
 const Footer = () => (
     <footer className="base-footer">
 

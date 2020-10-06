@@ -1,4 +1,4 @@
-import React , { Fragment,useState,useEffect, version } from 'react';
+import React , { Fragment,useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Search from "../../SearchBar/SearchBar";
 import ProfilePic from "../../Avtar/Avtar";
@@ -8,6 +8,20 @@ import { Item } from '../../backButton/backButton';
 import {getToken, getUrl} from  "../../../Utils/Common";
 import { Animated } from "react-animated-css";
 
+/******************************************
+* File: DocumentViewer.js
+* Desc: To preview the files.
+* @returns: Preview of files.
+* @author: Shayane Basu, 06 October 2020
+********************************************/
+
+
+/****
+ * Function for more details button. 
+ * @param: (1) Label for the button.
+ * @param: (2) On Click event handler to handle the button click.
+ * @return The more details button.
+ ****/
 function ToggleButton({ label, onClick })
  {
    return (
@@ -17,6 +31,12 @@ function ToggleButton({ label, onClick })
   );
 }
 
+/****
+ * Function for the visibility of document details when more details button is clicked. 
+ * @param: (1) {visible} Visibility of the box with document details.
+ * @param: (2) {children} Child of AnimatedVisibility Function.
+ * @return Animation on more details box.
+ ****/
 function AnimatedVisibility({ visible, children }) {
   const [noDisplay, setNoDisplay] = useState(!visible);
   useEffect(() => {
@@ -28,19 +48,23 @@ function AnimatedVisibility({ visible, children }) {
   return (
     <Animated
       isVisible={visible}
-      style={style}
-    >
+      style={style}>
       {children}
     </Animated>
   );
 }
 
+/****
+ * Function for the open the document details when more details button is clicked. 
+ * @param: Visibility of the box with document details.
+ * @return More details box with API call in DocumentDetails function.
+ ****/
 function Sidebar({ open }) {
   return (
     <AnimatedVisibility
       visible={open}
-      className="on-top"
-    >
+      className="on-top">
+
       <div className="sidebar">
         <ul>
           <li>{DocumentDetails()}</li>
@@ -50,6 +74,11 @@ function Sidebar({ open }) {
   );
 }
 
+/****
+ * Function to open the file previews. 
+ * @param: Title of the document which is previewed.
+ * @return File preview as per the file type.
+ ****/
 function DocPreview() {
     const [sidebarIsOpen, setSidebarOpen] = useState(false);
 
@@ -64,13 +93,21 @@ function DocPreview() {
 
     const fileType = path.split('.').pop()
     
+  //To open the more details box.
   function toggleSidebar() {
     setSidebarOpen(!sidebarIsOpen);
   }
 
+//Accepted file types.
 const acceptedFileTypes = ["pdf", "jpeg", "PNG", "png"]
+
+//Accepted Ms-Office file types.
 const acceptedMsOfficeTypes = ["ppt", "pptx", "doc", "docx", "xlsx", "xls", "odt"]
 
+/****
+ * Function to check the file type and open the file previews accordingly. 
+ * @return File preview as per the file type.
+ ****/
 function Viewer() { 
   if (acceptedFileTypes.includes(fileType)) return PdfViewer() 
   else if (acceptedMsOfficeTypes.includes(fileType)) 
@@ -78,6 +115,10 @@ function Viewer() {
   else return error()
 }
 
+/****
+ * Function to display error message in case of non-supported file types. 
+ * @return Error message inside iframe.
+ ****/
 function error(){
 
   console.log("Error Occured")
@@ -95,6 +136,10 @@ function error(){
     )
   }
 
+  /****
+ * Function to open the file previews of Ms-office files with API call. 
+ * @return File preview of Ms-Office files.
+ ****/
   function DisplayUsingOfficeApps() {
     return (
       <Fragment>
@@ -113,6 +158,10 @@ function error(){
     );
   }
 
+  /****
+ * Function to open the file previews of pdf and jpg with API call. 
+ * @return File preview of pdf and jpg files.
+ ****/
  const PdfViewer = () => {
 
         return (

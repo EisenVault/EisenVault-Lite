@@ -7,6 +7,7 @@ import { useHistory,useParams } from "react-router-dom";
 import {getToken, getUrl} from "../../Utils/Common";
 import Axios from 'axios';
 
+
 const DocumentDetails = (props) => {
 
     const [createdBy, setCreatedBy] = useState([]);
@@ -27,11 +28,17 @@ const DocumentDetails = (props) => {
     const path = window.location.href; 
     let nodeId =  path.split('/')
     let id = nodeId[5]
-    // console.log(nodeId)
     
+    /****
+     * Function to convert bytes to other size like GB, KB, MB, TB. 
+     * @param: (1) {bytes} Size in bytes.
+     * @param: (2) Seperator.
+     * @return Converted file size which is more readable.
+     ****/
     function bytesToSize(bytes, seperator = "") {
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
         if (bytes === 0) return 'n/a'
+        {/* Convert string to integer and then convert bytes to KB/MB/GB/TB */}
         const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
         if (i === 0) return `${bytes}${seperator}${sizes[i]}`
         return `${(bytes / (1024 ** i)).toFixed(1)}${seperator}${sizes[i]}`
@@ -41,6 +48,11 @@ const DocumentDetails = (props) => {
         DocDetails();
     },[id])
 
+    /******************************************
+    * Desc: Function to get the document details.
+    * @returns: The document details like modification date, document type, 
+    * created by, created at and document size.
+    ********************************************/
     function DocDetails(){
         Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
         {
@@ -55,6 +67,10 @@ const DocumentDetails = (props) => {
             setCreatedAt(response.data.entry.createdAt.split('T')[0])
     })}
 
+      /******************************************
+    * Desc: Function to share a document with API call.
+    * @returns: The shared link (shown as a alert message).
+    ********************************************/
     function DocumentShare () {
         Axios.post(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/shared-links`,
         {"nodeId":`${id}`},
@@ -70,6 +86,10 @@ const DocumentDetails = (props) => {
 
     useEffect(()=>{AuditTrail()}, [id])
 
+    /******************************************
+    * Desc: Function to get the latest 5 audit trail(activities on a file) with API call.
+    * @returns: Audit Trail Details.
+    ********************************************/
     function AuditTrail(){
         Axios.get(getUrl()+`alfresco/s/ev/nodeaudittrail?nodeRef=workspace://SpacesStore/${id}`,
         {
@@ -88,6 +108,7 @@ const DocumentDetails = (props) => {
                 }))
           })}
 
+    //Function to create an url which will consist of id and title (document name)
     const handleOnClick = () => {
         history.push(`/actions/${id}/${title}/AuditTrails`);
     }
@@ -96,6 +117,7 @@ const DocumentDetails = (props) => {
         versions();},
         [id])
 
+    //Function to display all the versions of a document.  
     function versions() {
     Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/versions`,
     {
@@ -106,7 +128,6 @@ const DocumentDetails = (props) => {
         if (response.data.list.entries === !null){
         setLatestVersion(response.data.list.entries[0].entry.id)}
         else setLatestVersion("1.0")
-
     })
     }
 

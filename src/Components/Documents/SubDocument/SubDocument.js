@@ -28,10 +28,10 @@ function SubDocument(){
   const id = params.id;
   const[documents,setDocuments]=useState([]);
   const [ paginationDefualtDoc, setPaginationDefaultDoc ] = useState([]);
-  const [ currentPage, setCurrentPage ] = useState(1);
+  const currentPage = useState(1);
   const [postsPerPage] = useState(10);
   const [hasMoreItems , setMoreItems] = useState('');
-  const [totalitems,settotalitems]=useState('');
+  const totalitems=useState('');
   const [lastButtonClicked, setLastButtonClicked] = useState("");
   const [skipCount , setSkipCount ] = useState(0);
   
