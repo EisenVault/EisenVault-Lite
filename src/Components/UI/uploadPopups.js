@@ -1,7 +1,20 @@
+/******************************************
+* File: UploadPopup.js
+* Desc: popup summary of MyUpload page
+* @author: Vanshika Bhatt, 6 october 2020
+********************************************/
+
 import React from "react";
 import Popup from "reactjs-popup";
 
-  //popup test
+ /**
+   * arrow function to show popup's.
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   * @props {del}, delete all files by clicking on DELETE button.
+   * @props {delsel}, delete selected files by clicking on DELETE button.
+   */
+  //
+
   const NestedToolTipuploads = (props) => (
     <Popup
       trigger= {<label id="label">Action </label>}

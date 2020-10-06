@@ -1,5 +1,11 @@
+/******************************************
+* File: ModalSummary.js
+* Desc: ModalSummary of ForgetPassword and DeleteDepartment modals.
+* @author: Vanshika Bhatt, 6 october 2020
+********************************************/
+
 import React, { Fragment } from "react";
-import "./Deletesumm.scss";
+import "./ModalSummary.scss";
 
 export const ForgotPassword = props => {
   return(

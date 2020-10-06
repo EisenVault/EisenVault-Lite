@@ -11,7 +11,7 @@ import './DocumentList.scss';
 import alertify from 'alertifyjs';
 import Search from "../SearchBar/SearchBar";
 import Modal from "../Modal/Modal";
-import { DeleteDepartment} from "../Modal/DeleteModalSumm/DeleteSumm";
+import { DeleteDepartment} from "../Modal/modalSummary/ModalSummary";
 import Pagination from '../Pagination/Pagination';
 import Axios from 'axios';
 

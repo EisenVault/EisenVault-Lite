@@ -5,7 +5,7 @@ import axios from 'axios';
 import LoginPage from "../Components/Login/Login"
 import NavigationItems from "../Components/Navigation/NavigationItems/NavigationItems";
 import SideDrawer from "../Components/MobileMenu/MobileSidebar/Sidedrawer";
-import {DrawerToggleButton} from "../Components/MobileMenu/MobileMenu";
+import {DrawerToggleButton} from "../Components/MobileMenu/drawerToggleButton";
 import Footer from "../Components/Footer/Footer";
 import MyUploads from "../Components/MyUploads/MyUploads";
 import Dashboard from "../Components/Dashboard/Dashboard";

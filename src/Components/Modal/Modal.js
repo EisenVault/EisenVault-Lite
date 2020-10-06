@@ -1,3 +1,9 @@
+/******************************************
+* File: Modal.js
+* Desc: Display Modal body with backdrop when 'show' property is 'true'.
+* @author: Vanshika Bhatt, 6 october 2020
+********************************************/
+
 import React from 'react'
 import './Modal.scss'
 import Auxiliary from '../../hoc/Auxiliary'

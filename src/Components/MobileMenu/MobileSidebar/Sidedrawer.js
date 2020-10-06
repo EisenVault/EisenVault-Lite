@@ -1,5 +1,12 @@
+/******************************************
+* File: Sidedrawer.js
+* Desc: Display's sideDrawer when minimum width is 770px.
+* @author: Vanshika Bhatt, 6 october 2020
+********************************************/
+
 import React, { useState} from 'react';
 import { useHistory,Link } from 'react-router-dom';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from "../../Navigation/NavigationItems/ProgressBar/ProgressBar";
 import { faHome,
@@ -10,6 +17,7 @@ import { faHome,
       faKey, 
       faSignOutAlt, 
       faTrash } from "@fortawesome/free-solid-svg-icons";
+
 import Axios from 'axios';
 import "../MobileMenu.scss"
 import "../MobileSidebar/Sidedrawer.scss"
@@ -21,10 +29,11 @@ const SideDrawer=(props)=>{
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // handle click event of logout button
-   const handleLogout = () => {
-    
-      Axios.delete(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
+   /**
+   * handle click event of logout button
+   */
+  const handleLogout = () => {
+     Axios.delete(getUrl()+`alfresco/api/-default-/public/authentication/versions/1/tickets/-me-`,
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {
@@ -36,12 +45,12 @@ const SideDrawer=(props)=>{
       }, [])
    }
    
-  let drawerclasses='Side-drawer';
+  let drawerclasses='Side-drawer';//drawer class style,which will hide side drawer from viewer.
   if(props.show){
-    drawerclasses='Side-drawer open';
+    drawerclasses='Side-drawer open';//when .side-drawer gets another class ‘.open’, it will animate(slide in). 
   }
   
-  const user = getUser();
+  const user = getUser(); //getting user name
    
     return(
         <Auxiliary>

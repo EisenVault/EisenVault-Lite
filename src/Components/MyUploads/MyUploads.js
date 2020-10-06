@@ -1,19 +1,25 @@
-import React, {useEffect,useState,Fragment} from 'react'
-import NestedToolTipuploads from '../UI/uploadPopups';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
-import './MyUploads.scss';
+/******************************************
+* File: MyUploads.js
+* Desc: MyUpload page where user can see files uploaded by him/her in any department.
+* @author: Vanshika Bhatt, 6 october 2020
+********************************************/
+
+import React, {useEffect,useState,Fragment} from 'react';
 import { useHistory } from 'react-router-dom';
-import Search from "../SearchBar/SearchBar";
 import Axios from 'axios';
+import { trackPromise } from 'react-promise-tracker';
+import LoadingIndicator from '../../Utils/LoadingIndicator';
+
+import NestedToolTipuploads from '../UI/uploadPopups';
+import Search from "../SearchBar/SearchBar";
 import { getToken,getUser, getUrl} from '../../Utils/Common';
 import ProfilePic from "../Avtar/Avtar";
 import Pagination from '../Pagination/Pagination';
-import { trackPromise } from 'react-promise-tracker';
-import LoadingIndicator from '../../Utils/LoadingIndicator';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import './MyUploads.scss';
 import alertify from 'alertifyjs';
-
-
 
   function MyUploads(props){
     let history = useHistory();
@@ -27,8 +33,14 @@ import alertify from 'alertifyjs';
     useEffect(()=>{
       getData();
      },[]);
-   
-    //api call 
+
+   /**
+   * api call to display files which are uploaded by user
+   *
+   * @param {getUser()}  gives user name.
+   * @return Documents id,name,type(whether file or folder)and date when 
+   *          it is uploaded by user.
+   */
       const getData=()=>{
         trackPromise(
         Axios.post(getUrl()+`alfresco/api/-default-/public/search/versions/1/search`,
@@ -60,8 +72,11 @@ import alertify from 'alertifyjs';
         )
     };
 
-
-  //arrow function for getting file nodeid and putting it dynamically in api to delete single/multiple files
+   /**
+   * arrow function for getting file nodeid and putting it dynamically in api url to delete single/multiple documents
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   */
+  //
   const deleteFileByIds=(close)=>{
     FileState.forEach( d=>{
       if(d.select){
@@ -79,8 +94,13 @@ import alertify from 'alertifyjs';
            }).catch(err=>alert(err));
        };
       })}
-      
-       const DefaultDelete=(close)=>{ //Delete all files
+    
+  /**
+   * arrow function to Delete all documents
+   * @param {close} ,used to close popup when API operation is completed successfully.
+   */
+  //
+       const DefaultDelete=(close)=>{ 
         FileState.forEach( d=>{
           if(d.id){
           Axios.delete(getUrl()+`/alfresco/api/-default-/public/alfresco/versions/1/nodes/${d.id}`, 
@@ -99,7 +119,12 @@ import alertify from 'alertifyjs';
           })
       }
 
-      const handleDelete=(id)=>{  //method to delete document without selecting by checkbox
+  /**
+   * arrow function to delete document without selecting checkbox
+   * @param {id}, nodeid of document which we want to delete
+   */
+  //
+    const handleDelete=(id)=>{  
         Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`, 
       {headers:{
       Authorization: `Basic ${btoa(getToken())}`
@@ -114,6 +139,13 @@ import alertify from 'alertifyjs';
            }).catch(err=>alert(err));
       }
 
+ /**
+   * function to get next items
+   * desc:connected to 'next' button of pagination.
+   * @param {getUser()}, to get user name.
+   * @returns next items id,name,type and date when item was uploaded
+   */
+  //
     function next(){ //pagination next button
         var localSkipCount = skipCount;
         if (lastButtonClicked === "previous")
@@ -161,7 +193,14 @@ import alertify from 'alertifyjs';
             setLastButtonClicked("next");
           });
           }
-      
+  
+  /**
+   * function to get previous items
+   * desc:connected to 'previous' button of pagination.
+   * @param {getUser()}, to get user name.
+   * @returns previous items id,name,type and date when item was uploaded
+   */
+  //
   function previous(){ //pagination previous button
         var localSkipCount = skipCount;
       if (lastButtonClicked === "next") {
