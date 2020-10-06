@@ -7,6 +7,12 @@ import { ForgotPassword } from '../Modal/DeleteModalSumm/DeleteSumm';
 import { setUserLocal, getUrl, setUrl } from '../../Utils/Common';
 import './LoginPage.scss';
 
+/******************************************
+* File: Login.js
+* Desc: Function to handle the user login and take url input from user.
+* @returns: Handle user login.
+* @author: Shayane Basu, 06 October 2020
+********************************************/
 const LoginPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [pswdloading, setPswdLoading] = useState(false);
@@ -19,13 +25,15 @@ const LoginPage = (props) => {
   const password = useFormInput ('');
   const forgotPswdUserName = useFormInput ('');
 
+  //Take url input from user
   let url = useFormInput('');
   let newUrl
-
+  //Different checks to ensure that user enters correct url.
   url.value.startsWith("https://") ?   
   newUrl = url.value.replace(/\/?(\?|#|$)/, '/$1'):
   newUrl = "https://" + url.value.replace(/\/?(\?|#|$)/, '/$1')
 
+  //Function to handle login with API call.
   const handleLogin = () => {
     setUrl(newUrl)
 
@@ -50,6 +58,7 @@ const LoginPage = (props) => {
    )
 }
 
+//Function to handle forgot password with API call.
 function HandleForgotPassword() {
   setPswdError(null);
   setUrl(newUrl)
@@ -78,6 +87,7 @@ if (loading) {
   return <div><i className="fa fa-spinner fa-spin" /> Loading...</div>
 }
 
+//Function to login when you click on enter key.
 const onEnter = (event) => {
   if (event.key === "Enter")
   handleLogin()

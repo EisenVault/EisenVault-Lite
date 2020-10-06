@@ -20,4 +20,3 @@ const IconBar = (props) => {
 )}
 
 export default IconBar;
-

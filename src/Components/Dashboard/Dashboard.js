@@ -11,6 +11,15 @@ import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
 import axios from 'axios';
 
+/******************************************
+* File: Dashboard.js
+* Desc: Display user's activities.
+* @param: (1) node id of the document
+* @param: (2) title(name) of the document
+* @returns: List of user activities.
+* @author: Shayane Basu, 06 October 2020
+********************************************/
+
 const Dashboard = () => {
   let personId = getUser();
   let history = useHistory();
@@ -23,7 +32,7 @@ const Dashboard = () => {
   const [skipCount , setSkipCount ] = useState('');
   const [totalitems,settotalitems] =useState('');
 
-  //API call to get the activities list.
+  //API call to get the user's activities list.
   useEffect(() => {
     trackPromise(
     axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/people/${personId}/activities?skipCount=0&who=me&maxItems=10`,
@@ -98,9 +107,16 @@ const Dashboard = () => {
       });
    }
 
+  /********  
+  This function will create the url for each document like 
+  'https://systest.eisenvault.net/document-details/123456789/example.pdf'
+  ********/
   function handleDocument(id,title){
     history.push(`/document-details/${id}/${title}`)
   }
+
+  /* In case the activity is one of the value from this array,
+   the preview icon will not be displayed in front of that activity */
 
   const noPreviewIcon = ["file-deleted", "user-role-changed", 
                           "folders-deleted", "folder-added"]
@@ -127,6 +143,8 @@ const Dashboard = () => {
             {documents.map(document => (              
             <tbody key={document.entry.id}>
                 <tr>
+
+                  {/* To display the filename with department name. */}
                   <td className='fileName'>                             
                     <FontAwesomeIcon icon={faFile} />
                         <h4>
@@ -135,10 +153,16 @@ const Dashboard = () => {
                         <p className="text">{ " " }in { " " }</p> 
                           <h4>{document.entry.siteId}</h4> 
                           </td>
+
+                          {/* To display the activity date. */}
                           <td className='fileDetails'>
                             {document.entry.postedAt.split('T')[0]} </td>
+
+                          {/* To display the activity. */}
                           <td className='fileActivity'>
                             {document.entry.activityType.split('.')[3]}</td>
+
+                          {/* The eye icon to view the file. */}
                             {noPreviewIcon.includes(document.entry.activityType.split('.')[3])?
                             "":<td className='view'
                             onClick={() => handleDocument(

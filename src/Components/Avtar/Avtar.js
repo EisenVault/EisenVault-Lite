@@ -2,9 +2,17 @@ import React, {useState , useEffect} from 'react';
 import Avatar from "react-avatar";
 import { getUser } from "../../Utils/Common";
 
+/******************************************
+* File: Avtar.js
+* Desc: Create Avtar for the user with the initials of username.
+* @returns: Avtar Icon.
+* @author: Shayane Basu, 06 October 2020
+********************************************/
+
 const ProfilePic = () => {
     const [profileInitials, setProfileInitials] = useState(null);
 
+    //get the username from localStorage and take the first character of the name.
     useEffect(() => {
         setProfileInitials (getUser() ? getUser().charAt(0) : "");
     }, [])
