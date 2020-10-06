@@ -1,3 +1,10 @@
+/******************************************
+* File: DocumentList.js
+* Desc: This page gives you the list of all departments you are member of , we can open document library of a department and gives a option to delete a department.
+* @returns: List of Departments
+* @author: Shrishti Raghav, 6 October 2020
+********************************************/
+
 import React,{Fragment , useEffect , useState} from 'react';
 import {getToken,getUser,getUrl} from "../../Utils/Common";
 import ProfilePic from "../Avtar/Avtar";
@@ -16,6 +23,7 @@ import Pagination from '../Pagination/Pagination';
 import Axios from 'axios';
 
 const DocumentsList = () => {
+   // name of user loggedIn
   const user = getUser();
   let history = useHistory();
   let url;
@@ -42,6 +50,11 @@ const DocumentsList = () => {
      },[url]);
   
   const getDepartments=()=>{
+    /**
+   * Track the api call promise helps the show the loading indicator till the api fetch a results.
+   *
+   * @return  A loading indicator.
+   */
     trackPromise(
     Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/${url}&skipCount=0`,
     {
@@ -57,6 +70,12 @@ const DocumentsList = () => {
     )
   }
 
+  /**
+   * Redirect to document library of a particular department.
+   *
+   * @param {number} key The node Id of department.
+   * @return  redirect to document library page.
+   */
 function handleDocumentLibrary(key){
   Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${key}/children`,
   {
@@ -78,6 +97,12 @@ function handleDocumentLibrary(key){
       })     
 }
 
+/**
+ * Function to delete a department .
+ *
+ * @param {number} id The node Id of department.
+ * @return  an alert of success message of department deletion or an alert of failure.
+ */
 function handleDeleteDepartment(id){
   Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/sites/${id}?permanent=false`,
   {
@@ -101,7 +126,11 @@ function handleDeleteDepartment(id){
 });
 }
  
-
+  /**
+   * Fetch next 10 departments and update the list of departments.
+   *
+   * @return  updated list of departments to display.
+   */
   function next(){
      var localSkipCount = skipCount;
     if (lastButtonClicked === "previous")
@@ -135,6 +164,11 @@ function handleDeleteDepartment(id){
         }); 
       }
   
+    /**
+   * Fetch previous 10 departments and update the list of departments.
+   *
+   * @return  updated list of departments to display.
+   */
     function previous(){
       var localSkipCount = skipCount;
       if (lastButtonClicked === "next") {
@@ -232,16 +266,6 @@ function handleDeleteDepartment(id){
       </Fragment>
           )
         }
-        const useFormInput = initialValue => {
-          const [value, setValue] = useState(initialValue);
-        
-          const handleChange = e => {
-            setValue(e.target.value);
-          }
-          return {
-            value,
-            onChange: handleChange
-          }
-        }
+
 export default DocumentsList;
 

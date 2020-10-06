@@ -1,3 +1,11 @@
+/******************************************
+* File: SubDocument.js
+* Desc: This page gives list of folder, files or subfolders of a department, we can preview a file and delete it.
+* @param: (1) nodeId of a folder.
+* @returns: all files , folders and subfolders
+* @author: Shrishti Raghav, 6 October 2020
+********************************************/
+
 import React, {useEffect,useState,Fragment} from 'react';
 import { useParams , useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +24,7 @@ import Axios from 'axios';
 function SubDocument(){
   let history = useHistory();
   let params = useParams();
+  //node id of document
   const id = params.id;
   const[documents,setDocuments]=useState([]);
   const [ paginationDefualtDoc, setPaginationDefaultDoc ] = useState([]);
@@ -36,6 +45,11 @@ function SubDocument(){
   },[id]);
 
   const getData = () => {
+      /**
+   * Track the api call promise helps the show the loading indicator till the api fetch a results.
+   *
+   * @return  A loading indicator.
+   */
     trackPromise(
     Axios.get(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}/children?skipCount=0&maxItems=10`,
     {
@@ -50,7 +64,13 @@ function SubDocument(){
     })
     )
   };
-  
+ 
+/**
+ * Function to delete a document .
+ *
+ * @param {number} id The node Id of document.
+ * @return  alert message of successfully deleted on success or an alert of failure.
+ */
 const handleDelete=(id)=>{
       Axios.delete(getUrl()+`alfresco/api/-default-/public/alfresco/versions/1/nodes/${id}`,
       {
@@ -67,6 +87,11 @@ const handleDelete=(id)=>{
            }).catch(err=>alert(err));
       }
     
+      /**
+   * Fetch next 10 documents and update the list of documents.
+   *
+   * @return  updated list of documents to display.
+   */
       function next(){
         var localSkipCount = skipCount;
         if (lastButtonClicked === "previous")
@@ -101,7 +126,11 @@ const handleDelete=(id)=>{
          }); 
       }
         
-      
+      /**
+   * Fetch previous 10 documents and update the list of documents.
+   *
+   * @return  updated list of documents to display.
+   */
       function previous(){
         var localSkipCount = skipCount;
         if (lastButtonClicked === "next") {
@@ -130,7 +159,16 @@ const handleDelete=(id)=>{
            setLastButtonClicked("previous")
           });
        }
-      
+    
+    
+  /**
+   * Redirects to document preview page or subfolder page based on type of document.
+   *
+   * @param {number} id The node Id of document.
+   * @param {text} name The name of document.
+   * @param {Boolean} file true if document is a file else false.
+   * @return  Redirects to a new page.
+   */
     function handleDocument(file , id, title){
       file ? history.push(`/document-details/${id}/${title}`)
       : history.push(`/document/${id}`)
