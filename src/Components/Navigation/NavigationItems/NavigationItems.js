@@ -27,6 +27,7 @@ function NavigationItems() {
       {headers:{
         Authorization: `Basic ${btoa(getToken())}`}
       }).then(response => {
+        console.log(response)
         setLoading(false);
         history.push('/');
       }).catch(error => {
