@@ -1,6 +1,6 @@
 import React,{Fragment, useEffect, useState} from 'react';
 import './styleDashboard.scss';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getToken, getUser, getUrl } from "../../Utils/Common";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFile, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -23,8 +23,8 @@ import axios from 'axios';
 const Dashboard = () => {
   let personId = getUser();
   let history = useHistory();
-  let params = useParams();
-  const id = params.id;
+  // let params = useParams();
+  // const id = params.id;
   
   const [ documents , setDocuments ] = useState([]);
   const [hasMoreItems , setMoreItems] = useState('');
@@ -119,7 +119,7 @@ const Dashboard = () => {
    the preview icon will not be displayed in front of that activity */
 
   const noPreviewIcon = ["file-deleted", "user-role-changed", 
-                          "folders-deleted", "folder-added"]
+                        "folders-deleted", "folder-added"]
 
   return (
   <Fragment>
@@ -139,13 +139,15 @@ const Dashboard = () => {
       <div className="filesDetail">
         <h3>My Recent Activities</h3>
 
-        <table className='documentsList'>
+        <table className='documentsList'
+        id='docDetails'>
             {documents.map(document => (              
             <tbody key={document.entry.id}>
-                <tr>
+                <tr id='tableRow'>
 
                   {/* To display the filename with department name. */}
-                  <td className='fileName'>                             
+                  <td className='fileName' 
+                  id='fileTitle'>                             
                     <FontAwesomeIcon icon={faFile} />
                         <h4>
                           {document.entry.activitySummary.title} 
@@ -180,8 +182,7 @@ const Dashboard = () => {
     <div className="col-md-6">
      <Pagination
      handlePrev={previous}
-     handleNext={next}
-        />  
+     handleNext={next}/>  
     </div>
 
   </Fragment>

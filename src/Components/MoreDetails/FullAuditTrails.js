@@ -1,8 +1,8 @@
-import React , { Fragment,useRef,useEffect, useState } from 'react';
+import React , { Fragment,useEffect, useState } from 'react';
 import { useHistory,useParams } from "react-router-dom";
 import axios from 'axios';
 import {getToken, getUrl} from "../../Utils/Common";
-import "./MoreDetails.scss"
+import "./MoreDetails.scss";
 
 function FullAudittrails() {
     let history = useHistory();
@@ -44,18 +44,20 @@ function FullAudittrails() {
             <h3>Detailed Document Audit History</h3>
            
                 <table>
-                <tbody className="label-input">
+                <thead className="label-input">
+                <tr>
                 <th className="actions">Action </th>
                 <th className="users">User</th>
                 <th className="time">Time</th>
-
+                </tr>
+                
                 {fullAuditDetails.map((d)=> (
                 <tr key={d.id}>   
                 <td >{d.actionF}</td>
                 <td >{d.userF}</td>
                 <td>{d.timeF}</td>
                 </tr>))}
-                </tbody>
+                </thead>
                 </table>
         </div>
         </Fragment>

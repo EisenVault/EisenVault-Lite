@@ -9,9 +9,8 @@ import LoadingIndicator from '../../Utils/LoadingIndicator';
 import '../../Containers/styles.scss';
 import Search from '../SearchBar/SearchBar';;
 
-function ChangePassword(props){
+function ChangePassword(){
     const user = getUser()
-    const userName = user[0].toUpperCase()+user.slice(1);
     const oldPassword = useFormInput ('');
     const newPassword = useFormInput ('');
     const confirmPassword = useFormInput('');
@@ -69,11 +68,16 @@ return(
                     <p>Confirm Password</p>
                 </div>
                 <div id="column-2">
-                    <input type="password" {...oldPassword}></input>
-                    <input type="password" {...newPassword}></input>
-                    <input type="password" {...confirmPassword}></input>
+                    <input id="oldPswd" 
+                    type="password" {...oldPassword}></input>
+                    <input id="newPswd" 
+                    type="password" {...newPassword}></input>
+                    <input id="confirmPswd"
+                    type="password" {...confirmPassword}></input>
                 </div>
-                <button className="btn01" type="button" onClick={handlechangePassword}>Change</button>
+                <button className="btn01" type="button" 
+                data-test="change-password"
+                onClick={handlechangePassword}>Change</button>
                 <button className="btn02" type="button">Cancel</button>
             </div>
             <LoadingIndicator/>

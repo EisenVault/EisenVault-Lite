@@ -13,8 +13,6 @@ import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
 import alertify from 'alertifyjs';
 
-
-
   function MyUploads(props){
     let history = useHistory();
 
