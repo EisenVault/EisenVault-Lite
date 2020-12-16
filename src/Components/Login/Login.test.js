@@ -15,6 +15,8 @@ Enzyme.configure({ adapter: new EnzymeAdapter() })
 
 describe('Check Login Page Input Fields and Buttons', () => {
     let setLoading = jest.fn()
+    let onEnter = jest.fn()
+    let closeModal =jest.fn()
 
     const handleClick = jest.spyOn(React, "useState");
     handleClick.mockImplementation(loading => [loading, setLoading])
@@ -30,6 +32,8 @@ describe('Check Login Page Input Fields and Buttons', () => {
     })
 
     test('Check for password input feild', () => {
+        expect(wrapper.find('.login-box').length).toBe(1);
+        expect(wrapper.find('.login-details').length).toBe(1);
         expect(wrapper.find('#pswd').at(0).props().placeholder).toEqual('Password')
     })
 

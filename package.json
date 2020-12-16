@@ -98,6 +98,7 @@
   "devDependencies": {
     "@testing-library/react": "^11.2.2",
     "@testing-library/react-hooks": "^3.4.2",
+    "jest-cli": "^26.6.3",
     "moxios": "^0.4.0",
     "react-test-renderer": "^16.8.0",
     "typescript": "3.8.3"
@@ -105,7 +106,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom jest  --coverage"
   },
   "browserslist": [
     ">0.2%",
@@ -113,7 +114,10 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  
   "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["json", "html"],
     "roots": [
       "<rootDir>/src"
     ],
