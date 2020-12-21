@@ -9,6 +9,16 @@ import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 import LoadingIndicator from '../../Utils/LoadingIndicator';
+import NestedToolTipuploads from '../UI/uploadPopups';
+import Search from "../SearchBar/SearchBar";
+import { getToken,getUser, getUrl} from '../../Utils/Common';
+import ProfilePic from "../Avtar/Avtar";
+import Pagination from '../Pagination/Pagination';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFile,faFolder,faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import './MyUploads.scss';
+import alertify from 'alertifyjs';
 
   function MyUploads(props){
     let history = useHistory();

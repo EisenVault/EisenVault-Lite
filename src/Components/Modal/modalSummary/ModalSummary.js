@@ -1,5 +1,5 @@
  import React, { Fragment } from "react";
-import "./Deletesumm.scss";
+ import "./ModalSummary.scss";
 
 export const ForgotPassword = props => {
   return(
