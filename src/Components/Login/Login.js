@@ -151,7 +151,6 @@ const onEnter = (event) => {
   
 }
 
-<<<<<<< HEAD
 // const useStateWithLocalStorage = localStorageKey => {
 //   const [value, setValue] = React.useState(
 //     localStorage.getItem(localStorageKey) || ''
@@ -164,8 +163,6 @@ const onEnter = (event) => {
 //   return [value, setValue];
 // };
 
-=======
->>>>>>> 788d0c00d5dc3f863bcd63325a06de5ef99226f8
 const useFormInput = initialValue => {
   const [value, setValue] = useState(initialValue);
  
