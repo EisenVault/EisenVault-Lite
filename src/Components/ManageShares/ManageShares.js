@@ -237,8 +237,10 @@ function handleDelete(id){
                       <thead>
                       <tr id="icons">
                         <th id="item-names">Item Name</th>
-                        <th id="shared">Effective From</th>
-                        <th id="shared">Effective To</th>
+                        <th className="EffectiveFrom" 
+                        id="shared">Effective From</th>
+                        <th className="EffectiveTo" 
+                        id="shared">Effective To</th>
                         <th id="action">Action</th>
                       </tr>
                       </thead>

@@ -93,6 +93,7 @@ const onEnter = (event) => {
   handleLogin()
 }
 
+
     return(
 
       <Fragment>
@@ -102,13 +103,16 @@ const onEnter = (event) => {
         <div className="login-box">
             <div className="login-details">
               <input type="text" {...url} 
-                id="url" placeholder="URL" required
+                name="url" id="url" className="url"
+                placeholder="URL" required
                 />
                 <br/>
                 <input type="text" {...userName} 
-                id="user-name" placeholder="User Name" required/>
+                name="username" id="user-name" 
+                placeholder="User Name" required/>
                   <br />
                 <input type="password" {...password} 
+                name="password"
                 onKeyPress={onEnter}
                 placeholder="Password" id="pswd" required/>
             </div>
@@ -147,17 +151,17 @@ const onEnter = (event) => {
   
 }
 
-const useStateWithLocalStorage = localStorageKey => {
-  const [value, setValue] = React.useState(
-    localStorage.getItem(localStorageKey) || ''
-  );
+// const useStateWithLocalStorage = localStorageKey => {
+//   const [value, setValue] = React.useState(
+//     localStorage.getItem(localStorageKey) || ''
+//   );
  
-  React.useEffect(() => {
-    localStorage.setItem(localStorageKey, value);
-  }, [value]);
+//   React.useEffect(() => {
+//     localStorage.setItem(localStorageKey, value);
+//   }, [value]);
  
-  return [value, setValue];
-};
+//   return [value, setValue];
+// };
 
 const useFormInput = initialValue => {
   const [value, setValue] = useState(initialValue);

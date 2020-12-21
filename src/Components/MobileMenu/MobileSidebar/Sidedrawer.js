@@ -66,13 +66,13 @@ const SideDrawer=(props)=>{
               icon={faHome}/>
               <p >DASHBOARD</p>
               </li></Link> 
-            
             </div>
 
           <div id="middle_bar">
             <Link to="/documentsList">
               <li> <FontAwesomeIcon 
               className="Icon" 
+              id="departments"
               icon={faFileAlt}/>
               <p> &nbsp;DEPARTMENTS</p>
               </li></Link>
@@ -80,6 +80,7 @@ const SideDrawer=(props)=>{
             <Link to="/myUploads">
               <li> <FontAwesomeIcon 
               className="Icon" 
+              id="myUploads"
               icon={faFolderOpen}/>
               <p>MY UPLOADS</p>
               </li></Link>
@@ -87,13 +88,15 @@ const SideDrawer=(props)=>{
               <Link to="/manageShares">
               <li> <FontAwesomeIcon 
               className="Icon" 
+              id="manageShares"
               icon={faShareAlt}/>
               <p>&nbsp;MANAGE SHARES</p>
               </li></Link>
           </div>
 
           <div id="lower_bar">
-              <li><a target="_blank" rel="noopener noreferrer"
+              <li id="support"><a target="_blank" 
+              rel="noopener noreferrer"
               href="https://support.eisenvault.com/portal/home">
               <FontAwesomeIcon 
               className="Icon" 
@@ -101,8 +104,9 @@ const SideDrawer=(props)=>{
               <p>SUPPORT</p>
               </a></li>
 
-              <li><a target="_blank" rel="noopener noreferrer"
-              href="https://systest.eisenvault.net/share/page/"> 
+              <li id="fullVersion"><a target="_blank" 
+              rel="noopener noreferrer"
+              href= {getUrl()+"/share/page/"}> 
               <FontAwesomeIcon 
               className="Icon" 
               icon={faFileAlt}/>
@@ -121,7 +125,7 @@ const SideDrawer=(props)=>{
                   </li></Link>
 
               <Link to="/changePassword">
-                <li> <FontAwesomeIcon 
+                <li id="changePswd"> <FontAwesomeIcon 
                 className="Icon" 
                 icon={faKey}/>
                 <p>CHANGE PASSWORD</p>

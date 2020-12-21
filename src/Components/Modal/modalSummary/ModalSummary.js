@@ -1,28 +1,24 @@
-/******************************************
-* File: ModalSummary.js
-* Desc: ModalSummary of ForgetPassword and DeleteDepartment modals.
-* @author: Vanshika Bhatt, 6 october 2020
-********************************************/
-
-import React, { Fragment } from "react";
-import "./ModalSummary.scss";
+ import React, { Fragment } from "react";
+import "./Deletesumm.scss";
 
 export const ForgotPassword = props => {
   return(
     <Fragment>
       <div className="modal-header">
-        <h2>Forgot Password</h2>
+        <h2 id="heading">Forgot Password</h2>
         </div>
         <div>
           <div>
-            <h3>You will recieve an email link to reset password.</h3>
+            <h3 id="msg">
+              You will recieve an email link to reset password.</h3>
            
             <div className="label-input">
-            <label>URL:</label>
+            <label id="url">URL:</label>
               <input type="text" {...props.url} id="urlFrgtPswd" required/>
                 <br/>
-              <label>Username:</label>
-              <input type="text" {...props.forgotPswdUserName} required/>
+            <label id="username">Username:</label>
+              <input type="text" {...props.forgotPswdUserName} 
+              id="forgotPswdUserName" required/>
             </div>
           </div>
         </div>
