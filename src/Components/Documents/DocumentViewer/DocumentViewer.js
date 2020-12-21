@@ -203,6 +203,7 @@ return(
 
         <div className="details">
         <ToggleButton
+            id = "moreDetails"
             label="More Details"
             isOpen={sidebarIsOpen}
             onClick={toggleSidebar}

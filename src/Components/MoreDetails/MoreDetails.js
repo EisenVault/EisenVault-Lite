@@ -20,7 +20,6 @@ const DocumentDetails = (props) => {
 
     const [auditDetails, setAuditDetails] = useState([])
 
-    let history = useHistory();
     let params = useParams();
 
     const title = params.title;
@@ -38,7 +37,7 @@ const DocumentDetails = (props) => {
     function bytesToSize(bytes, seperator = "") {
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
         if (bytes === 0) return 'n/a'
-        {/* Convert string to integer and then convert bytes to KB/MB/GB/TB */}
+        /* Convert string to integer and then convert bytes to KB/MB/GB/TB */
         const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
         if (i === 0) return `${bytes}${seperator}${sizes[i]}`
         return `${(bytes / (1024 ** i)).toFixed(1)}${seperator}${sizes[i]}`
@@ -108,8 +107,10 @@ const DocumentDetails = (props) => {
                 }))
           })}
 
+    const history = useHistory();
+
     //Function to create an url which will consist of id and title (document name)
-    const handleOnClick = () => {
+    const HandleOnClick = () => {
         history.push(`/actions/${id}/${title}/AuditTrails`);
     }
 
@@ -138,25 +139,28 @@ const DocumentDetails = (props) => {
                     <div className="details-p">
                         <button className="shareLink"
                         onClick={()=> (DocumentShare())}>
-                        <FontAwesomeIcon className="Icon" icon={faShareAlt}/>Click here to share</button> 
+                        <FontAwesomeIcon className="Icon" id="icon"
+                        icon={faShareAlt}/>Click here to share</button> 
 
                         <p className="top-heaading">Document Type:{documentType} </p>
                    
-                        <p>Created By: {createdBy}</p>
-                        <p>Created On: {createdAt}</p>
-                        <p>Last Modified: {modificationDate}</p>
-                        <p>File Size: {bytesToSize(docSize.sizeInBytes)}</p>
+                        <p className="createdBy">Created By: {createdBy}</p>
+                        <p className="createdOn">Created On: {createdAt}</p>
+                        <p className="modificationDate">
+                            Last Modified: {modificationDate}</p>
+                        <p className="docSize">File Size: {bytesToSize(docSize.sizeInBytes)}</p>
 
-                        <p>Activities:</p>  
+                        <p className="activities">Activities:</p>  
                         {auditDetails.map((audit) =>(
                             <p> {audit.action} by {audit.user} on {audit.time}</p>
                         ))}
 
                         <p> <button id="audit-trail" 
-                            onClick={() => {handleOnClick()}}>
+                            onClick={() => {HandleOnClick()}}>
                             (click to view detailed history)</button></p>
 
-                        <p>Current Version: {latestVersion}</p>
+                        <p className="latestVersion">
+                            Current Version: {latestVersion}</p>
                     </div>
 
                 </div>

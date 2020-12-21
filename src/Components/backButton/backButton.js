@@ -12,8 +12,10 @@ export const Item = () => {
     let history = useHistory();
 
     return (
-        <div>
-          <button onClick={() => history.goBack()} className="backButton">Back</button>
+        <div data-test = "component-app">
+          <button onClick={() => history.goBack()} 
+          data-test = "back-button"
+          className="backButton">Back</button>
         </div>
     );
 };
