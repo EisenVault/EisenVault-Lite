@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 // set the token and user from the local storage
   export const setUserLocal = (id, userId) => {
   localStorage.setItem('id', id);

@@ -117,8 +117,8 @@ const onEnter = (event) => {
             </div>
 
             <div id="btns_new">
-                {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
-                <br />
+                {/* {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
+                <br /> */}
                 <button id="btn_login" type="button" 
                 value={loading ? 'Loading...' : 'Login'} 
                 onClick={handleLogin} disabled={loading}>
