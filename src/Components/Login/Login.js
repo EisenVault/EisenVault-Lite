@@ -93,6 +93,7 @@ const onEnter = (event) => {
   handleLogin()
 }
 
+
     return(
 
       <Fragment>
@@ -150,6 +151,18 @@ const onEnter = (event) => {
 );
   
 }
+
+// const useStateWithLocalStorage = localStorageKey => {
+//   const [value, setValue] = React.useState(
+//     localStorage.getItem(localStorageKey) || ''
+//   );
+ 
+//   React.useEffect(() => {
+//     localStorage.setItem(localStorageKey, value);
+//   }, [value]);
+ 
+//   return [value, setValue];
+// };
 
 const useFormInput = initialValue => {
   const [value, setValue] = useState(initialValue);
