@@ -37,32 +37,32 @@ const LoginPage = (props) => {
   const handleLogin = () => {
     setUrl(newUrl)
 
-    // setError(null);
-    // setLoading(true);
+    setError(null);
+    setLoading(true);
 
     axios.post(getUrl()+'alfresco/api/-default-/public/authentication/versions/1/tickets', 
     { userId: userName.value, password: password.value}).then(response => {
-      // setLoading(false);
+      setLoading(false);
       setUserLocal(response.data.entry.id, response.data.entry.userId);
-      // props.history.push('/dashboard');
-    // }).catch(error => {
-    //   setLoading(false);
-    //   if (error.response.status === 401) setError(error.response.data.message);
-    //   else 
-    //   setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");
+      props.history.push('/dashboard');
+    }).catch(error => {
+      setLoading(false);
+      if (error.response.status === 401) setError(error.response.data.message);
+      else 
+      setError("Your authentication details have not been recognized or EisenVault may not be available at this time.");
     });
   }
 
-//   const closeModal=()=>{ //function to close modal after performing it's operations
-//   return (setmodalIsOpen(false)
-//    )
-// }
+  const closeModal=()=>{ //function to close modal after performing it's operations
+  return (setmodalIsOpen(false)
+   )
+}
 
 //Function to handle forgot password with API call.
 function HandleForgotPassword() {
-  // setPswdError(null);
+  setPswdError(null);
   setUrl(newUrl)
-  // setPswdLoading(true);
+  setPswdLoading(true);
 
   axios.post(getUrl()+'share/proxy/alfresco-noauth/com/flex-solution/reset-password',
   { userName: forgotPswdUserName.value }).then(response => {
@@ -73,13 +73,13 @@ function HandleForgotPassword() {
       'message': 'Please Check your registered email id.',
       'onok': () => {alertify.alert().destroy();} 
     });
-  //   console.log("Email Sent");
-  //   console.log(response);
-  // }).catch(err => {
-  //   if (err.response.status === 401) 
-  //   setPswdError(err.response.data.message);
-  //     else 
-  //     setPswdError("The user name doesn't exist.");
+    console.log("Email Sent");
+    console.log(response);
+  }).catch(err => {
+    if (err.response.status === 401) 
+    setPswdError(err.response.data.message);
+      else 
+      setPswdError("The user name doesn't exist.");
   });
 }
 
@@ -117,7 +117,7 @@ const onEnter = (event) => {
             </div>
 
             <div id="btns_new">
-                {/* {error && <><small style={{ color: 'red' }}>{error}</small><br /></>} */}
+                {error && <><small style={{ color: 'red' }}>{error}</small><br /></>}
                 <br />
                 <button id="btn_login" type="button" 
                 value={loading ? 'Loading...' : 'Login'} 
@@ -135,8 +135,8 @@ const onEnter = (event) => {
                   forgotPswdUserName={forgotPswdUserName}
                   url={url}/>
 
-                  {/* {err && <><small style={{ color: 'red' }}>
-                  {err}</small><br /></>} */}
+                  {err && <><small style={{ color: 'red' }}>
+                  {err}</small><br /></>}
                 </Modal>     
 
                <button id="btn_forgotPassword" type="button" 
