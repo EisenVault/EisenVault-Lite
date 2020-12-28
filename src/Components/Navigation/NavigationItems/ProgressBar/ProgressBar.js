@@ -25,10 +25,10 @@ const ProgressBar = () => {
     }
     })
     .then((response) =>{
-    getData(response.data)
-    setLoading(false) 
-  }).catch((error) => {
-    console.error(error)
+  //   getData(response.data)
+  //   setLoading(false) 
+  // }).catch((error) => {
+  //   console.error(error)
   });
   }, []);
 

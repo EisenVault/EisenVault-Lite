@@ -11,7 +11,16 @@ Enzyme.configure({ adapter: new EnzymeAdapter() })
  * @function setup
  * @returns {ShallowWrapper}
  ***/
-const setup = () => shallow(<Item />);
+
+const mockGoBack = jest.fn();
+
+const initialProps = {
+  history: {
+    goBack: mockGoBack
+  }
+};
+
+const setup = () => shallow(<Item {...initialProps}/>);
 const wrapper = setup()
 
 const findByTestAttr = (wrapper, val) => wrapper.find(`[data-test='${val}']`)
@@ -26,3 +35,9 @@ test("renders without error", () => {
 test("renders button", () => {
   expect(button.length).toBe(1);
 });
+
+test("Check for go back", () => {
+  button.simulate("click");
+  expect(mockGoBack).toHaveBeenCalled();
+
+})

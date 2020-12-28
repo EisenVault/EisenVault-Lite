@@ -1,6 +1,8 @@
 import React from 'react';
 import moxios from 'moxios';
 import axios from 'axios';
+import { setUserLocal } from '../../Utils/Common';
+import 'jest-styled-components';
 
 import { Router } from "react-router";
 import { createMemoryHistory } from "history";
@@ -26,16 +28,21 @@ describe('Check the APIs', () => {
       
     test("Login API call was successful", (done) => {
 		moxios.stubRequest(loginApi, { status: 200,         
-			response: {  "success": true }
+			response: {  
+                "entry": {
+                    "id": "TICKET_b2853ce6839d15f6951992e41119b2eaaa761a0d",
+                    "userId": "Admin"},
+                "success": true }
 	}) //mocked response
 	
     const history = createMemoryHistory();
 
 		axios.post(loginApi, 
 		{  "success": true }).then(	
-		response => {	
-            console.log(history.location.pathname)
-            
+		response => {
+            // console.log(response.data.entry.id);	
+            setUserLocal(response.data.entry.id, response.data.entry.userId);
+
 			expect(response.status).toBe(200);
             expect(history.location.pathname).toBe("/");
 
@@ -46,6 +53,9 @@ describe('Check the APIs', () => {
     })
 
     test("Forgot password API call was successful", (done) => {
+
+        let closeModal = jest.fn()
+
 		moxios.stubRequest(forgotPasswordApi, { status: 200,         
 			response: {  "success": true }
 	}) //mocked response
@@ -53,7 +63,10 @@ describe('Check the APIs', () => {
 		axios.post(forgotPasswordApi, 
 		{  "success": true }).then(	
 		response => {	
-			expect(response.status).toBe(200);
+            closeModal();
+            expect(response.status).toBe(200);
+            
+            expect(closeModal).toHaveBeenCalled();
 
 			const status = response.status
 			return status;
@@ -236,7 +249,7 @@ describe('Test for forgot password', () => {
         let setmodalIsOpen =jest.fn();
         const HandleForgotPassword =jest.fn();
 
-        let wrapper = shallow(<LoginPage onClick={setmodalIsOpen} />)
+        let wrapper = mount(<LoginPage onClick={setmodalIsOpen}/>)
 
         wrapper.find("#btn_forgotPassword").simulate('click');
         expect(setmodalIsOpen).toBeTruthy();
