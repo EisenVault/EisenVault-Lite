@@ -40,7 +40,6 @@ describe('Check the APIs', () => {
 		axios.post(loginApi, 
 		{  "success": true }).then(	
 		response => {
-            // console.log(response.data.entry.id);	
             setUserLocal(response.data.entry.id, response.data.entry.userId);
 
 			expect(response.status).toBe(200);
