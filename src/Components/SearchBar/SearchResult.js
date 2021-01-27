@@ -20,15 +20,15 @@ import Pagination from '../Pagination/Pagination';
 
 function SearchResult(){
   let history = useHistory();
-  const[documents,setDocuments]=useState([]);
+  const[documents,setDocuments]=React.useState([]);
 
    let params = useParams();
    // search keyword
    const result = params.result;
-   const [hasMoreItems , setMoreItems] = useState('');
-  const [skipCount , setSkipCount ] = useState('');
+   const [hasMoreItems , setMoreItems] = useState(false);
+  const [skipCount , setSkipCount ] = useState(0);
 
-  useEffect(()=>{
+  React.useEffect(()=>{
     /**
    * Track the api call promise helps the show the loading indicator till the api fetch a results.
    *
@@ -172,7 +172,7 @@ const handleDelete=(id)=>{
                   <tr id="icons">
                     <th id="item-names">Item Name</th>
                     <th id="shared">Department Name</th>
-                    <th>Actions</th>
+                    <th id="action-title">Actions</th>
                     <th id="action"><Item/></th>
                   </tr>
                   </thead>

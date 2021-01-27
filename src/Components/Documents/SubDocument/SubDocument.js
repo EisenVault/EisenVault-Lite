@@ -26,7 +26,7 @@ function SubDocument(){
   let params = useParams();
   //node id of document
   const id = params.id;
-  const[documents,setDocuments]=useState([]);
+  const[documents,setDocuments]=React.useState([]);
   const [ paginationDefualtDoc, setPaginationDefaultDoc ] = useState([]);
   const currentPage = useState(1);
   const [postsPerPage] = useState(10);
@@ -40,13 +40,11 @@ function SubDocument(){
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = documents.slice(indexOfFirstPost, indexOfLastPost);
   
-  useEffect(()=>{
-    getData()
-  },[id]);
+  
 
-  const getData = () => {
+   const getData = () => {
       /**
-   * Track the api call promise helps the show the loading indicator till the api fetch a results.
+   * Track the api call promise helps to show the loading indicator till the api fetch  results.
    *
    * @return  A loading indicator.
    */
@@ -56,15 +54,17 @@ function SubDocument(){
     headers:{
         Authorization: `Basic ${btoa(getToken())}`
         } }).then((response) => {
-    console.log(response.data)
     setDocuments(response.data.list.entries)
     setSkipCount(response.data.list.pagination.skipCount + 10)
     setPaginationDefaultDoc(response.data.list.pagination) 
-    console.log(response.data.list.pagination)
     })
     )
   };
  
+  React.useEffect(()=>{
+    getData()
+  },[id]);
+
 /**
  * Function to delete a document .
  *
@@ -78,7 +78,6 @@ const handleDelete=(id)=>{
           Authorization: `Basic ${btoa(getToken())}`
           } }
       ).then((data)=>{
-          console.log(data);
           alertify.confirm().destroy();
           alertify.alert('Document Deleted Successfully').setting({
             'onok': () => {alertify.alert().destroy();} 
@@ -191,14 +190,14 @@ const handleDelete=(id)=>{
                   <thead>
                   <tr id="icons">
                     <th id="item-names">Item Name</th>
-                    <th id="shared">Created By</th>
-                    <th id="shared">Created On</th>
-                    <th id="shared">Modified On</th>
-                    <th>Actions</th>
+                    <th id="shared" class="shared-by">Created By</th>
+                    <th id="shared-on" class="shared-on">Created On</th>
+                    <th id="modified" class="modified-on">Modified On</th>
+                    <th id="action-title">Actions</th>
                     <th id="action"><Item /></th>
                   </tr>
                   </thead>
-                  { currentPosts.map((d) => (
+                  { documents.map((d) => (
                   <tbody key={d.entry.id}>
                     <tr id="first_details">
                     <td className="file_name-u" 
@@ -211,9 +210,9 @@ const handleDelete=(id)=>{
                         icon={d.entry.isFile ? faFile : faFolder} 
                           />
                        {d.entry.name}</td>
-                    <td className="details-u-s">{d.entry.createdByUser.displayName}</td>
-                    <td className="details-u-s">{d.entry.createdAt.split('T')[0]}</td>
-                    <td className="details-u-s">{d.entry.modifiedAt.split('T')[0]}</td>
+                    <td className="details-u-s" id="display-name">{d.entry.createdByUser.displayName}</td>
+                    <td className="details-u-s" id="createdAt">{d.entry.createdAt.split('T')[0]}</td>
+                    <td className="details-u-s" id="modifiedAt">{d.entry.modifiedAt.split('T')[0]}</td>
                     <td className="delete-u-s-action">
                     <FontAwesomeIcon className="fas fa-times-circle" icon={faTimesCircle}
 
