@@ -22,18 +22,13 @@ import Pagination from '../Pagination/Pagination';
 function ManageShares(){
   let history = useHistory();
   let count=0;
-  const[FileState,setFileState]=useState([]);
-  const[DetailsState,setDetailsState]=useState([]);
+  const[FileState,setFileState]=React.useState([]);
+  const[DetailsState,setDetailsState]=React.useState([]);
   const [lastButtonClicked, setLastButtonClicked] = useState("");
   const [hasMoreItems , setMoreItems] = useState('');
   const [skipCount , setSkipCount ] = useState('');
   const [totalitems,settotalitems]=useState('')
 
- //API CALL
- useEffect(()=>{
-  getDetailsData();
-},[])
- 
 
  /**
    * Function to fetch data of shared files.
@@ -73,6 +68,12 @@ function ManageShares(){
     }) 
 }))
   }
+
+   //API CALL
+ React.useEffect(()=>{
+  getDetailsData();
+},[])
+ 
 
 
 /**

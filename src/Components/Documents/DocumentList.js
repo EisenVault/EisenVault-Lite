@@ -27,10 +27,10 @@ const DocumentsList = () => {
   const user = getUser();
   let history = useHistory();
   let url;
-  const [deletemodalIsOpen, deletesetmodalIsOpen] = useState(false);
+  const [ departments , setDepartments ] = React.useState([]);
+  const [deletemodalIsOpen, deletesetmodalIsOpen] = React.useState(false);
   const [lastButtonClicked, setLastButtonClicked] = useState("");
   const [ paginationDefualtDept, setPaginationDefaultDept ] = useState([]);
-  const [ departments , setDepartments ] = useState([]);
   const [ documents , setDocuments ] = useState([]);
   const [hasMoreItems , setMoreItems] = useState('');
   const [totalitems,settotalitems]=useState('');
@@ -44,10 +44,7 @@ const DocumentsList = () => {
     else{
       url = "/sites?maxItems=100"
     }
-  
-  useEffect(()=>{
-   getDepartments()
-     },[url]);
+ 
   
   const getDepartments=()=>{
     /**
@@ -62,6 +59,7 @@ const DocumentsList = () => {
         Authorization: `Basic ${btoa(getToken())}`
         }}).then((response) => {
       setDepartments(response.data.list.entries)
+      // console.log(response.data.list.entries)
       setPaginationDefaultDept(response.data.list.pagination)
       settotalitems(response.data.list.pagination.totalItems)
       setMoreItems(response.data.list.pagination.hasMoreItems) 
@@ -69,6 +67,11 @@ const DocumentsList = () => {
     })
     )
   }
+
+ 
+  React.useEffect(()=>{
+    getDepartments()
+      },[url]);
 
   /**
    * Redirect to document library of a particular department.
@@ -222,10 +225,11 @@ function handleDeleteDepartment(id){
                       
                         <FontAwesomeIcon icon={faGlobeAsia} className="fas"/>
                         {department.entry.title}</td>
-                        <td className='fileDetails' 
+                        <td className='fileDetails' id="filesDetails"
                         onClick={() => handleDocumentLibrary(department.entry.guid)}>
                         Document Library
-                        {document.folders} </td>
+                        {/* {document.folders} */}
+                         </td>
                         <td>
                           { user === 'admin' && 
                           <Modal show={deletemodalIsOpen}>

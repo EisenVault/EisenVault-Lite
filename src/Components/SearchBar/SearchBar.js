@@ -14,10 +14,11 @@ import { getToken,getUrl } from '../../Utils/Common';
 
  const Search = () => {
   let history = useHistory();
-  const [data ,setData] = useState([]);
+  const [data ,setData] = React.useState([]);
+  const [show , setShow] = React.useState(false);
     const [filtered ,setFilterd] = useState([]);
     const [result , setResult] = useState("");
-    const [show , setShow] = useState(false);
+   
 
       /**
    * Fetch data using search api.
@@ -32,6 +33,7 @@ import { getToken,getUrl } from '../../Utils/Common';
                                 Authorization: `Basic ${btoa(getToken())}`
                                 }
                               }).then((response) => {
+                                console.log(response.data.items)
                                      setData(response.data.items);
                                       setFilterd(response.data.items);
                                       setShow(true)
