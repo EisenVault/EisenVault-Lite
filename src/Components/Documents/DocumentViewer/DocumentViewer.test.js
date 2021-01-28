@@ -1,9 +1,9 @@
 import React from 'react';
 import { cleanup } from '@testing-library/react';
 import { MemoryRouter } from "react-router-dom";
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { shallow , mount } from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16';
-import DocPreview from './DocumentViewer';
+import DocPreview,{DisplayUsingOfficeApps} from './DocumentViewer';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
@@ -16,12 +16,12 @@ jest.mock('react-router-dom', () => ({
 
 const toggleSidebar = jest.fn()
 
+
 const wrapper = mount (
     <MemoryRouter>
         <DocPreview/>
     </MemoryRouter>
 );
-
 test('Check for the iframe',() => {
     expect(wrapper.find("iframe")).toBeTruthy();
 })
@@ -43,3 +43,8 @@ test('Check viewer is working properly', () => {
     
     afterEach(cleanup);
 })
+
+
+
+
+

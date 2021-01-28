@@ -1,10 +1,13 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, {shallow , mount } from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16';
 import DocumentDetails from './MoreDetails';
+
 import { cleanup } from '@testing-library/react';
 import { createMemoryHistory } from "history";
 import { Router } from "react-router";
+import moxios from 'moxios';
+
 
 Enzyme.configure({ adapter: new EnzymeAdapter() })
 
@@ -23,6 +26,31 @@ jest.mock('react-router-dom', () => ({
     }),
     }));
 
+    describe("mocking axios request",()=>{
+        beforeEach(function () {
+            // import and pass your custom axios instance to this method
+            moxios.install()
+            moxios.stubRequest(`https://systest.eisenvault.net/alfresco/api/-default-/public/alfresco/versions/1/shared-links`, {
+                status: 200,
+                response: {}
+          })
+        });
+        test('returns shared documents id' , async () => {
+            const response = {
+                data:{
+                    entry:{
+                          id:'1234'
+                    }
+                }
+            }
+            const sharedLink = response.data.entry.id
+           expect(sharedLink).toEqual('1234'); 
+        });
+        afterEach( () => {
+            moxios.uninstall();
+
+        });
+    })
     // const historyMock = { push: jest.fn() };
 
 describe('Tests for elements of more details option', () => {
@@ -75,3 +103,16 @@ describe('Tests for elements of more details option', () => {
         })
     })
 })
+
+
+    describe("test for share link button",()=>{
+        test('check the share link button',()=>{
+           const DocumentShare = jest.fn();
+           const wrapper = shallow(<button className="shareLink" onClick={DocumentShare}/>);
+           wrapper.find('.shareLink').at(0).simulate('click');
+           expect(DocumentShare).toHaveBeenCalled();
+       });
+    })
+
+
+

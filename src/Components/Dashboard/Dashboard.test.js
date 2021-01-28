@@ -18,6 +18,8 @@ afterEach(() => {
 
 Enzyme.configure({ adapter: new EnzymeAdapter() })
 
+
+
 test('Load the Activities Successfully', async () => {
     const wrapper = mount(<Dashboard/>)
 
@@ -30,3 +32,42 @@ test('Load the Activities Successfully', async () => {
     console.log(documents.length)
     expect(docDetails.length).toEqual(1);
 });
+
+test('check for pagination component', () => {
+    const wrapper = mount(<Dashboard/>)
+    expect(wrapper.find('Pagination').length).toBe(1);
+   });
+   
+
+test("test title of the page",()=>{
+    const wrapper = mount(<Dashboard/>)
+    expect(wrapper.find("h2").text()).toContain("Dashboard")
+})
+test('get search profile',()=>{
+    const wrapper = mount(<Dashboard/>)
+    expect(wrapper.find(".search-profile")).toBeTruthy
+})
+test('render profile picture', () => {
+    const wrapper = mount(<Dashboard/>)
+    expect(wrapper.find(".title")).toBeTruthy;
+})
+test('render heaading of page',()=>{
+    const wrapper = mount(<Dashboard/>)
+    expect(wrapper.find("h3").text()).toContain("My Recent Activities")
+})
+
+
+describe("test for react hooks",()=>{
+    
+    const setDocuments = jest.fn();
+    const useStateSpy = jest.spyOn(React, 'useState')
+    useStateSpy.mockImplementation((init) => [init, setDocuments]);
+    beforeEach(() => {
+        
+        const wrapper =mount(<Dashboard />);
+     });
+    
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+})
